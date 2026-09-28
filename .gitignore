@@ -60,3 +60,38 @@ fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots/**/*.png
 fastlane/test_output
+
+
+# ======================================================================
+# ADIÇÕES EXTRAS DE MELHORIA (Para evitar conflitos no time)
+# ======================================================================
+
+# Ignorar as configurações locais de Team ID (Para não dar conflito no project.pbxproj)
+Local.xcconfig
+
+# macOS (Impede que os arquivos ocultos de pastas do Mac de cada um subam)
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Xcode (Pastas de compilação locais e status de janela/arquivos abertos)
+build/
+DerivedData/
+*.xcuserstate
+*.xccheckout
+*.moved-aside
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+
+# Bundler / Ruby (Se vocês usarem Fastlane ou CocoaPods através de um Gemfile)
+.bundle/
+vendor/bundle/
+
+# Crashlytics / Firebase (Arquivos gerados automaticamente a cada build)
+crashlytics-build.properties
