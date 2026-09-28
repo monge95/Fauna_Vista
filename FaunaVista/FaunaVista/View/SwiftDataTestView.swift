@@ -22,6 +22,39 @@ struct SwiftDataTestView: View {
             Button("Salvar Tamanduá") {
                 salvarAnimal()
             }
+            Button("Testar catálogo") {
+                for animal in catalogoAnimais {
+                    print("Nome científico: \(animal.nomeCientifico)")
+                    print("Localização: \(animal.localizacao)")
+                    print("--------------------")
+                }
+            }
+            
+            Button("Carregar catálogo") {
+                Task {
+                    do {
+                        let service = INaturalistService()
+
+                        for animalCatalogo in catalogoAnimais {
+
+                            if let taxon = try await service.buscarAnimal(
+                                nomeCientifico: animalCatalogo.nomeCientifico
+                            ) {
+                                try salvarTaxon(
+                                    taxon,
+                                    localizacao: animalCatalogo.localizacao,
+                                    nomePopular: animalCatalogo.nomePopular
+                                )
+                            } else {
+                                print("Animal não encontrado: \(animalCatalogo.nomeCientifico)")
+                            }
+                        }
+
+                    } catch {
+                        print("Erro: \(error)")
+                    }
+                }
+            }
             
             Button("Buscar e salvar Tamanduá") {
                 Task {
@@ -116,49 +149,51 @@ struct SwiftDataTestView: View {
     
     private func salvarTaxon(
         _ taxon: INaturalistTaxon,
-        localizacao: String
+        localizacao: String,
+        nomePopular: String? = nil
     ) throws {
         
         let taxonID = taxon.id
-        
+
+        let nomeFinal =
+            nomePopular
+            ?? taxon.preferredCommonName
+            ?? "Nome não informado"
+
         var descriptor = FetchDescriptor<Animal>(
             predicate: #Predicate { animal in
                 animal.taxonID == taxonID
             }
         )
-        
+
         descriptor.fetchLimit = 1
-        
+
         let animaisEncontrados = try modelContext.fetch(descriptor)
-        
+
         if let animalExistente = animaisEncontrados.first {
-            
-            animalExistente.nomePopular =
-                taxon.preferredCommonName ?? "Nome não informado"
-            
+
+            animalExistente.nomePopular = nomeFinal
             animalExistente.nomeCientifico = taxon.name
-            
+            animalExistente.localizacao = localizacao
             animalExistente.statusConservacao =
                 taxon.conservationStatus?.statusName ?? "Não informado"
-            
-            animalExistente.localizacao = localizacao
-            
-            print("Animal atualizado!")
-            
+
+            print("Animal atualizado: \(nomeFinal)")
+
         } else {
-            
+
             let novoAnimal = Animal(
                 taxonID: taxon.id,
-                nomePopular: taxon.preferredCommonName ?? "Nome não informado",
+                nomePopular: nomeFinal,
                 nomeCientifico: taxon.name,
                 localizacao: localizacao,
                 statusConservacao:
                     taxon.conservationStatus?.statusName ?? "Não informado"
             )
-            
+
             modelContext.insert(novoAnimal)
-            
-            print("Animal criado!")
+
+            print("Animal criado: \(nomeFinal)")
         }
     }
 }
