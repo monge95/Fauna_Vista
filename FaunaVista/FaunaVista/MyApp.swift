@@ -3,7 +3,7 @@ import SwiftData
 @main struct MyApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            SwiftDataTestView()
         }
         .modelContainer(for: Animal.self)
     }
