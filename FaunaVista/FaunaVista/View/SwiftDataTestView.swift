@@ -43,7 +43,8 @@ struct SwiftDataTestView: View {
                                 try salvarTaxon(
                                     taxon,
                                     localizacao: animalCatalogo.localizacao,
-                                    nomePopular: animalCatalogo.nomePopular
+                                    nomePopular: animalCatalogo.nomePopular,
+                                    statusConservacao: animalCatalogo.statusConservacao
                                 )
                             } else {
                                 print("Animal não encontrado: \(animalCatalogo.nomeCientifico)")
@@ -150,7 +151,8 @@ struct SwiftDataTestView: View {
     private func salvarTaxon(
         _ taxon: INaturalistTaxon,
         localizacao: String,
-        nomePopular: String? = nil
+        nomePopular: String? = nil,
+        statusConservacao: String? = nil
     ) throws {
         
         let taxonID = taxon.id
@@ -159,6 +161,11 @@ struct SwiftDataTestView: View {
             nomePopular
             ?? taxon.preferredCommonName
             ?? "Nome não informado"
+        
+        let statusFinal =
+            statusConservacao
+            ?? taxon.conservationStatus?.statusName
+            ?? "Não informado"
 
         var descriptor = FetchDescriptor<Animal>(
             predicate: #Predicate { animal in
@@ -175,8 +182,7 @@ struct SwiftDataTestView: View {
             animalExistente.nomePopular = nomeFinal
             animalExistente.nomeCientifico = taxon.name
             animalExistente.localizacao = localizacao
-            animalExistente.statusConservacao =
-                taxon.conservationStatus?.statusName ?? "Não informado"
+            animalExistente.statusConservacao = statusFinal
 
             print("Animal atualizado: \(nomeFinal)")
 
@@ -187,8 +193,7 @@ struct SwiftDataTestView: View {
                 nomePopular: nomeFinal,
                 nomeCientifico: taxon.name,
                 localizacao: localizacao,
-                statusConservacao:
-                    taxon.conservationStatus?.statusName ?? "Não informado"
+                statusConservacao: statusFinal
             )
 
             modelContext.insert(novoAnimal)

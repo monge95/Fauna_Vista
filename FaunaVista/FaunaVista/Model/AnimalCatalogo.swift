@@ -11,18 +11,20 @@ struct AnimalCatalogo {
     let nomeCientifico: String
     let localizacao: String
     let nomePopular: String?
+    let statusConservacao: String?
 
     init(
         nomeCientifico: String,
         localizacao: String,
-        nomePopular: String? = nil
+        nomePopular: String? = nil,
+        statusConservacao: String? = nil
     ) {
         self.nomeCientifico = nomeCientifico
         self.localizacao = localizacao
         self.nomePopular = nomePopular
+        self.statusConservacao = statusConservacao
     }
 }
-
 let catalogoAnimais: [AnimalCatalogo] = [
 
     // AMAZÔNIA
@@ -34,7 +36,8 @@ let catalogoAnimais: [AnimalCatalogo] = [
     AnimalCatalogo(
         nomeCientifico: "Cacajao rubicundus",
         localizacao: "Amazônia",
-        nomePopular: "Uacari-vermelho"
+        nomePopular: "Uacari-vermelho",
+        statusConservacao: "least concern"
     ),
 
     // CERRADO
