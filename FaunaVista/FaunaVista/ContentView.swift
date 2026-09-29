@@ -4,10 +4,18 @@ import SwiftUI
 import Playgrounds
 
 struct ContentView: View {
+    @AppStorage("onboardingConcluido") var onboardingConcluido: Bool = false
+   
     var body: some View {
-        Text("Hello, world!")
-            .padding()
-    }
+            Group {
+                if onboardingConcluido {
+                   CoordinatorView()
+                } else {
+//                  OnboardingView()
+                }
+            }
+            .animation(.easeInOut, value: onboardingConcluido)
+        }
 }
 
 #Preview {
