@@ -10,9 +10,18 @@ import SwiftUI
 
 struct BiomeView: View {
     @Environment(AppCordinator.self) private var coordinator
-    @State var id: Int
-    
+   
+    @Environment(ExpeditionLog.self) private var log
+
     var body: some View {
-      Text("bioma view")
+        
+        MapBiome(mapPice: log.activeBiomeId)
+        
     }
+}
+
+#Preview {
+    BiomeView()
+        .environment(AppCordinator())
+
 }

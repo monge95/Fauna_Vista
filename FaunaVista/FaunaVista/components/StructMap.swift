@@ -1,0 +1,26 @@
+//
+//  StructMap.swift
+//  FaunaVista
+//
+//  Created by Pedro Monge Silveira on 30/09/26.
+//
+
+import SwiftUI
+
+struct MapPiece: Identifiable {
+        let id: Int
+        let assetColorido: String
+        let assetCinza: String
+        let posX: CGFloat
+        let posY: CGFloat
+        let shape: AnyShape
+    
+    static let todosOsBiomas: [MapPiece] = [
+        MapPiece(id: 2, assetColorido: "amazonia", assetCinza: "AmazoniaGrey", posX: 193.9, posY: 143.1, shape: AnyShape(AmazoniaShape())),
+        MapPiece(id: 3, assetColorido: "pampa", assetCinza: "PampaGrey", posX: 250.9, posY: 459.1, shape: AnyShape(PampaShape())),
+        MapPiece(id: 5, assetColorido: "catinga", assetCinza: "CatingaGrey", posX: 422.4, posY: 190.1, shape: AnyShape(Rectangle())),
+        MapPiece(id: 4, assetColorido: "mataatlantida", assetCinza: "MataatlanticaGrey", posX: 355.9, posY: 293.1, shape: AnyShape(MataAtlanticaShape())),
+        MapPiece(id: 6, assetColorido: "pantanal", assetCinza: "PantanalGrey", posX: 213.4, posY: 309.1, shape: AnyShape(Rectangle())),
+        MapPiece(id: 1, assetColorido: "Cerrado", assetCinza: "CerradoGrey", posX: 289.1, posY: 241.94, shape: AnyShape(CerradoShape()))
+        ]
+}

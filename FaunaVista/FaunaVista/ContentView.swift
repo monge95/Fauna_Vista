@@ -9,7 +9,7 @@ struct ContentView: View {
     var body: some View {
             Group {
                 if onboardingConcluido {
-                   CoordinatorView()
+                    CoordinatorView()
                 } else {
 //                  OnboardingView()
                 }

@@ -12,8 +12,8 @@ struct ViewFactory{
     @ViewBuilder
     static func viewBuilder(for route: AppRoute) -> some View{
         switch route {
-        case .Biome(let id):
-            BiomeView(id: id)
+        case .Biome:
+            BiomeView()
             
         case .ExpeditionSelector:
             ExpressionSelector()
