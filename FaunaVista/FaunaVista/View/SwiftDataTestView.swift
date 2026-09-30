@@ -1,6 +1,6 @@
 //
 //  SwiftDataTestView.swift
-//  
+//  FaunaVista
 //
 //  Created by Gabriel Groppo on 28/09/26.
 //
@@ -11,23 +11,27 @@ import SwiftData
 struct SwiftDataTestView: View {
 
     @Environment(\.modelContext) private var modelContext
-    @Query private var animais: [Animal]
+    @Query private var animals: [Animal]
+    @Query private var expeditions: [Expedition]
+    @Query private var expeditionPhotos: [ExpeditionPhoto]
 
     var body: some View {
         VStack(spacing: 8) {
 
-            Text("Teste SwiftData")
+            Text("SwiftData Test")
                 .font(.title)
 
-            Text("Animais salvos: \(animais.count)")
+            Text("Saved animals: \(animals.count)")
+            Text("Saved expeditions: \(expeditions.count)")
+            Text("Saved expedition photos: \(expeditionPhotos.count)")
 
             List {
-                ForEach(animais) { animal in
+                ForEach(animals) { animal in
                     VStack(alignment: .leading, spacing: 8) {
 
                         GeometryReader { geometry in
                             AsyncImage(
-                                url: URL(string: animal.imagemURL ?? "")
+                                url: URL(string: animal.imageURL ?? "")
                             ) { phase in
 
                                 switch phase {
@@ -42,7 +46,7 @@ struct SwiftDataTestView: View {
                                 case .success(let image):
                                     image
                                         .resizable()
-                                        .scaledToFill()
+                                        .scaledToFit()
                                         .frame(
                                             width: geometry.size.width,
                                             height: 300
@@ -63,31 +67,50 @@ struct SwiftDataTestView: View {
                         }
                         .frame(height: 300)
 
-                        Text(animal.nomePopular)
+                        Text(animal.commonName)
                             .font(.headline)
 
-                        Text(animal.nomeCientifico)
+                        Text(animal.scientificName)
 
-                        Text("Bioma: \(animal.localizacao)")
+                        Text("Biome: \(animal.biome)")
 
                         Text(
-                            "Status: \(animal.statusConservacao)"
+                            "Status: \(animal.conservationStatus)"
                         )
 
                         Text(
-                            "Descoberto: \(animal.descoberto ? "Sim" : "Não")"
+                            "Discovered: \(animal.discovered ? "Yes" : "No")"
                         )
 
                         Text(
-                            "Autor: \(animal.imagemAutor ?? "Não informado")"
+                            "Author: \(animal.imageAuthor ?? "Not informed")"
                         )
                         .font(.caption)
 
                         Text(
-                            "Licença: \(animal.imagemLicenca ?? "Não informada")"
+                            "License: \(animal.imageLicense ?? "Not informed")"
                         )
                         .font(.caption)
                     }
+                }
+            }
+            Button("Create Test Expedition") {
+                createTestExpedition()
+            }
+            .buttonStyle(.borderedProminent)
+            .padding()
+            Button("Delete Test Expedition") {
+                deleteTestExpedition()
+            }
+            .buttonStyle(.bordered)
+            .padding()
+            
+            ForEach(expeditions) { expedition in
+                VStack(alignment: .leading) {
+                    Text("Expedition: \(expedition.animal.commonName)")
+                    Text("Biome: \(expedition.biome)")
+                    Text("Overall rating: \(expedition.overallRating)")
+                    Text("Photos: \(expedition.photos.count)")
                 }
             }
         }
@@ -102,18 +125,94 @@ struct SwiftDataTestView: View {
                 )
 
                 try await animalService
-                    .inicializarCatalogoSeNecessario()
+                    .initializeCatalogIfNeeded()
 
             } catch {
                 print(
-                    "Erro ao inicializar catálogo: \(error)"
+                    "Error initializing catalog: \(error)"
                 )
             }
+        }
+    }
+    
+    private func createTestExpedition() {
+
+        guard let animal = animals.first else {
+            print("No animal available.")
+            return
+        }
+
+        let photo1 = ExpeditionPhoto(
+            image: nil,
+            rating: 5
+        )
+
+        let photo2 = ExpeditionPhoto(
+            image: nil,
+            rating: 3
+        )
+
+        let photo3 = ExpeditionPhoto(
+            image: nil,
+            rating: 4
+        )
+
+        let repository = ExpeditionRepository(
+            modelContext: modelContext
+        )
+
+        let service = ExpeditionService(
+            repository: repository
+        )
+
+        do {
+            try service.finishExpedition(
+                biome: animal.biome,
+                animal: animal,
+                challenge1Completed: true,
+                challenge2Completed: false,
+                challenge3Completed: true,
+                photos: [
+                    photo1,
+                    photo2,
+                    photo3
+                ]
+            )
+
+        } catch {
+            print(
+                "Error creating expedition: \(error)"
+            )
+        }
+    }
+    
+    private func deleteTestExpedition() {
+
+        guard let expedition = expeditions.first else {
+            print("No expedition available.")
+            return
+        }
+
+        let repository = ExpeditionRepository(
+            modelContext: modelContext
+        )
+
+        do {
+            try repository.deleteExpedition(expedition)
+
+        } catch {
+            print(
+                "Error deleting expedition: \(error)"
+            )
         }
     }
 }
 
 #Preview {
     SwiftDataTestView()
-        .modelContainer(for: Animal.self)
+        .modelContainer(for: [
+            Animal.self,
+            Expedition.self,
+            ExpeditionPhoto.self
+        ])
 }

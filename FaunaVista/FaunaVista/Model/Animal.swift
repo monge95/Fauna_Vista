@@ -1,6 +1,6 @@
 //
 //  Animal.swift
-//  
+//  FaunaVista
 //
 //  Created by Gabriel Groppo on 28/09/26.
 //
@@ -15,45 +15,45 @@ final class Animal {
     @Attribute(.unique)
     var taxonID: Int
 
-    var nomePopular: String
-    var nomeCientifico: String
-    var localizacao: String
-    var statusConservacao: String
+    var commonName: String
+    var scientificName: String
+    var biome: String
+    var conservationStatus: String
 
-    var imagemURL: String?
-    var imagemFonteURL: String?
-    var imagemAutor: String?
-    var imagemLicenca: String?
-    var imagemLicencaURL: String?
+    var imageURL: String?
+    var imageSourceURL: String?
+    var imageAuthor: String?
+    var imageLicense: String?
+    var imageLicenseURL: String?
 
-    var descoberto: Bool
+    var discovered: Bool
 
     init(
         taxonID: Int,
-        nomePopular: String,
-        nomeCientifico: String,
-        localizacao: String,
-        statusConservacao: String,
-        imagemURL: String? = nil,
-        imagemFonteURL: String? = nil,
-        imagemAutor: String? = nil,
-        imagemLicenca: String? = nil,
-        imagemLicencaURL: String? = nil,
-        descoberto: Bool = false
+        commonName: String,
+        scientificName: String,
+        biome: String,
+        conservationStatus: String,
+        imageURL: String? = nil,
+        imageSourceURL: String? = nil,
+        imageAuthor: String? = nil,
+        imageLicense: String? = nil,
+        imageLicenseURL: String? = nil,
+        discovered: Bool = false
     ) {
         self.id = UUID()
         self.taxonID = taxonID
-        self.nomePopular = nomePopular
-        self.nomeCientifico = nomeCientifico
-        self.localizacao = localizacao
-        self.statusConservacao = statusConservacao
+        self.commonName = commonName
+        self.scientificName = scientificName
+        self.biome = biome
+        self.conservationStatus = conservationStatus
 
-        self.imagemURL = imagemURL
-        self.imagemFonteURL = imagemFonteURL
-        self.imagemAutor = imagemAutor
-        self.imagemLicenca = imagemLicenca
-        self.imagemLicencaURL = imagemLicencaURL
+        self.imageURL = imageURL
+        self.imageSourceURL = imageSourceURL
+        self.imageAuthor = imageAuthor
+        self.imageLicense = imageLicense
+        self.imageLicenseURL = imageLicenseURL
 
-        self.descoberto = descoberto
+        self.discovered = discovered
     }
 }

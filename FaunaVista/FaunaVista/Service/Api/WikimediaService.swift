@@ -9,7 +9,7 @@ import Foundation
 
 final class WikimediaService {
 
-    func buscarImagem(
+    func fetchImage(
         pageID: Int
     ) async throws -> WikimediaPage? {
 
@@ -58,28 +58,28 @@ final class WikimediaService {
 
         let decoder = JSONDecoder()
 
-        let resposta = try decoder.decode(
+        let result = try decoder.decode(
             WikimediaResponse.self,
             from: data
         )
 
-        guard let pages = resposta.query?.pages else {
+        guard let pages = result.query?.pages else {
             return nil
         }
 
         return pages[String(pageID)]
     }
 
-    func limparAutor(_ autor: String?) -> String? {
-        return removerHTML(autor)
+    func cleanAuthor(_ author: String?) -> String? {
+        return removeHTML(author)
     }
 
-    private func removerHTML(_ texto: String?) -> String? {
-        guard let texto else {
+    private func removeHTML(_ text: String?) -> String? {
+        guard let text else {
             return nil
         }
 
-        return texto.replacingOccurrences(
+        return text.replacingOccurrences(
             of: "<[^>]+>",
             with: "",
             options: .regularExpression
