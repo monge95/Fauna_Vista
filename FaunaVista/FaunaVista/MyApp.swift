@@ -5,6 +5,10 @@ import SwiftData
         WindowGroup {
             SwiftDataTestView()
         }
-        .modelContainer(for: Animal.self)
+        .modelContainer(for: [
+            Animal.self,
+            Expedition.self,
+            ExpeditionPhoto.self
+        ])
     }
 }
