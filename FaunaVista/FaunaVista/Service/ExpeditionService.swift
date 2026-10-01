@@ -28,7 +28,7 @@ final class ExpeditionService {
         challenge1Completed: Bool,
         challenge2Completed: Bool,
         challenge3Completed: Bool,
-        photos: [ExpeditionPhoto]
+        photos: [ExpeditionPhotoModel]
     ) throws {
 
         if try repository.findByAnimal(animal) != nil {

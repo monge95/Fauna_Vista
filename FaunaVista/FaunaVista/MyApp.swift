@@ -11,7 +11,7 @@ import SwiftData
         .modelContainer(for: [
             Animal.self,
             Expedition.self,
-            ExpeditionPhoto.self
+            ExpeditionPhotoModel.self
         ])
     }
 }
