@@ -5,6 +5,7 @@
 //  Created by Pedro Monge Silveira on 28/09/26.
 //
 import SwiftUI
+import SwiftData
 
 struct MapView: View {
     @Environment(AppCordinator.self) private var coordinator
@@ -12,11 +13,8 @@ struct MapView: View {
     
     
     var body: some View {
-        
-            
-            
             ZStack{
-                Image("BackGroundMap")
+                Image("BackgroundMap")
                     .resizable()
                     .scaledToFill()
                     .ignoresSafeArea()
@@ -85,5 +83,6 @@ struct MapView: View {
 }
 #Preview {
     MapView()
-        .environment(AppCordinator())
+        .environment(PreviewSupport.coordinator)
+        .environment(PreviewSupport.expeditionLog)
 }

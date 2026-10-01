@@ -5,6 +5,7 @@
 //  Created by Pedro Monge Silveira on 28/09/26.
 //
 import SwiftUI
+import SwiftData
 
 struct CoordinatorView: View{
     @State private var coordinator = AppCordinator()
@@ -38,5 +39,6 @@ struct CoordinatorView: View{
 }
 #Preview {
     CoordinatorView()
+        .modelContainer(PreviewSupport.container)
+        .environment(PreviewSupport.expeditionLog)
 }
-
