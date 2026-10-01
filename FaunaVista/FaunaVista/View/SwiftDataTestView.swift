@@ -12,8 +12,6 @@ struct SwiftDataTestView: View {
 
     @Environment(\.modelContext) private var modelContext
     @Query private var animals: [Animal]
-    @Query private var expeditions: [Expedition]
-    @Query private var expeditionPhotos: [ExpeditionPhoto]
 
     var body: some View {
         VStack(spacing: 8) {
@@ -22,8 +20,6 @@ struct SwiftDataTestView: View {
                 .font(.title)
 
             Text("Saved animals: \(animals.count)")
-            Text("Saved expeditions: \(expeditions.count)")
-            Text("Saved expedition photos: \(expeditionPhotos.count)")
 
             List {
                 ForEach(animals) { animal in
@@ -51,7 +47,6 @@ struct SwiftDataTestView: View {
                                             width: geometry.size.width,
                                             height: 300
                                         )
-                                        .clipped()
 
                                 case .failure:
                                     Image(systemName: "photo")
@@ -94,25 +89,6 @@ struct SwiftDataTestView: View {
                     }
                 }
             }
-            Button("Create Test Expedition") {
-                createTestExpedition()
-            }
-            .buttonStyle(.borderedProminent)
-            .padding()
-            Button("Delete Test Expedition") {
-                deleteTestExpedition()
-            }
-            .buttonStyle(.bordered)
-            .padding()
-            
-            ForEach(expeditions) { expedition in
-                VStack(alignment: .leading) {
-                    Text("Expedition: \(expedition.animal.commonName)")
-                    Text("Biome: \(expedition.biome)")
-                    Text("Overall rating: \(expedition.overallRating)")
-                    Text("Photos: \(expedition.photos.count)")
-                }
-            }
         }
         .task {
             do {
@@ -132,78 +108,6 @@ struct SwiftDataTestView: View {
                     "Error initializing catalog: \(error)"
                 )
             }
-        }
-    }
-    
-    private func createTestExpedition() {
-
-        guard let animal = animals.first else {
-            print("No animal available.")
-            return
-        }
-
-        let photo1 = ExpeditionPhoto(
-            image: nil,
-            rating: 5
-        )
-
-        let photo2 = ExpeditionPhoto(
-            image: nil,
-            rating: 3
-        )
-
-        let photo3 = ExpeditionPhoto(
-            image: nil,
-            rating: 4
-        )
-
-        let repository = ExpeditionRepository(
-            modelContext: modelContext
-        )
-
-        let service = ExpeditionService(
-            repository: repository
-        )
-
-        do {
-            try service.finishExpedition(
-                biome: animal.biome,
-                animal: animal,
-                challenge1Completed: true,
-                challenge2Completed: false,
-                challenge3Completed: true,
-                photos: [
-                    photo1,
-                    photo2,
-                    photo3
-                ]
-            )
-
-        } catch {
-            print(
-                "Error creating expedition: \(error)"
-            )
-        }
-    }
-    
-    private func deleteTestExpedition() {
-
-        guard let expedition = expeditions.first else {
-            print("No expedition available.")
-            return
-        }
-
-        let repository = ExpeditionRepository(
-            modelContext: modelContext
-        )
-
-        do {
-            try repository.deleteExpedition(expedition)
-
-        } catch {
-            print(
-                "Error deleting expedition: \(error)"
-            )
         }
     }
 }

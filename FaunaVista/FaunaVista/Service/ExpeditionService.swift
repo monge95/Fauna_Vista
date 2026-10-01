@@ -8,6 +8,10 @@
 
 import Foundation
 
+enum ExpeditionServiceError: Error {
+    case expeditionAlreadyExists
+}
+
 final class ExpeditionService {
 
     private let repository: ExpeditionRepository
@@ -15,6 +19,7 @@ final class ExpeditionService {
     init(repository: ExpeditionRepository) {
         self.repository = repository
     }
+    
     
     
     func finishExpedition(
@@ -26,6 +31,10 @@ final class ExpeditionService {
         photos: [ExpeditionPhoto]
     ) throws {
 
+        if try repository.findByAnimal(animal) != nil {
+            throw ExpeditionServiceError.expeditionAlreadyExists
+        }
+        
         let overallRating = [
             challenge1Completed,
             challenge2Completed,
@@ -43,5 +52,14 @@ final class ExpeditionService {
         )
 
         try repository.createExpedition(expedition)
+    }
+    
+    func redoExpedition(for animal: Animal) throws {
+
+        guard let expedition = try repository.findByAnimal(animal) else {
+            return
+        }
+
+        try repository.deleteExpedition(expedition)
     }
 }
