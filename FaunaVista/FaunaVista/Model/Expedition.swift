@@ -24,7 +24,7 @@ final class Expedition {
     var challenge3Completed: Bool
 
     @Relationship(deleteRule: .cascade)
-    var photos: [ExpeditionPhoto]
+    var photos: [ExpeditionPhotoModel]
 
     init(
         biome: String,
@@ -33,7 +33,7 @@ final class Expedition {
         challenge1Completed: Bool,
         challenge2Completed: Bool,
         challenge3Completed: Bool,
-        photos: [ExpeditionPhoto] = []
+        photos: [ExpeditionPhotoModel] = []
     ) {
         self.id = UUID()
         self.biome = biome

@@ -24,7 +24,7 @@ struct CoordinatorView: View{
             
             
             NavigationStack(path: $coordinator.pathColecao) {
-                ColecaoView()
+                CollectionView()
                     .navigationDestination(for: AppRoute.self) { rota in
                         ViewFactory.viewBuilder(for: rota)
                             .toolbar(.hidden, for: .tabBar)

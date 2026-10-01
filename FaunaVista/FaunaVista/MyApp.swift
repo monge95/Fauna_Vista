@@ -5,13 +5,13 @@ import SwiftData
     
     var body: some Scene {
         WindowGroup {
-            CoordinatorView()
+            SwiftDataTestView()
                        .environment(log) 
         }
         .modelContainer(for: [
             Animal.self,
             Expedition.self,
-            ExpeditionPhoto.self
+            ExpeditionPhotoModel.self
         ])
     }
 }

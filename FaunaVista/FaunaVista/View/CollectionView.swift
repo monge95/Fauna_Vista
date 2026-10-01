@@ -6,20 +6,46 @@
 //
 
 import SwiftUI
+import SwiftData
 
-struct ColecaoView: View {
-    @Environment(AppCordinator.self) private var coordinator
-    
+struct CollectionView: View {
+
+    @Query private var animals: [Animal]
+
+    private let columns = [
+        GridItem(.flexible(), spacing: 12),
+        GridItem(.flexible(), spacing: 12)
+    ]
+
     var body: some View {
-        VStack(spacing: 20) {
-            Image(systemName: "books.vertical.fill")
-                .font(.system(size: 60))
-                .foregroundColor(.brown)
-            
-            Text("Tela Base da Coleção")
-                .font(.title)
-                .bold()
+        ScrollView {
+            VStack(alignment: .leading, spacing: 24) {
+
+                Text("Coleção de animais")
+                    .font(.system(size: 32, weight: .bold))
+                    .foregroundStyle(.black)
+
+                LazyVGrid(
+                    columns: columns,
+                    spacing: 12
+                ) {
+                    ForEach(animals) { animal in
+                        AnimalCard(animal: animal)
+                    }
+                }
+            }
+            .padding(.horizontal, 20)
+            .padding(.top, 20)
+            .padding(.bottom, 40)
         }
+        .background(
+            Color("CollectionBackground")
+                .ignoresSafeArea()
+        )
     }
 }
 
+#Preview {
+    CollectionView()
+        .modelContainer(PreviewSupport.container)
+}
