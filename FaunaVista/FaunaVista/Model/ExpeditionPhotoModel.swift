@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-final class ExpeditionPhotoModel {
+final class ExpeditionPhotoModel{
 
     var id: UUID
 

@@ -19,7 +19,7 @@ enum PreviewSupport {
                 for:
                     Animal.self,
                     Expedition.self,
-                    ExpeditionPhotoModel.self,
+                ExpeditionPhotoModel.self,
                 configurations: configuration
             )
 

@@ -14,7 +14,7 @@ struct MapView: View {
     
     var body: some View {
             ZStack{
-                Image("BackgroundMap")
+                Image("BackGroundMap")
                     .resizable()
                     .scaledToFill()
                     .ignoresSafeArea()

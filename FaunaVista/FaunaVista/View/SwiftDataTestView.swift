@@ -119,12 +119,13 @@
             }
         }
     }
+}
 
-    #Preview {
-        SwiftDataTestView()
-            .modelContainer(for: [
-                Animal.self,
-                Expedition.self,
-                ExpeditionPhotoModel.self
-            ])
-    }
+#Preview {
+    SwiftDataTestView()
+        .modelContainer(for: [
+            Animal.self,
+            Expedition.self,
+            ExpeditionPhotoModel.self
+        ])
+}
