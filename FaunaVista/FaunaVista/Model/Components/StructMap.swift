@@ -14,13 +14,14 @@ struct MapPiece: Identifiable {
         let posX: CGFloat
         let posY: CGFloat
         let shape: AnyShape
+        let border: String
     
     static let todosOsBiomas: [MapPiece] = [
-        MapPiece(id: 2, assetColorido: "amazonia", assetCinza: "AmazoniaGrey", posX: 193.9, posY: 143.1, shape: AnyShape(AmazoniaShape())),
-        MapPiece(id: 3, assetColorido: "pampa", assetCinza: "PampaGrey", posX: 250.9, posY: 459.1, shape: AnyShape(PampaShape())),
-        MapPiece(id: 5, assetColorido: "caatinga", assetCinza: "CaatingaGrey", posX: 422.4, posY: 190.1, shape: AnyShape(Rectangle())),
-        MapPiece(id: 4, assetColorido: "mataatlantica", assetCinza: "MataatlanticaGrey", posX: 355.9, posY: 293.1, shape: AnyShape(MataAtlanticaShape())),
-        MapPiece(id: 6, assetColorido: "pantanal", assetCinza: "PantanalGrey", posX: 213.4, posY: 309.1, shape: AnyShape(Rectangle())),
-        MapPiece(id: 1, assetColorido: "Cerrado", assetCinza: "CerradoGrey", posX: 289.1, posY: 241.94, shape: AnyShape(CerradoShape()))
+        MapPiece(id: 2, assetColorido: "amazonia", assetCinza: "AmazoniaGrey", posX: 193.9, posY: 143.1, shape: AnyShape(AmazoniaShape()), border: "BorderAmazonia"),
+        MapPiece(id: 3, assetColorido: "pampa", assetCinza: "PampaGrey", posX: 250.9, posY: 459.1, shape: AnyShape(PampaShape()), border: "BorderPampa"),
+        MapPiece(id: 5, assetColorido: "caatinga", assetCinza: "CaatingaGrey", posX: 422.4, posY: 190.1, shape: AnyShape(Rectangle()), border: "BorderCaatinga"),
+        MapPiece(id: 4, assetColorido: "mataatlantica", assetCinza: "MataatlanticaGrey", posX: 355.9, posY: 293.1, shape: AnyShape(MataAtlanticaShape()), border: "BorderMataaclantica"),
+        MapPiece(id: 6, assetColorido: "pantanal", assetCinza: "PantanalGrey", posX: 213.4, posY: 309.1, shape: AnyShape(Rectangle()), border: "BorderPantanal"),
+        MapPiece(id: 1, assetColorido: "Cerrado", assetCinza: "CerradoGrey", posX: 289.1, posY: 241.94, shape: AnyShape(CerradoShape()), border: "BordaCerrado")
         ]
 }

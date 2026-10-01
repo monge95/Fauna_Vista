@@ -16,7 +16,7 @@ struct MapView: View {
             
             
             ZStack{
-                Image("AppCordinator")
+                Image("BackGroundMap")
                     .resizable()
                     .scaledToFill()
                     .ignoresSafeArea()

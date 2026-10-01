@@ -31,7 +31,7 @@ struct MapBiome: View {
                     ZStack{
                         Image(biome.assetColorido)
                             .position(x: biome.posX, y: biome.posY)
-                        Image("borda\(biome.assetColorido)")
+                        Image(biome.border)
                             .position(x: biome.posX, y: biome.posY)
                     }
 

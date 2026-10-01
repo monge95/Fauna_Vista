@@ -18,7 +18,7 @@ struct CoordinatorView: View{
                             .toolbar(.hidden, for: .tabBar)
                     }
             }
-            .tabItem { Label("Mapa", systemImage: "map") }
+            .tabItem { Label("Mapa", systemImage: "map.fill") }
             .tag(AppTap.Map)
             
             
@@ -29,7 +29,7 @@ struct CoordinatorView: View{
                             .toolbar(.hidden, for: .tabBar)
                     }
             }
-            .tabItem { Label("Coleção", systemImage: "book") }
+            .tabItem { Label("Coleção", systemImage: "magazine") }
             .tag(AppTap.Collection)
         }
         .environment(coordinator)

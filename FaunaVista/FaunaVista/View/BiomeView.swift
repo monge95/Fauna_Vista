@@ -14,8 +14,13 @@ struct BiomeView: View {
     @Environment(ExpeditionLog.self) private var log
 
     var body: some View {
+        ZStack{
+            Image("BackGroundBiome")
+            
+            MapBiome(mapPice: log.activeBiomeId)
+            
+        }
         
-        MapBiome(mapPice: log.activeBiomeId)
         
     }
 }
