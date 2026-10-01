@@ -14,9 +14,10 @@ enum AppTap: Hashable {
 
 enum AppRoute: Hashable{
     case Biome
-    case ExpeditionSelector
     case Expedition
     case Analyze
     case CheckExpedition
     case registro
+    
+    case information
 }

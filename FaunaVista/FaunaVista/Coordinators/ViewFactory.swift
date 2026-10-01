@@ -15,9 +15,7 @@ struct ViewFactory{
         case .Biome:
             BiomeView()
             
-        case .ExpeditionSelector:
-            ExpressionSelector()
-            
+        // fluxo principal
         case .Expedition:
             ExpeditionView()
                     
@@ -29,6 +27,11 @@ struct ViewFactory{
                     
         case .registro:
             RegistroView()
+            
+            
+        // fluuxo secundario 
+        case .information:
+            InformationView()
         }
     }
 }

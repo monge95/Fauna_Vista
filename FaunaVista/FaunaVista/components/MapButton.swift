@@ -6,7 +6,7 @@
 //
 import SwiftUI
 
-struct MapButoon: View {
+struct MapButton: View {
     @Environment(AppCordinator.self) private var coordinator
     
     @Environment(ExpeditionLog.self) private var log
@@ -39,6 +39,6 @@ struct MapButoon: View {
 }
 
 #Preview {
-    MapButoon()
+    MapButton()
         .environment(AppCordinator())
 }

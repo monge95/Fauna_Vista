@@ -33,7 +33,7 @@ struct CoordinatorView: View{
             .tag(AppTap.Collection)
         }
         .environment(coordinator)
-        .ignoresSafeArea()
+     
     }
 }
 #Preview {

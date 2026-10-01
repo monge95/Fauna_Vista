@@ -52,6 +52,6 @@ struct MapBiome: View {
     }
 }
 #Preview {
-    MapBiome(mapPice: 1)
+    MapBiome(mapPice: 2)
         .environment(AppCordinator())
 }
