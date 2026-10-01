@@ -1,9 +1,12 @@
 import SwiftUI
 import SwiftData
 @main struct MyApp: App {
+    @State private var log = ExpeditionLog()
+    
     var body: some Scene {
         WindowGroup {
-            SwiftDataTestView()
+            CoordinatorView()
+                       .environment(log) 
         }
         .modelContainer(for: [
             Animal.self,
@@ -12,3 +15,4 @@ import SwiftData
         ])
     }
 }
+

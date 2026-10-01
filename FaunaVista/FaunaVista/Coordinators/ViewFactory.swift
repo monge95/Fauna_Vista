@@ -12,12 +12,10 @@ struct ViewFactory{
     @ViewBuilder
     static func viewBuilder(for route: AppRoute) -> some View{
         switch route {
-        case .Biome(let id):
-            BiomeView(id: id)
+        case .Biome:
+            BiomeView()
             
-        case .ExpeditionSelector:
-            ExpressionSelector()
-            
+        // fluxo principal
         case .Expedition:
             ExpeditionView()
                     
@@ -29,6 +27,11 @@ struct ViewFactory{
                     
         case .registro:
             RegistroView()
+            
+            
+        // fluuxo secundario 
+        case .information:
+            InformationView()
         }
     }
 }

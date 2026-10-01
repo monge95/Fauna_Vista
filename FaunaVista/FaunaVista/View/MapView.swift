@@ -9,24 +9,81 @@ import SwiftUI
 struct MapView: View {
     @Environment(AppCordinator.self) private var coordinator
     
+    
+    
     var body: some View {
-        VStack(spacing: 20) {
-            Image(systemName: "map.fill")
-                .font(.system(size: 60))
-                .foregroundColor(.green)
+        
             
-            Text("Tela Base do Mapa")
-                .font(.title)
-                .bold()
             
-           
-            Button("Explorar Bioma 1") {
-                coordinator.push(.Biome (id: 1))
+            ZStack{
+                Image("BackGroundMap")
+                    .resizable()
+                    .scaledToFill()
+                    .ignoresSafeArea()
+                VStack{
+                    Spacer()
+                    HStack{
+                        VStack(spacing: 5){
+                            Text("Biomas do Brasil")
+                                .font(.custom("Belanosima-SemiBold", size: 35))
+                                .foregroundColor(Color("BackGroundColor"))
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                            
+                            Text("Toque no bioma para explorar")
+                                .font(.system(size: 14, weight: .semibold))
+                                .foregroundColor(.black)
+                                .padding(5)
+                                .padding(.horizontal, 10)
+                                .background(Color("LightGreenProgress"))
+                                .cornerRadius(20)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                        }
+                        Button(action: {
+                            coordinator.push(.information)
+                        }) {
+                            Image(systemName: "info")
+                                .resizable()
+                                .scaledToFit()
+                                .foregroundColor(.white)
+                                .frame(width: 20, height: 20)
+                        }
+                        .frame(width: 44, height: 44)
+                        .buttonStyle(.plain)
+                       
+                        .background(
+                            Circle()
+                                .fill(.ultraThinMaterial)
+                        )
+                       
+                        .overlay(
+                            Circle()
+                                .stroke(
+                                    LinearGradient(
+                                        colors: [.white.opacity(0.8), .clear, .white.opacity(0.2)],
+                                        startPoint: .topLeading,
+                                        endPoint: .bottomTrailing
+                                    ),
+                                    lineWidth: 1.5
+                                )
+                        )
+                        
+                        .shadow(color: .black.opacity(0.15), radius: 4, x: 2, y: 4)
+                    }
+                    .padding(.horizontal, 70)
+                    ZStack{
+                    Image("cloud")
+                        
+                        
+                        MapButton()
+                            .padding(.top, 60)
+                    }
+                    Spacer()
+                }
+                
             }
-            .buttonStyle(.borderedProminent)
-            .tint(.green)
-        }
-        .ignoresSafeArea()
-
     }
+}
+#Preview {
+    MapView()
+        .environment(AppCordinator())
 }
