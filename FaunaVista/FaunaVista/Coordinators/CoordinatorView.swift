@@ -9,7 +9,7 @@ import SwiftData
 
 struct CoordinatorView: View{
     @State private var coordinator = AppCordinator()
-    
+   
     var body: some View{
         TabView(selection: $coordinator.selectedView) {
             NavigationStack(path: $coordinator.pathMapa) {
@@ -19,7 +19,12 @@ struct CoordinatorView: View{
                             .toolbar(.hidden, for: .tabBar)
                     }
             }
-            .tabItem { Label("Mapa", systemImage: "map.fill") }
+            .tabItem {Label(
+                "Mapa",
+                image: coordinator.selectedView == .Map ? "SelectICmap" : "ICmap"
+            )
+            
+            }
             .tag(AppTap.Map)
             
             
@@ -30,10 +35,17 @@ struct CoordinatorView: View{
                             .toolbar(.hidden, for: .tabBar)
                     }
             }
-            .tabItem { Label("Coleção", systemImage: "magazine") }
+            .tabItem { Label("Coleção",  image: coordinator.selectedView == .Collection ? "SelectICmagazine" : "ICmagazine")
+                }
             .tag(AppTap.Collection)
         }
         .environment(coordinator)
+        .onAppear {
+                    let appearance = UITabBarAppearance()
+                    appearance.stackedLayoutAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor.texIcon]
+                    appearance.stackedLayoutAppearance.selected.titleTextAttributes = [.foregroundColor: UIColor.white]
+                    UITabBar.appearance().standardAppearance = appearance
+                }
      
     }
 }
