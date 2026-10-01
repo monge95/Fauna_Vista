@@ -9,8 +9,8 @@ import Foundation
 
 final class INaturalistService {
 
-    func buscarAnimal(
-        nomeCientifico: String
+    func fetchAnimal(
+        scientificName: String
     ) async throws -> INaturalistTaxon? {
 
         guard var components = URLComponents(
@@ -22,7 +22,7 @@ final class INaturalistService {
         components.queryItems = [
             URLQueryItem(
                 name: "q",
-                value: nomeCientifico
+                value: scientificName
             ),
             URLQueryItem(
                 name: "locale",
@@ -49,13 +49,13 @@ final class INaturalistService {
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = .convertFromSnakeCase
 
-        let resposta = try decoder.decode(
+        let result = try decoder.decode(
             INaturalistResponse.self,
             from: data
         )
 
-        return resposta.results.first { taxon in
-            taxon.name.lowercased() == nomeCientifico.lowercased()
+        return result.results.first { taxon in
+            taxon.name.lowercased() == scientificName.lowercased()
             && taxon.rank == "species"
         }
     }

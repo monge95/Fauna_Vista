@@ -23,72 +23,72 @@ final class AnimalService {
         self.wikimediaService = wikimediaService
     }
 
-    func carregarCatalogo() async throws {
+    func loadCatalog() async throws {
 
-        for animalCatalogo in catalogoAnimais {
+        for catalogAnimal in animalCatalog {
 
-            if let taxon = try await iNaturalistService.buscarAnimal(
-                nomeCientifico: animalCatalogo.nomeCientifico
+            if let taxon = try await iNaturalistService.fetchAnimal(
+                scientificName: catalogAnimal.scientificName
             ) {
 
-                let paginaWikimedia = try await wikimediaService.buscarImagem(
-                    pageID: animalCatalogo.wikimediaPageID
+                let wikimediaPage = try await wikimediaService.fetchImage(
+                    pageID: catalogAnimal.wikimediaPageID
                 )
 
-                let imagemWikimedia = paginaWikimedia?.imageinfo?.first
+                let wikimediaImage = wikimediaPage?.imageinfo?.first
 
-                let imagemURL =
-                    imagemWikimedia?.thumburl
-                    ?? imagemWikimedia?.url
+                let imageURL =
+                    wikimediaImage?.thumburl
+                    ?? wikimediaImage?.url
 
-                let imagemFonteURL =
-                    imagemWikimedia?.descriptionurl
+                let imageSourceURL =
+                    wikimediaImage?.descriptionurl
 
-                let imagemAutor = wikimediaService.limparAutor(
-                    imagemWikimedia?.extmetadata?.Artist?.value
+                let imageAuthor = wikimediaService.cleanAuthor(
+                    wikimediaImage?.extmetadata?.Artist?.value
                 )
 
-                let imagemLicenca =
-                    imagemWikimedia?.extmetadata?.LicenseShortName?.value
+                let imageLicense =
+                    wikimediaImage?.extmetadata?.LicenseShortName?.value
 
-                let imagemLicencaURL =
-                    imagemWikimedia?.extmetadata?.LicenseUrl?.value
+                let imageLicenseURL =
+                    wikimediaImage?.extmetadata?.LicenseUrl?.value
 
-                try repository.salvarTaxon(
+                try repository.saveTaxon(
                     taxon,
-                    localizacao: animalCatalogo.localizacao,
-                    nomePopular: animalCatalogo.nomePopular,
-                    statusConservacao: animalCatalogo.statusConservacao,
-                    imagemURL: imagemURL,
-                    imagemFonteURL: imagemFonteURL,
-                    imagemAutor: imagemAutor,
-                    imagemLicenca: imagemLicenca,
-                    imagemLicencaURL: imagemLicencaURL
+                    biome: catalogAnimal.biome,
+                    commonName: catalogAnimal.commonName,
+                    conservationStatus: catalogAnimal.conservationStatus,
+                    imageURL: imageURL,
+                    imageSourceURL: imageSourceURL,
+                    imageAuthor: imageAuthor,
+                    imageLicense: imageLicense,
+                    imageLicenseURL: imageLicenseURL
                 )
 
             } else {
                 print(
-                    "Animal não encontrado: \(animalCatalogo.nomeCientifico)"
+                    "Animal not found: \(catalogAnimal.scientificName)"
                 )
             }
         }
     }
 
-    func inicializarCatalogoSeNecessario() async throws {
+    func initializeCatalogIfNeeded() async throws {
 
-        let quantidade = try repository.quantidadeDeAnimais()
+        let count = try repository.animalCount()
 
-        guard quantidade < catalogoAnimais.count else {
-            print("Catálogo já inicializado.")
+        guard count < animalCatalog.count else {
+            print("Catalog already initialized.")
             return
         }
 
         print(
-            "Catálogo incompleto: \(quantidade)/\(catalogoAnimais.count)"
+            "Incomplete catalog: \(count)/\(animalCatalog.count)"
         )
 
-        try await carregarCatalogo()
+        try await loadCatalog()
 
-        print("Catálogo inicializado.")
+        print("Catalog initialized.")
     }
 }

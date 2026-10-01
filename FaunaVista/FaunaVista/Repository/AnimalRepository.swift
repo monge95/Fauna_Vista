@@ -9,128 +9,127 @@ import Foundation
 import SwiftData
 
 final class AnimalRepository {
-    
+
     private let modelContext: ModelContext
-    
+
     init(modelContext: ModelContext) {
         self.modelContext = modelContext
     }
-    
-    func salvarTaxon(
+
+    func saveTaxon(
         _ taxon: INaturalistTaxon,
-        localizacao: String,
-        nomePopular: String? = nil,
-        statusConservacao: String? = nil,
-        imagemURL: String? = nil,
-        imagemFonteURL: String? = nil,
-        imagemAutor: String? = nil,
-        imagemLicenca: String? = nil,
-        imagemLicencaURL: String? = nil
+        biome: String,
+        commonName: String? = nil,
+        conservationStatus: String? = nil,
+        imageURL: String? = nil,
+        imageSourceURL: String? = nil,
+        imageAuthor: String? = nil,
+        imageLicense: String? = nil,
+        imageLicenseURL: String? = nil
     ) throws {
-        
+
         let taxonID = taxon.id
-        
-        let nomeFinal =
-            nomePopular
+
+        let finalName =
+            commonName
             ?? taxon.preferredCommonName
             ?? "Nome não informado"
-        
-        let statusFinal =
-            statusConservacao
+
+        let finalStatus =
+            conservationStatus
             ?? taxon.conservationStatus?.statusName
             ?? "Não informado"
-        
-        if let animalExistente = try buscarPorTaxonID(taxonID) {
-            
-            animalExistente.nomePopular = nomeFinal
-            animalExistente.nomeCientifico = taxon.name
-            animalExistente.localizacao = localizacao
-            animalExistente.statusConservacao = statusFinal
-            
-            animalExistente.imagemURL = imagemURL
-            animalExistente.imagemFonteURL = imagemFonteURL
-            animalExistente.imagemAutor = imagemAutor
-            animalExistente.imagemLicenca = imagemLicenca
-            animalExistente.imagemLicencaURL = imagemLicencaURL
-            
-            print("Animal atualizado: \(nomeFinal)")
-            
+
+        if let existingAnimal = try findByTaxonID(taxonID) {
+
+            existingAnimal.commonName = finalName
+            existingAnimal.scientificName = taxon.name
+            existingAnimal.biome = biome
+            existingAnimal.conservationStatus = finalStatus
+
+            existingAnimal.imageURL = imageURL
+            existingAnimal.imageSourceURL = imageSourceURL
+            existingAnimal.imageAuthor = imageAuthor
+            existingAnimal.imageLicense = imageLicense
+            existingAnimal.imageLicenseURL = imageLicenseURL
+
+            print("Animal updated: \(finalName)")
+
         } else {
-            
-            let novoAnimal = Animal(
+
+            let newAnimal = Animal(
                 taxonID: taxon.id,
-                nomePopular: nomeFinal,
-                nomeCientifico: taxon.name,
-                localizacao: localizacao,
-                statusConservacao: statusFinal,
-                imagemURL: imagemURL,
-                imagemFonteURL: imagemFonteURL,
-                imagemAutor: imagemAutor,
-                imagemLicenca: imagemLicenca,
-                imagemLicencaURL: imagemLicencaURL
+                commonName: finalName,
+                scientificName: taxon.name,
+                biome: biome,
+                conservationStatus: finalStatus,
+                imageURL: imageURL,
+                imageSourceURL: imageSourceURL,
+                imageAuthor: imageAuthor,
+                imageLicense: imageLicense,
+                imageLicenseURL: imageLicenseURL
             )
-            
-            modelContext.insert(novoAnimal)
-            
-            print("Animal criado: \(nomeFinal)")
+
+            modelContext.insert(newAnimal)
+
+            print("Animal created: \(finalName)")
         }
-        
+
         try modelContext.save()
     }
-    
-    func marcarComoDescoberto(taxonID: Int) throws {
-        
-        guard let animal = try buscarPorTaxonID(taxonID) else {
-            print("Animal não encontrado.")
+
+    func markAsDiscovered(taxonID: Int) throws {
+
+        guard let animal = try findByTaxonID(taxonID) else {
+            print("Animal not found.")
             return
         }
-        
-        animal.descoberto = true
-        
+
+        animal.discovered = true
+
         try modelContext.save()
-        
-        print("Animal descoberto: \(animal.nomePopular)")
+
+        print("Animal discovered: \(animal.commonName)")
     }
-    
-    func buscarPorTaxonID(_ taxonID: Int) throws -> Animal? {
-        
+
+    func findByTaxonID(_ taxonID: Int) throws -> Animal? {
+
         var descriptor = FetchDescriptor<Animal>(
             predicate: #Predicate { animal in
                 animal.taxonID == taxonID
             }
         )
-        
+
         descriptor.fetchLimit = 1
-        
+
         return try modelContext.fetch(descriptor).first
     }
-    
-    func quantidadeDeAnimais() throws -> Int {
+
+    func animalCount() throws -> Int {
         let descriptor = FetchDescriptor<Animal>()
-        
+
         return try modelContext.fetchCount(descriptor)
     }
-    
-    func buscarPorBioma(_ bioma: String) throws -> [Animal] {
-        
+
+    func findByBiome(_ biome: String) throws -> [Animal] {
+
         let descriptor = FetchDescriptor<Animal>(
             predicate: #Predicate { animal in
-                animal.localizacao == bioma
+                animal.biome == biome
             }
         )
-        
+
         return try modelContext.fetch(descriptor)
     }
-    
-    func buscarDescobertos() throws -> [Animal] {
-        
+
+    func findDiscovered() throws -> [Animal] {
+
         let descriptor = FetchDescriptor<Animal>(
             predicate: #Predicate { animal in
-                animal.descoberto == true
+                animal.discovered == true
             }
         )
-        
+
         return try modelContext.fetch(descriptor)
     }
 }
-
