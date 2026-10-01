@@ -5,7 +5,7 @@ import SwiftData
     
     var body: some Scene {
         WindowGroup {
-            CoordinatorView()
+            SwiftDataTestView()
                        .environment(log) 
         }
         .modelContainer(for: [
