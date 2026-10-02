@@ -46,6 +46,13 @@ enum PreviewSupport {
         AppCordinator()
     }
 
+    @MainActor
+    static func expeditionLog(biomeId: Int) -> ExpeditionLog {
+        let log = ExpeditionLog()
+        log.activeBiomeId = biomeId
+        return log
+    }
+
     static var animals: [Animal] {
         [
             // Amazônia

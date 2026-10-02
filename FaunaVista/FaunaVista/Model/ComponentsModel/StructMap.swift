@@ -15,6 +15,7 @@ struct MapPiece: Identifiable {
         let posY: CGFloat
         let shape: AnyShape
         let border: String
+  
     
     static let todosOsBiomas: [MapPiece] = [
         MapPiece(id: 2, assetColorido: "amazonia", assetCinza: "AmazoniaGrey", posX: 193.9, posY: 143.1, shape: AnyShape(AmazoniaShape()), border: "BorderAmazonia"),

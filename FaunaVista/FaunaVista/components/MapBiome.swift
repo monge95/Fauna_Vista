@@ -45,13 +45,16 @@ struct MapBiome: View {
                 
             
          
-            
+            MissionPinsLayer()
         }
         .frame(width: 491.8, height: 504.17)
+        
         
     }
 }
 #Preview {
     MapBiome(mapPice: 2)
         .environment(AppCordinator())
+        .environment(PreviewSupport.expeditionLog(biomeId: 4))
+
 }
