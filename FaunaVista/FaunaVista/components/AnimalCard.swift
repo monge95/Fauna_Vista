@@ -23,12 +23,10 @@ struct AnimalCard: View {
                 .padding(.top, 16)
 
             Spacer(minLength: 8)
-            ZStack{
-                RoundedRectangle(cornerRadius: 20)
-                    .fill(Color(.systemGray4))
-                    .frame(width: 150, height: 160)
-                animalIllustration
-            }
+            
+                
+            animalIllustration
+            
             Spacer(minLength: 8)
 
             Text(animal.biome)
@@ -43,7 +41,7 @@ struct AnimalCard: View {
                 .padding(.horizontal, 20)
                 .padding(.bottom, 16)
         }
-        .frame(height: 300)
+        .frame(height: 260)
         .background {
             RoundedRectangle(cornerRadius: 20)
                 .fill(Color("CardBackground"))
@@ -62,11 +60,7 @@ struct AnimalCard: View {
                 .frame(width: 140, height: 90)
                 
 
-            if !animal.discovered {
-                Text("?")
-                    .font(.system(size: 65, weight: .bold))
-                    .foregroundStyle(.white)
-            }
+            
         }
     }
 
