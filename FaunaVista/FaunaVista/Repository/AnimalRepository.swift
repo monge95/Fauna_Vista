@@ -37,22 +37,10 @@ final class AnimalRepository {
 
         let originalStatus =
             conservationStatus
-            ?? taxon.conservationStatus?.statusName
-
-        print(
-            "STATUS \(finalName):",
-            originalStatus ?? "nil"
-        )
-
+ 
         let finalStatus = translateConservationStatus(
             originalStatus
-        )
-
-        print(
-            "STATUS TRADUZIDO \(finalName):",
-            finalStatus
-        )
-        
+        )    
 
         if let existingAnimal = try findByTaxonID(taxonID) {
 
