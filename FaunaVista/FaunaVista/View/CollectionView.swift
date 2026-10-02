@@ -17,7 +17,6 @@ struct CollectionView: View {
         GridItem(.flexible(), spacing: 12)
     ]
    
-    private let unlockAllAnimalsForDevelopment = true
 
     var body: some View {
         
@@ -77,10 +76,7 @@ struct CollectionView: View {
                 ) {
                     ForEach(orderedAnimals) { animal in
 
-                        let isUnlocked =
-                            unlockAllAnimalsForDevelopment || animal.discovered
-
-                        if isUnlocked {
+                        if animal.discovered {
                             NavigationLink {
                                 AnimalDetailView(animal: animal)
                             } label: {
