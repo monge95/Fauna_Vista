@@ -12,10 +12,10 @@ import Combine
 
 
 // MARK: - ESTADO DO JOGO
-enum ExpeditionGameState {
-    case start
-    case playing
-    case finished
+enum ExpeditionGameState { case start,
+                                playing,
+                                finished,
+                                missionCheck,
+                                registered
 }
-
 

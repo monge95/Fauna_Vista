@@ -48,11 +48,13 @@ struct ExpeditionAnimalDefinition: Identifiable {
     let detectionScaleX: Float
     let detectionScaleY: Float
     let detectionVisible: Bool
+    let scientificName: String
      
     init(
         id: String,
         modelName: String,
         displayName: String,
+        scientificName: String = "",
         enabled: Bool = true,
         speed: Float = 1.0,
         waitAtPosition: TimeInterval = 2.0,
@@ -83,6 +85,7 @@ struct ExpeditionAnimalDefinition: Identifiable {
         self.id = id
         self.modelName = modelName
         self.displayName = displayName
+        self.scientificName = scientificName
         self.enabled = enabled
         self.speed = speed
         self.waitAtPosition = waitAtPosition

@@ -1200,63 +1200,44 @@ final class ExpeditionSceneView: ARView {
     // MARK: - FOTO
     // ========================================================
 
+    private func animalInfo(for object: SceneObject) -> (animalID: String, pose: ExpeditionAnimalPose)? {
+        guard case .animal(let definition) = object.target,
+              let controller = animalControllers.first(where: { $0.definition.id == definition.id })
+        else { return nil }
+        return (definition.id, controller.pose)
+    }
+
     func captureCurrentView(cropRect providedRect: CGRect) async -> CaptureResult {
+        // 1) Detecta ANTES do snapshot: o animal pode mudar de estado durante o await.
+        let target = detectTargetAtAimPoint()
+        let info = target.flatMap { animalInfo(for: $0.object) }
+
         let screenshot = await snapshotImage()
 
-        let cropSize = min(
-            ExpeditionConfig.photoCropSize,
-            min(bounds.width, bounds.height)
-        )
+        let cropSize = min(ExpeditionConfig.photoCropSize, min(bounds.width, bounds.height))
+        let fallback = CGRect(x: bounds.midX - cropSize / 2, y: bounds.midY - cropSize / 2,
+                              width: cropSize, height: cropSize)
+        let localRect = (providedRect.width > 0 && providedRect.height > 0)
+            ? convert(providedRect, from: nil) : fallback
+        let finalCropRect = (localRect.width > 0 && localRect.height > 0) ? localRect : fallback
 
-        let fallback = CGRect(
-            x: bounds.midX - cropSize / 2,
-            y: bounds.midY - cropSize / 2,
-            width: cropSize,
-            height: cropSize
-        )
-
-        let localRect: CGRect
-
-        if providedRect.width > 0 && providedRect.height > 0 {
-            localRect = convert(providedRect, from: nil)
-        } else {
-            localRect = fallback
-        }
-
-        let finalCropRect = localRect.width > 0 && localRect.height > 0
-            ? localRect
-            : fallback
-
-        let target = detectTargetAtAimPoint()
-
-        let cropped = cropImage(
-            screenshot,
-            rect: finalCropRect
-        )
+        let cropped = cropImage(screenshot, rect: finalCropRect)
 
         if let target {
-            let stars = target.isScorable
-                ? starsForDistance(target.distance)
-                : 0
-
+            let stars = target.isScorable ? starsForDistance(target.distance) : 0
             return CaptureResult(
-                image: cropped,
-                stars: stars,
+                image: cropped, stars: stars,
                 objectName: target.object.target.displayName,
-                distance: target.distance,
-                isScorable: target.isScorable
+                distance: target.distance, isScorable: target.isScorable,
+                animalID: info?.animalID, pose: info?.pose
             )
         }
 
         return CaptureResult(
-            image: cropped,
-            stars: 0,
-            objectName: "Nenhum objeto detectado",
-            distance: nil,
-            isScorable: true
+            image: cropped, stars: 0, objectName: "Nenhum objeto detectado",
+            distance: nil, isScorable: true, animalID: nil, pose: nil
         )
     }
-
     private func detectTargetAtAimPoint() -> (object: SceneObject, distance: Float, isScorable: Bool)? {
         guard let cameraRay = aimRay() else {
             return nil
