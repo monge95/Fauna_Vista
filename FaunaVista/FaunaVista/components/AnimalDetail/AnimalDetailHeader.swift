@@ -21,7 +21,7 @@ struct AnimalDetailHeader: View {
                 } label: {
                     Image(systemName: "chevron.left")
                         .font(.system(size: 28, weight: .bold))
-                        .foregroundStyle(.green)
+                        .foregroundStyle(Color("VerdeBackButton"))
                         .frame(width: 44, height: 44)
                         .background {
                             Circle()
@@ -34,7 +34,7 @@ struct AnimalDetailHeader: View {
             }
 
             Text(title)
-                .font(.system(size: 32, weight: .bold))
+                .font(.system(size: 26, weight: .semibold))
                 .foregroundStyle(.black)
                 .multilineTextAlignment(.center)
                 .lineLimit(2)

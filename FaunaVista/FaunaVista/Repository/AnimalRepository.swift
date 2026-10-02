@@ -35,10 +35,24 @@ final class AnimalRepository {
             ?? taxon.preferredCommonName
             ?? "Nome não informado"
 
-        let finalStatus =
+        let originalStatus =
             conservationStatus
             ?? taxon.conservationStatus?.statusName
-            ?? "Não informado"
+
+        print(
+            "STATUS \(finalName):",
+            originalStatus ?? "nil"
+        )
+
+        let finalStatus = translateConservationStatus(
+            originalStatus
+        )
+
+        print(
+            "STATUS TRADUZIDO \(finalName):",
+            finalStatus
+        )
+        
 
         if let existingAnimal = try findByTaxonID(taxonID) {
 
@@ -78,6 +92,7 @@ final class AnimalRepository {
         try modelContext.save()
     }
 
+
     func markAsDiscovered(taxonID: Int) throws {
 
         guard let animal = try findByTaxonID(taxonID) else {
@@ -92,6 +107,7 @@ final class AnimalRepository {
         print("Animal discovered: \(animal.commonName)")
     }
 
+
     func findByTaxonID(_ taxonID: Int) throws -> Animal? {
 
         var descriptor = FetchDescriptor<Animal>(
@@ -105,11 +121,14 @@ final class AnimalRepository {
         return try modelContext.fetch(descriptor).first
     }
 
+
     func animalCount() throws -> Int {
+
         let descriptor = FetchDescriptor<Animal>()
 
         return try modelContext.fetchCount(descriptor)
     }
+
 
     func findByBiome(_ biome: String) throws -> [Animal] {
 
@@ -122,6 +141,7 @@ final class AnimalRepository {
         return try modelContext.fetch(descriptor)
     }
 
+
     func findDiscovered() throws -> [Animal] {
 
         let descriptor = FetchDescriptor<Animal>(
@@ -131,5 +151,48 @@ final class AnimalRepository {
         )
 
         return try modelContext.fetch(descriptor)
+    }
+
+
+    private func translateConservationStatus(
+        _ status: String?
+    ) -> String {
+
+        guard let status else {
+            return "Não informado"
+        }
+
+        switch status.lowercased() {
+
+        case "least concern":
+            return "Pouco preocupante"
+
+        case "near threatened":
+            return "Quase ameaçado"
+
+        case "vulnerable":
+            return "Vulnerável"
+
+        case "endangered":
+            return "Em perigo"
+
+        case "critically endangered":
+            return "Criticamente em perigo"
+
+        case "extinct in the wild":
+            return "Extinto na natureza"
+
+        case "extinct":
+            return "Extinto"
+
+        case "data deficient":
+            return "Dados insuficientes"
+
+        case "not evaluated":
+            return "Não avaliado"
+
+        default:
+            return status
+        }
     }
 }

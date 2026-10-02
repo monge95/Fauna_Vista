@@ -17,6 +17,8 @@ struct AnimalTag: View {
         Text(text)
             .font(.system(size: 16, weight: .semibold))
             .foregroundStyle(textColor)
+            .lineLimit(1)
+            .fixedSize(horizontal: true, vertical: false)
             .padding(.horizontal, 18)
             .padding(.vertical, 7)
             .background {
