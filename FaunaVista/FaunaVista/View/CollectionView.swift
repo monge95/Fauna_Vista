@@ -23,11 +23,9 @@ struct CollectionView: View {
         
         ScrollView {
             VStack(alignment: .leading, spacing: 24) {
-
                 HStack {
-
                     Text("Coleção de animais")
-                        .font(.system(size: 32, weight: .bold))
+                        .font(.custom("Belanosima-SemiBold", size: 32))
                         .foregroundStyle(.black)
 
                     Spacer()
