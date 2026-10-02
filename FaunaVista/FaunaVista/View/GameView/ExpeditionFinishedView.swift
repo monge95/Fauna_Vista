@@ -1,110 +1,111 @@
 //
 //  ExpeditionFinishedView.swift
-//  Experiment Project
-//
-//  Created by Felipe Colares Cardoso on 01/10/26.
+//  Tela "Análise das fotos": escolher as fotos com checkmark.
 //
 
 import SwiftUI
-import UIKit
-import RealityKit
-import Combine
-
-
-// ============================================================
-// MARK: - RESULTADO
-// ============================================================
 
 struct ExpeditionFinishedView: View {
     @ObservedObject var vm: ExpeditionViewModel
 
-    let columns = [
-        GridItem(
-            .adaptive(minimum: 150),
-            spacing: 12
-        )
+    private let columns = [
+        GridItem(.flexible(), spacing: 12),
+        GridItem(.flexible(), spacing: 12)
     ]
 
     var body: some View {
-        NavigationStack {
-            VStack(spacing: 12) {
-                Text("Expedição encerrada")
-                    .font(.largeTitle.bold())
+        ZStack(alignment: .bottom) {
+            Color(.systemBackground).ignoresSafeArea()
 
-                Text("\(vm.photosTaken) fotos registradas")
-                    .font(.title3)
-                    .foregroundStyle(.secondary)
+            ScrollView {
+                VStack(spacing: 6) {
+                    Text("Análise das fotos")
+                        .font(.system(size: 28, weight: .heavy))
 
-                ScrollView {
-                    LazyVGrid(
-                        columns: columns,
-                        spacing: 12
-                    ) {
-                        ForEach(vm.photoCards) { card in
-                            VStack(alignment: .leading, spacing: 6) {
-                                Image(uiImage: card.image)
-                                    .resizable()
-                                    .scaledToFill()
-                                    .frame(height: 150)
-                                    .clipped()
-                                    .clipShape(
-                                        RoundedRectangle(cornerRadius: 12)
-                                    )
+                    Text("Selecione as fotos que\ndeseja enviar para análise")
+                        .font(.footnote)
+                        .multilineTextAlignment(.center)
+                        .padding(.bottom, 16)
 
-                                if card.isScorable {
-                                    if card.stars > 0 {
-                                        Text(String(repeating: "⭐️", count: card.stars))
-                                            .font(.title3)
-                                    } else {
-                                        Text("Sem objeto detectado")
-                                            .font(.headline)
-                                    }
-                                } else {
-                                    Text("Obstrução — sem avaliação")
-                                        .font(.subheadline)
-                                        .foregroundStyle(.secondary)
-                                }
-                                Text(card.objectName)
-                                    .font(.headline)
-                                if let distance = card.distance {
-                                    Text(
-                                        String(format: "Distância: %.2f m", distance)
-                                    )
-                                    .font(.caption)
-                                    .foregroundStyle(.secondary)
-                                }
+                    if vm.photoCards.isEmpty {
+                        Text("Nenhuma foto foi registrada.")
+                            .foregroundStyle(.secondary)
+                            .padding(.top, 40)
+                    }
+
+                    LazyVGrid(columns: columns, spacing: 12) {
+                        ForEach(vm.photoCards) { photo in
+                            PhotoSelectionCell(
+                                photo: photo,
+                                isSelected: vm.isSelected(photo)
+                            ) {
+                                vm.toggleSelection(photo)
                             }
-                            .padding(8)
-                            .background(
-                                .thinMaterial,
-                                in: RoundedRectangle(cornerRadius: 16)
-                            )
-                            .padding(8)
-                            .background(
-                                .thinMaterial,
-                                in: RoundedRectangle(cornerRadius: 16)
-                            )
                         }
                     }
-                    .padding()
                 }
+                .padding(.horizontal, 20)
+                .padding(.top, 20)
+                .padding(.bottom, 120)
+            }
 
+            VStack {
                 Button {
-                    vm.returnToStart()
+                    vm.confirmSelection()
                 } label: {
-                    Text("Novo Expedition")
+                    Text("Enviar fotos (\(vm.selectedPhotoIDs.count)/\(vm.requiredSelection))")
                         .font(.headline)
                         .foregroundStyle(.white)
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 15)
+                        .padding(.vertical, 16)
+                        .frame(maxWidth: 260)
                         .background(
-                            Color.accentColor,
+                            vm.canSubmitSelection ? FaunaPalette.teal : Color.gray,
                             in: Capsule()
                         )
                 }
-                .padding(.horizontal)
+                .disabled(!vm.canSubmitSelection)
+                .padding(.bottom, 24)
+                .padding(.top, 30)
+                .frame(maxWidth: .infinity)
+                .background(
+                    LinearGradient(
+                        colors: [.clear, Color(.systemBackground)],
+                        startPoint: .top,
+                        endPoint: .bottom
+                    )
+                )
             }
-            .padding(.top)
         }
+    }
+}
+
+private struct PhotoSelectionCell: View {
+    let photo: ExpeditionPhoto
+    let isSelected: Bool
+    let onTap: () -> Void
+
+    var body: some View {
+        Button(action: onTap) {
+            Color.clear
+                .aspectRatio(1, contentMode: .fit)
+                .overlay(
+                    Image(uiImage: photo.image)
+                        .resizable()
+                        .scaledToFill()
+                )
+                .clipShape(RoundedRectangle(cornerRadius: 24))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 24)
+                        .stroke(isSelected ? FaunaPalette.teal : .clear, lineWidth: 4)
+                )
+                .overlay(alignment: .topTrailing) {
+                    Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
+                        .font(.system(size: 30))
+                        .foregroundStyle(.white)
+                        .shadow(radius: 2)
+                        .padding(10)
+                }
+        }
+        .buttonStyle(.plain)
     }
 }

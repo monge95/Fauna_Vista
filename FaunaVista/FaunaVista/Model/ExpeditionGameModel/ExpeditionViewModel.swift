@@ -40,6 +40,8 @@ final class ExpeditionViewModel: ObservableObject {
     // Deslocamento efetivo no zoom atual (usado pela bolinha de debug).
     @Published var aimDetectionOffset: CGPoint = .zero
 
+    @Published var selectedPhotoIDs: [UUID] = []
+    
     private weak var expeditionView: ExpeditionSceneView?
     private var timer: Timer?
     private var gameEndDate: Date?
@@ -48,6 +50,37 @@ final class ExpeditionViewModel: ObservableObject {
     // O tempo acabou enquanto uma foto ainda estava sendo processada:
     // a partida só termina quando essa foto fechar.
     private var finishRequested = false
+    
+    
+
+    var missionAnimal: ExpeditionAnimalDefinition? {
+        ExpeditionAnimalConfig.animals.first { $0.enabled }
+    }
+    var requiredSelection: Int { min(ExpeditionConfig.photosToSubmit, photoCards.count) }
+    var selectedPhotos: [ExpeditionPhoto] { photoCards.filter { selectedPhotoIDs.contains($0.id) } }
+    var canSubmitSelection: Bool { requiredSelection > 0 && selectedPhotoIDs.count == requiredSelection }
+
+    func isSelected(_ photo: ExpeditionPhoto) -> Bool { selectedPhotoIDs.contains(photo.id) }
+
+    func toggleSelection(_ photo: ExpeditionPhoto) {
+        if let i = selectedPhotoIDs.firstIndex(of: photo.id) {
+            selectedPhotoIDs.remove(at: i)
+        } else if selectedPhotoIDs.count < requiredSelection {
+            selectedPhotoIDs.append(photo.id)
+        }
+    }
+
+    func confirmSelection() { if canSubmitSelection { gameState = .missionCheck } }
+    func backToSelection()  { gameState = .finished }
+    func showRegistered()   { gameState = .registered }
+
+    var missionResults: [(mission: ExpeditionMission, completed: Bool)] {
+        guard let id = missionAnimal?.id else {
+            return ExpeditionMission.allCases.map { ($0, false) }
+        }
+        return ExpeditionMission.allCases.map { ($0, $0.isCompleted(by: selectedPhotos, animalID: id)) }
+    }
+    var allMissionsCompleted: Bool { missionResults.allSatisfy { $0.completed } }
 
     init() {
         ExpeditionMapCache.shared.preload()
@@ -189,12 +222,10 @@ final class ExpeditionViewModel: ObservableObject {
 
             photoCards.insert(
                 ExpeditionPhoto(
-                        image: result.image,
-                        stars: result.stars,
-                        objectName: result.objectName,
-                        distance: result.distance,
-                        isScorable: result.isScorable
-                    ),
+                    image: result.image, stars: result.stars, objectName: result.objectName,
+                    distance: result.distance, isScorable: result.isScorable,
+                    animalID: result.animalID, pose: result.pose
+                ),
                     at: 0
             )
 

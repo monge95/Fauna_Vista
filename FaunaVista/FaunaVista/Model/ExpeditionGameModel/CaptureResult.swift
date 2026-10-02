@@ -15,4 +15,6 @@ struct CaptureResult {
     let objectName: String
     let distance: Float?
     let isScorable: Bool
+    let animalID: String?
+    let pose: ExpeditionAnimalPose?
 }
