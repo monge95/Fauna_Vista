@@ -15,11 +15,21 @@ struct BiomeView: View {
 
     var body: some View {
         ZStack{
-            Image("BackGroundBiome")
-            
+            GeometryReader { geo in
+                Image("BackGroundBiome")
+                    .resizable()
+                    .frame(width: geo.size.width + 10, height: geo.size.height+10)
+                .position(x: geo.size.width / 2, y: geo.size.height / 2)             }
+            .ignoresSafeArea()
             MapBiome(mapPice: log.activeBiomeId)
             
+            
+            MissionPinsLayer()
+            
+            
+            
         }
+        
         
         
     }
@@ -27,6 +37,6 @@ struct BiomeView: View {
 
 #Preview {
     BiomeView()
-        .environment(AppCordinator())
-
+        .environment(PreviewSupport.coordinator)
+        .environment(PreviewSupport.expeditionLog)
 }

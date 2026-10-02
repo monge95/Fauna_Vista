@@ -17,6 +17,7 @@ struct CoordinatorView: View{
                     .navigationDestination(for: AppRoute.self) { rota in
                         ViewFactory.viewBuilder(for: rota)
                             .toolbar(.hidden, for: .tabBar)
+
                     }
             }
             .tabItem {Label(
@@ -39,6 +40,7 @@ struct CoordinatorView: View{
                 }
             .tag(AppTap.Collection)
         }
+        .buttonStyle(.plain)
         .environment(coordinator)
         .onAppear {
                     let appearance = UITabBarAppearance()
