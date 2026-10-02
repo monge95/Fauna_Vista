@@ -54,12 +54,14 @@ struct AnimalBasicInfoCard: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .background {
             RoundedRectangle(cornerRadius: 20)
-                .fill(Color(.white))
+                .fill(.white)
         }
     }
 
+
     private var biomeColor: Color {
         switch animal.biome {
+
         case "Amazônia":
             return Color("AmazonColor")
 
@@ -83,8 +85,10 @@ struct AnimalBasicInfoCard: View {
         }
     }
 
+
     private var biomeTextColor: Color {
         switch animal.biome {
+
         case "Amazônia", "Mata Atlântica":
             return .white
 
@@ -93,23 +97,36 @@ struct AnimalBasicInfoCard: View {
         }
     }
 
+
     private var conservationStatusColor: Color {
         switch animal.conservationStatus.lowercased() {
 
-        case "vulnerable", "vulnerável":
-            return .yellow.opacity(0.7)
+        case "pouco preocupante":
+            return .green.opacity(0.5)
 
-        case "endangered", "em perigo":
-            return .orange.opacity(0.7)
-
-        case "critically endangered", "criticamente em perigo":
-            return .red.opacity(0.7)
-
-        case "near threatened", "quase ameaçado":
+        case "quase ameaçado":
             return .yellow.opacity(0.4)
 
-        case "least concern", "pouco preocupante":
-            return .green.opacity(0.5)
+        case "vulnerável":
+            return .yellow.opacity(0.7)
+
+        case "em perigo":
+            return .orange.opacity(0.7)
+
+        case "criticamente em perigo":
+            return .red.opacity(0.7)
+
+        case "extinto na natureza":
+            return .red.opacity(0.8)
+
+        case "extinto":
+            return .red
+
+        case "dados insuficientes":
+            return .gray.opacity(0.4)
+
+        case "não avaliado":
+            return .gray.opacity(0.4)
 
         default:
             return .gray.opacity(0.4)
