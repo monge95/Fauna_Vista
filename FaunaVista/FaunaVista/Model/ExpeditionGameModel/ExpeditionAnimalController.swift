@@ -23,7 +23,8 @@ final class ExpeditionAnimalController {
     let detectionRoot: Entity
     // O Entity real do USDZ que contém o esqueleto/AnimationResource.
     private let animationTarget: Entity
-
+    private(set) var pose: ExpeditionAnimalPose = .idle
+    
     private let waypoints: [SIMD3<Float>]
     private let actionPoints: [SIMD3<Float>]
     private let speed: Float
@@ -327,19 +328,20 @@ final class ExpeditionAnimalController {
         let loops: Bool
         let resourceName: String
 
-        switch kind {
+        switch kind { 
         case .idle:
-            key = "idle"
+            key = "idle";
+            pose = .idle;
             loops = definition.idleLoops
             resourceName = "fauna_idle"
-
         case .walking:
-            key = "walking"
+            key = "walking";
+            pose = .walking;
             loops = definition.walkingLoops
             resourceName = "fauna_walking"
-
         case .action:
-            key = "action"
+            key = "action";
+            pose = .action;
             loops = definition.actionLoops
             resourceName = "fauna_action"
         }

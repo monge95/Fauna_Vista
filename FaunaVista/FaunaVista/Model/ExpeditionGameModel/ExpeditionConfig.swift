@@ -48,4 +48,6 @@ struct ExpeditionConfig {
     static let idealDistanceScore: Float = 100  // Distância máxima = 0 pontos.
     static let minimumDistanceForScore: Float = minimumCaptureDistance
     static let maximumDistanceForScore: Float = maxCaptureDistance
+    static let missionMinimumStars = 3
+    static let photosToSubmit = 3
 }

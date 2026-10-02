@@ -9,6 +9,9 @@ import SwiftData
             CoordinatorView()
                 .environment(coordinator)
                 .environment(log)
+
+            //SwiftDataTestView()
+
         }
         .modelContainer(for: [
             Animal.self,

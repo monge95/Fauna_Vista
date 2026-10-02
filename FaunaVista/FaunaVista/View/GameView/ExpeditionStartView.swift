@@ -1,92 +1,71 @@
 //
 //  ExpeditionStartView.swift
-//  Experiment Project
-//
-//  Created by Felipe Colares Cardoso on 01/10/26.
 //
 
 import SwiftUI
-import UIKit
-import RealityKit
-import Combine
 
-
-// MARK: - TELA INICIAL
+// MARK: - TELA INICIAL (com as missões)
 struct ExpeditionStartView: View {
     @ObservedObject var vm: ExpeditionViewModel
 
     var body: some View {
-        NavigationStack {
-            ScrollView {
-                VStack(spacing: 22) {
-                    Image(systemName: "binoculars.fill")
-                        .font(.system(size: 60))
+        ScrollView {
+            VStack(spacing: 22) {
+                Image(systemName: "binoculars.fill")
+                    .font(.system(size: 60))
 
-                    Text("Fauna Vista")
-                        .font(.largeTitle.bold())
+                Text("Fauna Vista")
+                    .font(.largeTitle.bold())
 
-                    Text(
-                        "Explore a fauna brasileira, encontre animais pouco conhecidos e registre seus encontros."
-                    )
+                Text("Encontre \(vm.missionAnimal?.displayName ?? "o animal") e registre seus comportamentos com a câmera.")
                     .multilineTextAlignment(.center)
                     .foregroundStyle(.secondary)
 
-                    VStack(alignment: .leading, spacing: 12) {
-                        Text("Detecção por mira")
-                            .font(.headline)
+                VStack(alignment: .leading, spacing: 14) {
+                    Text("Missões")
+                        .font(.headline)
 
-                        Text("Aponte o ponto central para o objeto 3D e tire a foto dentro da distância válida.")
-                            .font(.subheadline)
-                            .foregroundStyle(.secondary)
+                    ForEach(ExpeditionMission.allCases) { mission in
+                        HStack(alignment: .top, spacing: 12) {
+                            Text("\(mission.rawValue + 1)")
+                                .font(.subheadline.bold())
+                                .foregroundStyle(.white)
+                                .frame(width: 28, height: 28)
+                                .background(FaunaPalette.teal, in: Circle())
 
-                        ForEach(ExpeditionObjectType.allCases.filter { $0.category == .vegetation }) { object in
-                            HStack {
-                                Image(systemName: "cube.fill")
-                                Text(object.displayName)
-                                Spacer()
-                                Text(object.modelName + ".usdz")
-                                    .font(.caption)
-                                    .foregroundStyle(.secondary)
-                            }
+                            Text(mission.title)
+                                .font(.subheadline)
+                                .fixedSize(horizontal: false, vertical: true)
                         }
-                    }
-                    .padding()
-                    .background(
-                        .thinMaterial,
-                        in: RoundedRectangle(cornerRadius: 20)
-                    )
-
-                    VStack(spacing: 6) {
-                        if vm.mapLoaded {
-                            Text("Percurso: \(Int(vm.travelDistance)) m")
-                            Text("Tempo: \(Int(vm.travelDuration)) s")
-                        } else {
-                            Text("Mapa: FaunaVistaMap.usdz")
-                            Text("O percurso será calculado pelo mapa.")
-                        }
-
-                        Text("Fotos: \(ExpeditionConfig.totalPhotos)")
-                        Text("Distância válida: \(String(format: "%.1f", ExpeditionConfig.minimumCaptureDistance))–\(String(format: "%.1f", ExpeditionConfig.maxCaptureDistance)) m")
-                    }
-                    .foregroundStyle(.secondary)
-
-                    Button {
-                        vm.startGame()
-                    } label: {
-                        Text("Começar Expedição")
-                            .font(.headline)
-                            .foregroundStyle(.white)
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 16)
-                            .background(
-                                Color.accentColor,
-                                in: Capsule()
-                            )
                     }
                 }
+                .frame(maxWidth: .infinity, alignment: .leading)
                 .padding()
+                .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 20))
+
+                VStack(spacing: 6) {
+                    Text("Fotos: \(ExpeditionConfig.totalPhotos)")
+                    Text("Tempo: \(Int(ExpeditionConfig.gameDuration)) s")
+                    Text("Depois você escolhe \(ExpeditionConfig.photosToSubmit) fotos para análise.")
+                }
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+
+                Button {
+                    vm.startGame()
+                } label: {
+                    Text("Começar Expedição")
+                        .font(.headline)
+                        .foregroundStyle(.white)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 16)
+                        .background(FaunaPalette.teal, in: Capsule())
+                }
             }
-            .navigationTitle("Fauna Vista")
+            .padding()
         }
     }
+}
+#Preview {
+    ExpeditionStartView(vm: ExpeditionViewModel())
 }

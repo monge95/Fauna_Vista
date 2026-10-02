@@ -20,5 +20,7 @@ struct ExpeditionPhoto: Identifiable {
     let objectName: String
     let distance: Float?
     let isScorable: Bool
+    let animalID: String?
+    let pose: ExpeditionAnimalPose?
     let date = Date()
 }

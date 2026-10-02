@@ -23,6 +23,7 @@ struct ExpeditionAnimalConfig {
             id: "animal_1",
             modelName: "tamandua_all",
             displayName: "Tamanduá Bandeira",
+            scientificName: "Myrmecophaga tridactyla",
             enabled: true,
             speed: 3.4,
             waitAtPosition: 2.0,
