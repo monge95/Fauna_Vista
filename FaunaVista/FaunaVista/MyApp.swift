@@ -5,8 +5,9 @@ import SwiftData
     
     var body: some Scene {
         WindowGroup {
-            SwiftDataTestView()
-                       .environment(log) 
+            CoordinatorView()
+            //SwiftDataTestView()
+            .environment(log)
         }
         .modelContainer(for: [
             Animal.self,

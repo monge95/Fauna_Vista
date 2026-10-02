@@ -13,8 +13,8 @@ struct AnimalCard: View {
     var body: some View {
         VStack(spacing: 0) {
 
-            Text(animal.commonName)
-                .font(.system(size: 18, weight: .bold))
+            Text(animal.discovered ? animal.commonName : "Animal não descoberto")
+                .font(.system(size: 20, weight: .bold))
                 .foregroundStyle(.black)
                 .multilineTextAlignment(.center)
                 .lineLimit(2)
@@ -23,9 +23,12 @@ struct AnimalCard: View {
                 .padding(.top, 16)
 
             Spacer(minLength: 8)
-
-            animalIllustration
-
+            ZStack{
+                RoundedRectangle(cornerRadius: 20)
+                    .fill(Color(.systemGray4))
+                    .frame(width: 150, height: 160)
+                animalIllustration
+            }
             Spacer(minLength: 8)
 
             Text(animal.biome)
@@ -50,19 +53,18 @@ struct AnimalCard: View {
         )
     }
 
-    // MARK: - Animal Illustration
-
     private var animalIllustration: some View {
         ZStack {
 
             Image(illustrationName)
                 .resizable()
                 .scaledToFit()
-                .frame(height: 140)
+                .frame(width: 140, height: 90)
+                
 
             if !animal.discovered {
                 Text("?")
-                    .font(.system(size: 52, weight: .bold))
+                    .font(.system(size: 65, weight: .bold))
                     .foregroundStyle(.white)
             }
         }
@@ -75,7 +77,6 @@ struct AnimalCard: View {
         )
     }
 
-    // MARK: - Biome Style
 
     private var biomeColor: Color {
         switch animal.biome {
@@ -106,7 +107,8 @@ struct AnimalCard: View {
     private var biomeTextColor: Color {
         switch animal.biome {
 
-       
+        case "Amazônia", "Pantanal", "Caatinga":
+            return .white
 
         default:
             return .black
