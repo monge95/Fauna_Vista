@@ -21,10 +21,10 @@ struct BiomeView: View {
                     .frame(width: geo.size.width + 10, height: geo.size.height+10)
                 .position(x: geo.size.width / 2, y: geo.size.height / 2)             }
             .ignoresSafeArea()
+            
             MapBiome(mapPice: log.activeBiomeId)
             
             
-            MissionPinsLayer()
             
             
             

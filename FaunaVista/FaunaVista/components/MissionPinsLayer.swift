@@ -30,7 +30,7 @@ struct MissionPinsLayer: View {
             Button {
                 selectedPin = pin     
             } label: {
-                Image("PinMisson")
+                Image(pin.assetsName)
                     .resizable()
                     .scaledToFit()
                     .frame(width: 44, height: 49)
