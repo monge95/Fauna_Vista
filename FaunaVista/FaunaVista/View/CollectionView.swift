@@ -121,6 +121,7 @@ struct CollectionView: View {
             "Ceratophrys ornata": 11
         ]
 
+        
         return animals.sorted {
             order[$0.scientificName, default: Int.max]
                 < order[$1.scientificName, default: Int.max]

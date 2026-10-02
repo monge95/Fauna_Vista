@@ -9,6 +9,7 @@ import SwiftData
 
 struct CoordinatorView: View{
     @State private var coordinator = AppCordinator()
+    @Environment(\.modelContext) private var modelContext
    
     var body: some View{
         TabView(selection: $coordinator.selectedView) {
@@ -45,10 +46,29 @@ struct CoordinatorView: View{
                     appearance.stackedLayoutAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor.texIcon]
                     appearance.stackedLayoutAppearance.selected.titleTextAttributes = [.foregroundColor: UIColor.white]
                     UITabBar.appearance().standardAppearance = appearance
-                }
+        }
+        .task {
+            await initializeCatalog()
+        }
      
     }
+    private func initializeCatalog() async {
+        let repository = AnimalRepository(
+            modelContext: modelContext
+        )
+
+        let service = AnimalService(
+            repository: repository
+        )
+
+        do {
+            try await service.initializeCatalogIfNeeded()
+        } catch {
+            print("Error initializing catalog: \(error)")
+        }
+    }
 }
+
 #Preview {
     CoordinatorView()
         .modelContainer(PreviewSupport.container)
