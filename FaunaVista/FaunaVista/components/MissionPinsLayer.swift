@@ -10,7 +10,7 @@ import SwiftUI
 struct MissionPinsLayer: View {
         @Environment(ExpeditionLog.self) private var log
         @State private var selectedPin: MissionPin? = nil
-
+        @Environment(AppCordinator.self) private var coordinator
         var body: some View {
             Group {
                 if let activeBiomeId = log.activeBiomeId {
@@ -23,7 +23,23 @@ struct MissionPinsLayer: View {
             }
             .sheet(item: $selectedPin) { pin in
               Text("sheet funcionou \(pin)")
+                // 🧪 TEMPORÁRIO: atalho para testar o fluxo da expedição. Remover depois.
+               // Spacer()
+                .overlay(alignment: .bottom) {
+                    Button {
+                        coordinator.push(.Expedition)
+                    } label: {
+                        Label("Testar expedição", systemImage: "binoculars.fill")
+                            .font(.headline)
+                            .foregroundStyle(.white)
+                            .padding(.horizontal, 20)
+                            .padding(.vertical, 12)
+                            .background(Color.blue, in: Capsule())
+                    }
+                   // .padding(.bottom, 24)
+                }
             }
+            
         }
 
         private func pinButton(for pin: MissionPin) -> some View {

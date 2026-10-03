@@ -1214,13 +1214,24 @@ final class ExpeditionSceneView: ARView {
 
         let screenshot = await snapshotImage()
 
+        // Log para conferir se o snapshot tem a mesma proporção da view.
+        print("📸 snapshot:", screenshot.size, "scale:", screenshot.scale,
+              "• bounds:", bounds.size)
+
         let cropSize = min(ExpeditionConfig.photoCropSize, min(bounds.width, bounds.height))
         let fallback = CGRect(x: bounds.midX - cropSize / 2, y: bounds.midY - cropSize / 2,
                               width: cropSize, height: cropSize)
-        let localRect = (providedRect.width > 0 && providedRect.height > 0)
-            ? convert(providedRect, from: nil) : fallback
-        let finalCropRect = (localRect.width > 0 && localRect.height > 0) ? localRect : fallback
 
+        var localRect = (providedRect.width > 0 && providedRect.height > 0)
+            ? convert(providedRect, from: nil) : fallback
+
+        // Ajuste fino: compensa o desalinhamento entre o 3D renderizado e o quadro.
+        localRect = localRect.offsetBy(
+            dx: ExpeditionConfig.photoCropOffset.x,
+            dy: ExpeditionConfig.photoCropOffset.y
+        )
+
+        let finalCropRect = (localRect.width > 0 && localRect.height > 0) ? localRect : fallback
         let cropped = cropImage(screenshot, rect: finalCropRect)
 
         if let target {
