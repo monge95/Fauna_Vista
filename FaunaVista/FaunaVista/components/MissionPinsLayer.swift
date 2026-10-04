@@ -22,23 +22,15 @@ struct MissionPinsLayer: View {
                 }
             }
             .sheet(item: $selectedPin) { pin in
-              Text("sheet funcionou \(pin)")
-                // 🧪 TEMPORÁRIO: atalho para testar o fluxo da expedição. Remover depois.
-               // Spacer()
-                .overlay(alignment: .bottom) {
-                    Button {
-                        coordinator.push(.Expedition)
-                    } label: {
-                        Label("Testar expedição", systemImage: "binoculars.fill")
-                            .font(.headline)
-                            .foregroundStyle(.white)
-                            .padding(.horizontal, 20)
-                            .padding(.vertical, 12)
-                            .background(Color.blue, in: Capsule())
-                    }
-                   // .padding(.bottom, 24)
+                MissionSheetView(pin: pin) {
+                    log.activeScientificName = pin.scientificName
+                    selectedPin = nil
+                    coordinator.push(.Expedition)
+                 }
                 }
-            }
+                   // .padding(.bottom, 24)
+                
+            
             
         }
 

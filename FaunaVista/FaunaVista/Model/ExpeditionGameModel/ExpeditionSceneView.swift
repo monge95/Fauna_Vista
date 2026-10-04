@@ -53,6 +53,7 @@ final class ExpeditionSceneView: ARView {
     private var foregroundObserver: NSObjectProtocol?
     private var lastDetectionRequestTime: CFTimeInterval = 0 //private var detectionTask: Task<Void, Never>?
     private let detectionInterval: CFTimeInterval = 1.0 / 20.0
+    private var level: ExpeditionLevel? { vm?.level }
 
     var mapLoaded = false
 
@@ -213,9 +214,12 @@ final class ExpeditionSceneView: ARView {
         buildTask?.cancel()
         buildTask = Task { @MainActor [weak self] in
             guard let self else { return }
-
             do {
-                let loadedRoot = try await ExpeditionMapCache.shared.makeInstance()
+                guard let level = self.level else {
+                    print("❌ Nenhuma fase configurada no ViewModel.")
+                    return
+                }
+                let loadedRoot = try await ExpeditionMapCache.shared.makeInstance(fileName: level.mapFileName)
 
                 // A cena pode ter sido encerrada enquanto o mapa carregava.
                 guard !Task.isCancelled, !self.isTornDown else { return }
@@ -442,9 +446,10 @@ final class ExpeditionSceneView: ARView {
             guard objectType.category == .vegetation else {
                 continue
             }
+            guard let level, let modelName = objectType.modelName(in: level) else { continue }
 
             do {
-                let objectRoot = try await ExpeditionObjectCache.shared.makeInstance(for: objectType)
+                let objectRoot = try await ExpeditionObjectCache.shared.makeInstance(modelName: modelName)
 
                 // Cena encerrada/reiniciada durante o carregamento: descarta.
                 guard !Task.isCancelled, !isTornDown else { return }
@@ -460,6 +465,7 @@ final class ExpeditionSceneView: ARView {
 
                 switch objectType.category {
                 case .vegetation:
+                   // guard let level, let modelName = objectType.modelName(in: level) else { continue }
                     // A vegetação não usa mais as colisões do mesh original.
                     // O detector é uma caixa própria, estável e previsível.
                     removeCollisionComponents(from: objectRoot)
@@ -633,7 +639,9 @@ final class ExpeditionSceneView: ARView {
     private func createAnimalsFromMarkers(in root: Entity) async {
         let entities = allEntities(in: root)
 
-        for animal in ExpeditionAnimalConfig.animals where animal.enabled {
+       // for animal in ExpeditionAnimalConfig.animals where animal.enabled {
+        let levelAnimals = level?.animal.map { [$0] } ?? []
+        for animal in levelAnimals {
             let routeMarkers = entities.filter {
                 isRouteMarker($0.name, for: animal)
             }
@@ -1188,11 +1196,24 @@ final class ExpeditionSceneView: ARView {
 
         yaw -= Float(deltaX) * sensitivity
         pitch -= Float(deltaY) * sensitivity
-        pitch = max(-0.9, min(0.9, pitch))
-
+       // pitch = max(-0.9, min(0.9, pitch))
+        clampLook()
         if gesture.state == .ended || gesture.state == .cancelled {
             lastPanTranslation = .zero
         }
+    }
+    
+    private func clampLook(){
+        let toRad = Float.pi / 180
+        
+        let maxUp = ExpeditionConfig.maxLookUpDegrees * toRad
+        let maxDown = ExpeditionConfig.maxLookUpDegrees * toRad
+        let maxLeft = ExpeditionConfig.maxLookUpDegrees * toRad
+        let maxRight = ExpeditionConfig.maxLookUpDegrees * toRad
+        
+        pitch = max(-maxDown, min(maxUp, pitch))
+        yaw = max(-maxRight, min(maxLeft, yaw))
+        
     }
 
 

@@ -53,5 +53,11 @@ struct ExpeditionConfig {
     // Ajuste fino do recorte da foto (em pontos de tela).
     // y NEGATIVO = o recorte sobe (foto mostra mais coisas acima).
     // x NEGATIVO = o recorte vai para a esquerda.
-    static let photoCropOffset = CGPoint(x: 0, y: -70) // Calibrado
+    static let photoCropOffset = CGPoint(x: 0, y: -70) // Calibragem do quadro de fotografia
+    
+    // limitação do angulo da camera em graus
+    static let maxLookUpDegrees: Float = 50
+    static let maxLookDownDegrees: Float = 50
+    static let maxLookLeftDegrees: Float = 50
+    static let maxLookRightDegrees: Float = 50
 }

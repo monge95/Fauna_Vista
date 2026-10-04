@@ -14,10 +14,14 @@ class ExpeditionLog{
     var activeBiomeId: Int?
     
     var activeMissionId: Int?
+    var activeScientificName: String?
+    
     
     var capturedPhotos: [RegistroFotografico] = []
     
     var MissionAccomplished: Bool = false
+    
+  
     
     func AddPhoto(registroFotografico:RegistroFotografico) {
         if capturedPhotos.count < 10 {
