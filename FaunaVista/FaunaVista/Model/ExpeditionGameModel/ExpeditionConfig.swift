@@ -28,13 +28,13 @@ struct ExpeditionConfig {
     // Ajuste estes dois valores conforme o tamanho real dos seus modelos 3D.
     static let minimumCaptureDistance: Float =  0 //  se o animal for do tamanho do Animal do prototipo
     static let maxCaptureDistance: Float = 220.0
-    static let aimPointRadius: CGFloat = 3 // Raio do ponto central da mira.
+    static let aimPointRadius: CGFloat = 9 // Raio do ponto central da mira.
     // AJUSTE MANUAL DO PONTO DE DETECÇÃO (em pontos de tela, relativo à mira desenhada).
     // y NEGATIVO = a detecção sobe; y POSITIVO = desce. x NEGATIVO = esquerda.
     // O valor é interpolado entre o zoom mínimo (1x) e o máximo (5x).
     // Use o painel "Ajuste da mira" na tela e copie aqui os valores impressos no console.
     static let aimDetectionOffsetAtMinZoom = CGPoint(x: 0, y: -40) // calibrado!!
-    static let aimDetectionOffsetAtMaxZoom = CGPoint(x: 0, y: 30) // calibrado!
+    static let aimDetectionOffsetAtMaxZoom = CGPoint(x: 0, y: 50) // calibrado!
     static let aimTuningPanelVisible = true   // painel de ajuste ao vivo
     static let aimDebugMarkerVisible = true   // bolinha ciano = ponto REAL da detecção
     static let aimTuningStep: CGFloat = 10    // passo de cada toque, em pontos
@@ -50,4 +50,14 @@ struct ExpeditionConfig {
     static let maximumDistanceForScore: Float = maxCaptureDistance
     static let missionMinimumStars = 3
     static let photosToSubmit = 3
+    // Ajuste fino do recorte da foto (em pontos de tela).
+    // y NEGATIVO = o recorte sobe (foto mostra mais coisas acima).
+    // x NEGATIVO = o recorte vai para a esquerda.
+    static let photoCropOffset = CGPoint(x: 0, y: -70) // Calibragem do quadro de fotografia
+    
+    // limitação do angulo da camera em graus
+    static let maxLookUpDegrees: Float = 50
+    static let maxLookDownDegrees: Float = 50
+    static let maxLookLeftDegrees: Float = 50
+    static let maxLookRightDegrees: Float = 50
 }

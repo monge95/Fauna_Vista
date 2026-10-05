@@ -19,9 +19,9 @@ struct ExpeditionAnimalConfig {
     // 51...100  = Walking
     // 101...140 = Action
     static let animals: [ExpeditionAnimalDefinition] = [
-        ExpeditionAnimalDefinition(
+        ExpeditionAnimalDefinition( // tamandua bandeira - Cerrado
             id: "animal_1",
-            modelName: "tamandua_all",
+            modelName: "tamandua_bandeira",
             displayName: "Tamanduá Bandeira",
             scientificName: "Myrmecophaga tridactyla",
             enabled: true,
@@ -48,7 +48,342 @@ struct ExpeditionAnimalConfig {
             detectionScaleX: 5.5,
             detectionScaleY: 3.2,
             detectionVisible: false,
+        ),
+        ExpeditionAnimalDefinition( // lobo guará - Cerrado
+            id: "animal_2",
+            modelName: "lobo_guara",
+            displayName: "Lobo-Guará",
+            scientificName: "Chrysocyon brachyurus",
+            enabled: true,
+            speed: 3.4,
+            waitAtPosition: 2.0,
+            actionDuration: 7.0,
+            loopRoute: true,
+            randomActionEnabled: true,
+            randomActionChance: 0.35,
+            animationTimelineStartFrame: 0,
+            animationTimelineEndFrame: 140,
+            idleStartFrame: 0,
+            idleEndFrame: 50, // pode mudar de animal pra animal
+            walkingStartFrame: 51, // pode mudar de animal pra animal
+            walkingEndFrame: 100, // pode mudar de animal pra animal
+            actionStartFrame: 101,// pode mudar de animal pra animal
+            actionEndFrame: 140,// pode mudar de animal pra animal
+            idleLoops: true, // Idle e Walking ficam em loop.
+            walkingLoops: true,  // Action toca uma vez e depois volta para Idle.
+            actionLoops: false,
+            modelFacesRight: true,// A rota do tamanduá é comparada com a horizontal visível
+            movementAxis: .screen, // da câmera, não com um eixo fixo do mapa.
+            detectionOffset: SIMD3<Float>(1.4,0,1.5), // Se o USDZ original olhar para a esquerda, use false. onde Z é pra cima e pra baixo
+            detectionScaleX: 5.5,
+            detectionScaleY: 3.2,
+            detectionVisible: false,
+        ),
+        ExpeditionAnimalDefinition( // boto cor de rosa AMAZONIA
+            id: "animal_3",
+            modelName: "boto_cor_de_rosa",
+            displayName: "Boto-cor-de-rosa",
+            scientificName: "Inia geoffrensis",
+            enabled: true,
+            speed: 3.4,
+            waitAtPosition: 2.0,
+            actionDuration: 7.0,
+            loopRoute: true,
+            randomActionEnabled: true,
+            randomActionChance: 0.35,
+            animationTimelineStartFrame: 0,
+            animationTimelineEndFrame: 140,
+            idleStartFrame: 0,
+            idleEndFrame: 50, // pode mudar de animal pra animal
+            walkingStartFrame: 51, // pode mudar de animal pra animal
+            walkingEndFrame: 100, // pode mudar de animal pra animal
+            actionStartFrame: 101,// pode mudar de animal pra animal
+            actionEndFrame: 140,// pode mudar de animal pra animal
+            idleLoops: true, // Idle e Walking ficam em loop.
+            walkingLoops: true,  // Action toca uma vez e depois volta para Idle.
+            actionLoops: false,
+            modelFacesRight: true,// A rota do tamanduá é comparada com a horizontal visível
+            movementAxis: .screen, // da câmera, não com um eixo fixo do mapa.
+            detectionOffset: SIMD3<Float>(1.4,0,1.5), // Se o USDZ original olhar para a esquerda, use false. onde Z é pra cima e pra baixo
+            detectionScaleX: 5.5,
+            detectionScaleY: 3.2,
+            detectionVisible: false,
+        ),
+        ExpeditionAnimalDefinition( // uacari vermehlo - AMAZONIA
+            id: "animal_4",
+            modelName: "uacari_vermelho",
+            displayName: "Uacari-vermelho",
+            scientificName: "Cacajao rubicundus",
+            enabled: true,
+            speed: 3.4,
+            waitAtPosition: 2.0,
+            actionDuration: 7.0,
+            loopRoute: true,
+            randomActionEnabled: true,
+            randomActionChance: 0.35,
+            animationTimelineStartFrame: 0,
+            animationTimelineEndFrame: 140,
+            idleStartFrame: 0,
+            idleEndFrame: 50, // pode mudar de animal pra animal
+            walkingStartFrame: 51, // pode mudar de animal pra animal
+            walkingEndFrame: 100, // pode mudar de animal pra animal
+            actionStartFrame: 101,// pode mudar de animal pra animal
+            actionEndFrame: 140,// pode mudar de animal pra animal
+            idleLoops: true, // Idle e Walking ficam em loop.
+            walkingLoops: true,  // Action toca uma vez e depois volta para Idle.
+            actionLoops: false,
+            modelFacesRight: true,// A rota do tamanduá é comparada com a horizontal visível
+            movementAxis: .screen, // da câmera, não com um eixo fixo do mapa.
+            detectionOffset: SIMD3<Float>(1.4,0,1.5), // Se o USDZ original olhar para a esquerda, use false. onde Z é pra cima e pra baixo
+            detectionScaleX: 5.5,
+            detectionScaleY: 3.2,
+            detectionVisible: false,
+        ),
+        ExpeditionAnimalDefinition( // arara azul
+            id: "animal_5",
+            modelName: "veste_amarela",
+            displayName: "Veste-amarela",
+            scientificName: "Xanthopsar flavus",
+            enabled: true,
+            speed: 3.4,
+            waitAtPosition: 2.0,
+            actionDuration: 7.0,
+            loopRoute: true,
+            randomActionEnabled: true,
+            randomActionChance: 0.35,
+            animationTimelineStartFrame: 0,
+            animationTimelineEndFrame: 140,
+            idleStartFrame: 0,
+            idleEndFrame: 50, // pode mudar de animal pra animal
+            walkingStartFrame: 51, // pode mudar de animal pra animal
+            walkingEndFrame: 100, // pode mudar de animal pra animal
+            actionStartFrame: 101,// pode mudar de animal pra animal
+            actionEndFrame: 140,// pode mudar de animal pra animal
+            idleLoops: true, // Idle e Walking ficam em loop.
+            walkingLoops: true,  // Action toca uma vez e depois volta para Idle.
+            actionLoops: false,
+            modelFacesRight: true,// A rota do tamanduá é comparada com a horizontal visível
+            movementAxis: .screen, // da câmera, não com um eixo fixo do mapa.
+            detectionOffset: SIMD3<Float>(1.4,0,1.5), // Se o USDZ original olhar para a esquerda, use false. onde Z é pra cima e pra baixo
+            detectionScaleX: 5.5,
+            detectionScaleY: 3.2,
+            detectionVisible: false,
+        ),
+        ExpeditionAnimalDefinition( // sapo de chifres - PAMPA
+            id: "animal_6",
+            modelName: "sapo_de_chifres",
+            displayName: "Sapo-de-chifres",
+            scientificName: "Ceratophrys ornata",
+            enabled: true,
+            speed: 3.4,
+            waitAtPosition: 2.0,
+            actionDuration: 7.0,
+            loopRoute: true,
+            randomActionEnabled: true,
+            randomActionChance: 0.35,
+            animationTimelineStartFrame: 0,
+            animationTimelineEndFrame: 140,
+            idleStartFrame: 0,
+            idleEndFrame: 50, // pode mudar de animal pra animal
+            walkingStartFrame: 51, // pode mudar de animal pra animal
+            walkingEndFrame: 100, // pode mudar de animal pra animal
+            actionStartFrame: 101,// pode mudar de animal pra animal
+            actionEndFrame: 140,// pode mudar de animal pra animal
+            idleLoops: true, // Idle e Walking ficam em loop.
+            walkingLoops: true,  // Action toca uma vez e depois volta para Idle.
+            actionLoops: false,
+            modelFacesRight: true,// A rota do tamanduá é comparada com a horizontal visível
+            movementAxis: .screen, // da câmera, não com um eixo fixo do mapa.
+            detectionOffset: SIMD3<Float>(1.4,0,1.5), // Se o USDZ original olhar para a esquerda, use false. onde Z é pra cima e pra baixo
+            detectionScaleX: 5.5,
+            detectionScaleY: 3.2,
+            detectionVisible: false,
+        ),
+        ExpeditionAnimalDefinition(
+            id: "animal_7",
+            modelName: "mico_leao_dourado",
+            displayName: "Mico-leão-dourado",
+            scientificName: "Leontopithecus rosalia",
+            enabled: true,
+            speed: 3.4,
+            waitAtPosition: 2.0,
+            actionDuration: 7.0,
+            loopRoute: true,
+            randomActionEnabled: true,
+            randomActionChance: 0.35,
+            animationTimelineStartFrame: 0,
+            animationTimelineEndFrame: 140,
+            idleStartFrame: 0,
+            idleEndFrame: 50, // pode mudar de animal pra animal
+            walkingStartFrame: 51, // pode mudar de animal pra animal
+            walkingEndFrame: 100, // pode mudar de animal pra animal
+            actionStartFrame: 101,// pode mudar de animal pra animal
+            actionEndFrame: 140,// pode mudar de animal pra animal
+            idleLoops: true, // Idle e Walking ficam em loop.
+            walkingLoops: true,  // Action toca uma vez e depois volta para Idle.
+            actionLoops: false,
+            modelFacesRight: true,// A rota do tamanduá é comparada com a horizontal visível
+            movementAxis: .screen, // da câmera, não com um eixo fixo do mapa.
+            detectionOffset: SIMD3<Float>(1.4,0,1.5), // Se o USDZ original olhar para a esquerda, use false. onde Z é pra cima e pra baixo
+            detectionScaleX: 5.5,
+            detectionScaleY: 3.2,
+            detectionVisible: false,
+        ),
+        ExpeditionAnimalDefinition(
+            id: "animal_8",
+            modelName: "preguica_de_coleira",
+            displayName: "Preguiça-de-coleira",
+            scientificName: "Bradypus torquatus",
+            enabled: true,
+            speed: 3.4,
+            waitAtPosition: 2.0,
+            actionDuration: 7.0,
+            loopRoute: true,
+            randomActionEnabled: true,
+            randomActionChance: 0.35,
+            animationTimelineStartFrame: 0,
+            animationTimelineEndFrame: 140,
+            idleStartFrame: 0,
+            idleEndFrame: 50, // pode mudar de animal pra animal
+            walkingStartFrame: 51, // pode mudar de animal pra animal
+            walkingEndFrame: 100, // pode mudar de animal pra animal
+            actionStartFrame: 101,// pode mudar de animal pra animal
+            actionEndFrame: 140,// pode mudar de animal pra animal
+            idleLoops: true, // Idle e Walking ficam em loop.
+            walkingLoops: true,  // Action toca uma vez e depois volta para Idle.
+            actionLoops: false,
+            modelFacesRight: true,// A rota do tamanduá é comparada com a horizontal visível
+            movementAxis: .screen, // da câmera, não com um eixo fixo do mapa.
+            detectionOffset: SIMD3<Float>(1.4,0,1.5), // Se o USDZ original olhar para a esquerda, use false. onde Z é pra cima e pra baixo
+            detectionScaleX: 5.5,
+            detectionScaleY: 3.2,
+            detectionVisible: false,
+        ),
+        ExpeditionAnimalDefinition(
+            id: "animal_9",
+            modelName: "arara_azul",
+            displayName: "Arara-Azul",
+            scientificName: "Andorhynchus leari",
+            enabled: true,
+            speed: 3.4,
+            waitAtPosition: 2.0,
+            actionDuration: 7.0,
+            loopRoute: true,
+            randomActionEnabled: true,
+            randomActionChance: 0.35,
+            animationTimelineStartFrame: 0,
+            animationTimelineEndFrame: 140,
+            idleStartFrame: 0,
+            idleEndFrame: 50, // pode mudar de animal pra animal
+            walkingStartFrame: 51, // pode mudar de animal pra animal
+            walkingEndFrame: 100, // pode mudar de animal pra animal
+            actionStartFrame: 101,// pode mudar de animal pra animal
+            actionEndFrame: 140,// pode mudar de animal pra animal
+            idleLoops: true, // Idle e Walking ficam em loop.
+            walkingLoops: true,  // Action toca uma vez e depois volta para Idle.
+            actionLoops: false,
+            modelFacesRight: true,// A rota do tamanduá é comparada com a horizontal visível
+            movementAxis: .screen, // da câmera, não com um eixo fixo do mapa.
+            detectionOffset: SIMD3<Float>(1.4,0,1.5), // Se o USDZ original olhar para a esquerda, use false. onde Z é pra cima e pra baixo
+            detectionScaleX: 5.5,
+            detectionScaleY: 3.2,
+            detectionVisible: false,
+        ),
+        ExpeditionAnimalDefinition(
+            id: "animal_10",
+            modelName: "tatu_bola",
+            displayName: "Tatu-bola",
+            scientificName: "Tolypeutes tricinctus",
+            enabled: true,
+            speed: 3.4,
+            waitAtPosition: 2.0,
+            actionDuration: 7.0,
+            loopRoute: true,
+            randomActionEnabled: true,
+            randomActionChance: 0.35,
+            animationTimelineStartFrame: 0,
+            animationTimelineEndFrame: 140,
+            idleStartFrame: 0,
+            idleEndFrame: 50, // pode mudar de animal pra animal
+            walkingStartFrame: 51, // pode mudar de animal pra animal
+            walkingEndFrame: 100, // pode mudar de animal pra animal
+            actionStartFrame: 101,// pode mudar de animal pra animal
+            actionEndFrame: 140,// pode mudar de animal pra animal
+            idleLoops: true, // Idle e Walking ficam em loop.
+            walkingLoops: true,  // Action toca uma vez e depois volta para Idle.
+            actionLoops: false,
+            modelFacesRight: true,// A rota do tamanduá é comparada com a horizontal visível
+            movementAxis: .screen, // da câmera, não com um eixo fixo do mapa.
+            detectionOffset: SIMD3<Float>(1.4,0,1.5), // Se o USDZ original olhar para a esquerda, use false. onde Z é pra cima e pra baixo
+            detectionScaleX: 5.5,
+            detectionScaleY: 3.2,
+            detectionVisible: false,
+        ),
+        ExpeditionAnimalDefinition(
+            id: "animal_11",
+            modelName: "ariranha",
+            displayName: "Ariranha",
+            scientificName: "Pteronura brasiliensis",
+            enabled: true,
+            speed: 3.4,
+            waitAtPosition: 2.0,
+            actionDuration: 7.0,
+            loopRoute: true,
+            randomActionEnabled: true,
+            randomActionChance: 0.35,
+            animationTimelineStartFrame: 0,
+            animationTimelineEndFrame: 140,
+            idleStartFrame: 0,
+            idleEndFrame: 50, // pode mudar de animal pra animal
+            walkingStartFrame: 51, // pode mudar de animal pra animal
+            walkingEndFrame: 100, // pode mudar de animal pra animal
+            actionStartFrame: 101,// pode mudar de animal pra animal
+            actionEndFrame: 140,// pode mudar de animal pra animal
+            idleLoops: true, // Idle e Walking ficam em loop.
+            walkingLoops: true,  // Action toca uma vez e depois volta para Idle.
+            actionLoops: false,
+            modelFacesRight: true,// A rota do tamanduá é comparada com a horizontal visível
+            movementAxis: .screen, // da câmera, não com um eixo fixo do mapa.
+            detectionOffset: SIMD3<Float>(1.4,0,1.5), // Se o USDZ original olhar para a esquerda, use false. onde Z é pra cima e pra baixo
+            detectionScaleX: 5.5,
+            detectionScaleY: 3.2,
+            detectionVisible: false,
+        ),
+        ExpeditionAnimalDefinition(
+            id: "animal_12",
+            modelName: "onca_pintada",
+            displayName: "Onça-pintada",
+            scientificName: "Panthera onca",
+            enabled: true,
+            speed: 3.4,
+            waitAtPosition: 2.0,
+            actionDuration: 7.0,
+            loopRoute: true,
+            randomActionEnabled: true,
+            randomActionChance: 0.35,
+            animationTimelineStartFrame: 0,
+            animationTimelineEndFrame: 140,
+            idleStartFrame: 0,
+            idleEndFrame: 50, // pode mudar de animal pra animal
+            walkingStartFrame: 51, // pode mudar de animal pra animal
+            walkingEndFrame: 100, // pode mudar de animal pra animal
+            actionStartFrame: 101,// pode mudar de animal pra animal
+            actionEndFrame: 140,// pode mudar de animal pra animal
+            idleLoops: true, // Idle e Walking ficam em loop.
+            walkingLoops: true,  // Action toca uma vez e depois volta para Idle.
+            actionLoops: false,
+            modelFacesRight: true,// A rota do tamanduá é comparada com a horizontal visível
+            movementAxis: .screen, // da câmera, não com um eixo fixo do mapa.
+            detectionOffset: SIMD3<Float>(1.4,0,1.5), // Se o USDZ original olhar para a esquerda, use false. onde Z é pra cima e pra baixo
+            detectionScaleX: 5.5,
+            detectionScaleY: 3.2,
+            detectionVisible: false,
         )
+        
+        
+        
+        
+       
         // Exemplo para adicionar outro animal
         // ExpeditionAnimalDefinition(
         //     id: "animal_2",

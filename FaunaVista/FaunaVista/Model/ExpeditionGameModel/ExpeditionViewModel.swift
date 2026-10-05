@@ -21,7 +21,7 @@ final class ExpeditionViewModel: ObservableObject {
     @Published private(set) var photoFlashID = 0
     @Published var cropRect: CGRect = .zero
     @Published var isDetectedObjectScorable = true
-    
+    @Published private(set) var level: ExpeditionLevel?
 
     @Published var mapLoaded = false
     @Published var travelDistance: Float = 0
@@ -53,9 +53,7 @@ final class ExpeditionViewModel: ObservableObject {
     
     
 
-    var missionAnimal: ExpeditionAnimalDefinition? {
-        ExpeditionAnimalConfig.animals.first { $0.enabled }
-    }
+    var missionAnimal: ExpeditionAnimalDefinition? { level?.animal }
     var requiredSelection: Int { min(ExpeditionConfig.photosToSubmit, photoCards.count) }
     var selectedPhotos: [ExpeditionPhoto] { photoCards.filter { selectedPhotoIDs.contains($0.id) } }
     var canSubmitSelection: Bool { requiredSelection > 0 && selectedPhotoIDs.count == requiredSelection }
@@ -81,13 +79,24 @@ final class ExpeditionViewModel: ObservableObject {
         return ExpeditionMission.allCases.map { ($0, $0.isCompleted(by: selectedPhotos, animalID: id)) }
     }
     var allMissionsCompleted: Bool { missionResults.allSatisfy { $0.completed } }
-
+    
+   // var missionAnimal: ExpeditionAnimalDefinition? {level?.animal }
     init() {
-        ExpeditionMapCache.shared.preload()
-        ExpeditionObjectCache.shared.preloadAll()
-        ExpeditionAnimalCache.shared.preloadAll()
+       // ExpeditionMapCache.shared.preload()
+       // ExpeditionObjectCache.shared.preloadAll()
+        //ExpeditionAnimalCache.shared.preloadAll()
     }
-
+    
+    func configure(level: ExpeditionLevel) {
+        guard self.level?.id != level.id else { return }
+        self.level = level
+        ExpeditionMapCache.shared.preload(fileName: level.mapFileName)
+        ExpeditionObjectCache.shared.preload(modelNames: level.vegetationModelNames)
+        if let animal = level.animal {
+            ExpeditionAnimalCache.shared.preload(animal)
+        }
+    }
+    
     func connect(_ view: ExpeditionSceneView) {
         // Garante que nunca haja duas cenas vivas ao mesmo tempo.
         if let old = expeditionView, old !== view {

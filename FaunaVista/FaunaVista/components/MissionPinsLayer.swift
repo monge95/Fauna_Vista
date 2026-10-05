@@ -10,7 +10,7 @@ import SwiftUI
 struct MissionPinsLayer: View {
         @Environment(ExpeditionLog.self) private var log
         @State private var selectedPin: MissionPin? = nil
-
+        @Environment(AppCordinator.self) private var coordinator
         var body: some View {
             Group {
                 if let activeBiomeId = log.activeBiomeId {
@@ -22,8 +22,16 @@ struct MissionPinsLayer: View {
                 }
             }
             .sheet(item: $selectedPin) { pin in
-              Text("sheet funcionou \(pin)")
-            }
+                MissionSheetView(pin: pin) {
+                    log.activeScientificName = pin.scientificName
+                    selectedPin = nil
+                    coordinator.push(.Expedition)
+                 }
+                }
+                   // .padding(.bottom, 24)
+                
+            
+            
         }
 
         private func pinButton(for pin: MissionPin) -> some View {
