@@ -3,7 +3,6 @@
 //  FaunaVista
 //
 //  Created by Felipe Colares Cardoso on 04/10/26.
-//
 import SwiftUI
 import Foundation
 
@@ -13,26 +12,25 @@ struct ExpeditionLevel: Identifiable {
     let animalID: String         // id em ExpeditionAnimalConfig (ex.: "animal_1")
     let mapFileName: String      // .usdz do mapa (sem extensão)
 
-    // Modelos usados nos slots Vegetacao_N do Blender.
-    var grassModel = "gramaCerrado"
-    var treeModel = "arvorecerrado1"
-    // Quais Vegetacao_N são árvore; os demais usam grassModel.
-    var treeSlots: Set<Int> = [2, 6, 11, 15]
+    // Paleta de vegetação dos slots Vegetacao_N do Blender.
+    var vegetation: VegetationPalette = .cerrado
 
     var animal: ExpeditionAnimalDefinition? {
         ExpeditionAnimalConfig.animals.first { $0.id == animalID }
     }
 
-    var vegetationModelNames: [String] { [grassModel, treeModel] }
+    var vegetationModelNames: [String] { vegetation.allModelNames }
 
     static let all: [ExpeditionLevel] = [
         // CERRADO
         ExpeditionLevel(id: "cerrado1", scientificName: "Myrmecophaga tridactyla",
-                        animalID: "animal_1", mapFileName: "MapaCerrado"),
+                        animalID: "animal_1", mapFileName: "MapaCerrado",
+                        vegetation: .cerrado),
         ExpeditionLevel(id: "cerrado2", scientificName: "Chrysocyon brachyurus",
-                        animalID: "animal_2", mapFileName: "MapaCerrado2"),
+                        animalID: "animal_2", mapFileName: "MapaCerrado2",
+                        vegetation: .cerrado), // .withTreeSlots([...]) se o mapa tiver outros slots de árvore
 
-        // AMAZÔNIA  (troque grassModel/treeModel quando tiver os modelos)
+        // AMAZÔNIA  (troque por .amazonia quando criar a paleta)
         ExpeditionLevel(id: "amazonia1", scientificName: "Inia geoffrensis",
                         animalID: "animal_3", mapFileName: "MapaAmazonia"),
         ExpeditionLevel(id: "amazonia2", scientificName: "Cacajao rubicundus",
@@ -58,9 +56,9 @@ struct ExpeditionLevel: Identifiable {
 
         // PANTANAL
         ExpeditionLevel(id: "pantanal1", scientificName: "Pteronura brasiliensis",
-                        animalID: "animal_11", mapFileName: "MapaPantanal"),
+                        animalID: "animal_11", mapFileName: "MapaPantanal", vegetation: .pantanal),
         ExpeditionLevel(id: "pantanal2", scientificName: "Panthera onca",
-                        animalID: "animal_12", mapFileName: "MapaPantanal2"),
+                        animalID: "animal_12", mapFileName: "MapaPantanal2", vegetation: .pantanal),
     ]
 
     static func level(for scientificName: String?) -> ExpeditionLevel? {

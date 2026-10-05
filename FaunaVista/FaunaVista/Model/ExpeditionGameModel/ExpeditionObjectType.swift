@@ -64,10 +64,12 @@ enum ExpeditionObjectType: String, CaseIterable, Identifiable { // elementos em 
     }
 
     // Modelo 3D do slot, conforme a fase atual.
-    func modelName(in level: ExpeditionLevel) -> String? {
+    func modelName(in level: ExpeditionLevel) -> String?{
         guard let n = slotNumber else { return nil }
-        return level.treeSlots.contains(n) ? level.treeModel : level.grassModel
+        return level.vegetation.model(forSlot: n, seed: level.id)?.fileName
     }
+    
+   
    /* var displayName: String { // nome do objeto na View do APP
         switch self {
         case .objetoTeste1:
