@@ -42,16 +42,6 @@ struct InformationView: View {
                 .buttonStyle(.plain)
 
 
-                NavigationLink {
-                    PrivacyPolicyView()
-                } label: {
-                    InformationOptionCard(
-                        icon: "lock.shield.fill",
-                        title: "Política de privacidade",
-                        description: "Seus dados e como\nos tratamos"
-                    )
-                }
-                .buttonStyle(.plain)
 
 
                 NavigationLink {
@@ -61,6 +51,17 @@ struct InformationView: View {
                         icon: "doc.fill",
                         title: "Termos de uso",
                         description: "Regras e diretrizes\ndo serviço"
+                    )
+                }
+                .buttonStyle(.plain)
+                
+                NavigationLink {
+                    PrivacyPolicyView()
+                } label: {
+                    InformationOptionCard(
+                        icon: "lock.shield.fill",
+                        title: "Política de privacidade",
+                        description: "Seus dados e como\nos tratamos"
                     )
                 }
                 .buttonStyle(.plain)
