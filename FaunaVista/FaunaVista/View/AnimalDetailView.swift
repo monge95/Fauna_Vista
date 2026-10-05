@@ -55,7 +55,7 @@ struct AnimalDetailView: View {
             taxonID: 47107,
             commonName: "Tamanduá-bandeira",
             scientificName: "Myrmecophaga tridactyla",
-            biome: "Cerrado",
+            biome: 2,
             conservationStatus: "Vulnerável",
             imageURL:"https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f6/Myrmecophaga_tridactyla_86003248.jpg/1280px-Myrmecophaga_tridactyla_86003248.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
             discovered: true

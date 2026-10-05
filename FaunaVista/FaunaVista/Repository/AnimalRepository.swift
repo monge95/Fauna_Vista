@@ -18,7 +18,7 @@ final class AnimalRepository {
 
     func saveTaxon(
         _ taxon: INaturalistTaxon,
-        biome: String,
+        biome: Int,
         commonName: String? = nil,
         conservationStatus: String? = nil,
         imageURL: String? = nil,
@@ -118,7 +118,7 @@ final class AnimalRepository {
     }
 
 
-    func findByBiome(_ biome: String) throws -> [Animal] {
+    func findByBiome(_ biome: Int) throws -> [Animal] {
 
         let descriptor = FetchDescriptor<Animal>(
             predicate: #Predicate { animal in

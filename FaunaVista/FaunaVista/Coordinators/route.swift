@@ -20,4 +20,10 @@ enum AppRoute: Hashable{
     case registro
     
     case information
+    
+    case startExpedition
+    case exploreTerritories
+    case findSpecies
+    case observeImg
+    case endOnboarding
 }

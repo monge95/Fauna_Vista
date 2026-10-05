@@ -33,7 +33,7 @@ struct ExpeditionView: View {
                 ExpeditionAnimalRegisteredView(
                     animalName: vm.missionAnimal?.displayName ?? "Animal",
                     scientificName: vm.missionAnimal?.scientificName ?? "",
-                    biome: missionAnimalModel?.biome ?? "Cerrado"
+                    biome: missionAnimalModel?.biome ?? 2
                 ) {
                     registerAnimal()
                     vm.returnToStart()
