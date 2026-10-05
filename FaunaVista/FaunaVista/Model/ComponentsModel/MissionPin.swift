@@ -29,11 +29,13 @@ struct MissionPin: Identifiable {
                    missionObjective2: "O lobo-guará está escondido entre o capim-dourado.",
                    missionObjective3: "Fotografe o lobo sem assustá-lo",
                    posX: 350.0, posY: 158.0),
+        
         MissionPin(biomeId: 1, animalName: "Tamanduá-bandeira", scientificName: "Myrmecophaga tridactyla", assetsName: "PinTamandua",
                    missionObjective1: "O jardineiro do cerrado",
                    missionObjective2: "O tamanduá cava cupinzeiros e fertiliza o solo.",
                    missionObjective3: "Fotografe o tamanduá se alimentando",
                    posX: 262.0, posY: 285.0),
+        
         // AMAZÔNIA
         MissionPin(biomeId: 2, animalName: "Boto-cor-de-rosa", scientificName: "Inia geoffrensis", assetsName: "PinBoto",
                    missionObjective1: "A lenda do rio",

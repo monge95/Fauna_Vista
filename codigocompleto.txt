@@ -118,7 +118,24 @@ struct ViewFactory{
         // fluuxo secundario 
         case .information:
             InformationView()
+        
+        // fluuxo Onearding
+        case .startExpedition:
+            Text("ola")
+            
+        case .exploreTerritories:
+            Text("ola")
+            
+        case .findSpecies:
+            Text("")
+            
+        case .observeImg:
+            Text("")
+        
+        case .endOnboarding:
+            Text("")
         }
+    
     }
 }
 
@@ -196,6 +213,12 @@ enum AppRoute: Hashable{
     case registro
     
     case information
+    
+    case startExpedition
+    case exploreTerritories
+    case findSpecies
+    case observeImg
+    case endOnboarding
 }
 
 
@@ -222,7 +245,7 @@ final class AnimalRepository {
 
     func saveTaxon(
         _ taxon: INaturalistTaxon,
-        biome: String,
+        biome: Int,
         commonName: String? = nil,
         conservationStatus: String? = nil,
         imageURL: String? = nil,
@@ -322,7 +345,7 @@ final class AnimalRepository {
     }
 
 
-    func findByBiome(_ biome: String) throws -> [Animal] {
+    func findByBiome(_ biome: Int) throws -> [Animal] {
 
         let descriptor = FetchDescriptor<Animal>(
             predicate: #Predicate { animal in
@@ -443,7 +466,7 @@ final class ExpeditionRepository {
         return try modelContext.fetch(descriptor).first
     }
     
-    func findByBiome(_ biome: String) throws -> [Expedition] {
+    func findByBiome(_ biome: Int) throws -> [Expedition] {
 
         let descriptor = FetchDescriptor<Expedition>(
             predicate: #Predicate { expedition in
@@ -461,29 +484,6 @@ final class ExpeditionRepository {
 
         print("Expedition deleted for: \(expedition.animal.commonName)")
     }
-}
-
-
-========================================
-ARQUIVO: ./FaunaVista/FaunaVista/Components/MissionProgress .swift
-========================================
-//
-//  MissionProgress .swift
-//  FaunaVista
-//
-//  Created by Pedro Monge Silveira on 03/10/26.
-//
-
-import SwiftUI
-
-struct MissionProgress_: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
-}
-
-#Preview {
-    MissionProgress_()
 }
 
 
@@ -707,6 +707,12 @@ ARQUIVO: ./FaunaVista/FaunaVista/Components/AnimalDetail/AnimalBasicInfoCard.swi
 //
 //  Created by Gabriel Groppo on 02/10/26.
 //
+//
+//  AnimalBasicInfoCard.swift
+//  FaunaVista
+//
+//  Created by Gabriel Groppo on 02/10/26.
+//
 
 import SwiftUI
 
@@ -733,7 +739,7 @@ struct AnimalBasicInfoCard: View {
                         .font(.system(size: 18, weight: .bold))
 
                     AnimalTag(
-                        text: animal.biome,
+                        text: biomeName,
                         backgroundColor: biomeColor,
                         textColor: biomeTextColor
                     )
@@ -761,45 +767,34 @@ struct AnimalBasicInfoCard: View {
         }
     }
 
+    // MARK: - Bioma (id Int → nome e cores)
+
+    /// Converte o id do bioma no nome, usando a sua MapPiece
+    private var biomeName: String {
+        MapPiece.todosOsBiomas
+            .first { $0.id == animal.biome }?.name ?? "Bioma"
+    }
 
     private var biomeColor: Color {
         switch animal.biome {
-
-        case "Amazônia":
-            return Color("AmazonColor")
-
-        case "Cerrado":
-            return Color("CerradoColor")
-
-        case "Caatinga":
-            return Color("CaatingaColor")
-
-        case "Mata Atlântica":
-            return Color("AtlanticForestColor")
-
-        case "Pantanal":
-            return Color("PantanalColor")
-
-        case "Pampa":
-            return Color("PampaColor")
-
-        default:
-            return .gray
+        case 2:  return Color("AmazonColor")          // Amazônia
+        case 1:  return Color("CerradoColor")         // Cerrado
+        case 5:  return Color("CaatingaColor")        // Caatinga
+        case 4:  return Color("AtlanticForestColor")  // Mata Atlântica
+        case 6:  return Color("PantanalColor")        // Pantanal
+        case 3:  return Color("PampaColor")           // Pampa
+        default: return .gray
         }
     }
-
 
     private var biomeTextColor: Color {
         switch animal.biome {
-
-        case "Amazônia", "Mata Atlântica":
-            return .white
-
-        default:
-            return .black
+        case 2, 4: return .white   // Amazônia e Mata Atlântica
+        default:   return .black
         }
     }
 
+    // MARK: - Conservação (continua String, então não mudou)
 
     private var conservationStatusColor: Color {
         switch animal.conservationStatus.lowercased() {
@@ -881,6 +876,13 @@ ARQUIVO: ./FaunaVista/FaunaVista/Components/AnimalCard.swift
 //
 //  Created by Gabriel Groppo on 01/10/26.
 //
+//
+//  AnimalCard.swift
+//  FaunaVista
+//
+//  Created by Gabriel Groppo on 01/10/26.
+//
+
 import SwiftUI
 
 struct AnimalCard: View {
@@ -900,13 +902,12 @@ struct AnimalCard: View {
                 .padding(.top, 16)
 
             Spacer(minLength: 8)
-            
-                
+
             animalIllustration
-            
+
             Spacer(minLength: 8)
 
-            Text(animal.biome)
+            Text(biomeName)
                 .font(.system(size: 16))
                 .foregroundStyle(biomeTextColor)
                 .frame(maxWidth: .infinity)
@@ -928,16 +929,39 @@ struct AnimalCard: View {
         )
     }
 
+    // MARK: - Bioma (id Int → nome e cores)
+
+    /// Converte o id do bioma no nome, usando a sua MapPiece
+    private var biomeName: String {
+        MapPiece.todosOsBiomas
+            .first { $0.id == animal.biome }?.name ?? "Bioma"
+    }
+
+    private var biomeColor: Color {
+        switch animal.biome {
+        case 2:  return Color("AmazonColor")
+        case 1:  return Color("CerradoColor")
+        case 5:  return Color("CaatingaColor")
+        case 4:  return Color("AtlanticForestColor")
+        case 6:  return Color("PantanalColor")
+        case 3:  return Color("PampaColor")
+        default: return .gray
+        }
+    }
+
+    private var biomeTextColor: Color {
+        switch animal.biome {
+        case 2, 6, 5: return .white   
+        default:      return .black
+        }
+    }
+
     private var animalIllustration: some View {
         ZStack {
-
             Image(illustrationName)
                 .resizable()
                 .scaledToFit()
                 .frame(width: 140, height: 90)
-                
-
-            
         }
     }
 
@@ -946,44 +970,6 @@ struct AnimalCard: View {
             for: animal.scientificName,
             discovered: animal.discovered
         )
-    }
-
-
-    private var biomeColor: Color {
-        switch animal.biome {
-
-        case "Amazônia":
-            return Color("AmazonColor")
-
-        case "Cerrado":
-            return Color("CerradoColor")
-
-        case "Caatinga":
-            return Color("CaatingaColor")
-
-        case "Mata Atlântica":
-            return Color("AtlanticForestColor")
-
-        case "Pantanal":
-            return Color("PantanalColor")
-
-        case "Pampa":
-            return Color("PampaColor")
-
-        default:
-            return .gray
-        }
-    }
-
-    private var biomeTextColor: Color {
-        switch animal.biome {
-
-        case "Amazônia", "Pantanal", "Caatinga":
-            return .white
-
-        default:
-            return .black
-        }
     }
 }
 
@@ -1060,7 +1046,7 @@ ARQUIVO: ./FaunaVista/FaunaVista/Components/mission/MissionProgress .swift
 
 import SwiftUI
 
-struct MissionProgress_: View {
+struct MissionProgress: View {
     
     
     var body: some View {
@@ -1075,12 +1061,11 @@ struct MissionProgress_: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
                 
-                Text("\()%")
+                Text("%")
                     .font(.system(size: 12, weight: .regular))
                     .frame(maxWidth: .infinity, alignment: .trailing)
                 
             }
-
             
         }
         .padding(10)
@@ -1091,30 +1076,7 @@ struct MissionProgress_: View {
 }
 
 #Preview {
-    MissionProgress_()
-}
-
-
-========================================
-ARQUIVO: ./FaunaVista/FaunaVista/Components/map/MissionProgress .swift
-========================================
-//
-//  MissionProgress .swift
-//  FaunaVista
-//
-//  Created by Pedro Monge Silveira on 03/10/26.
-//
-
-import SwiftUI
-
-struct MissionProgress_: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
-}
-
-#Preview {
-    MissionProgress_()
+    MissionProgress()
 }
 
 
@@ -1163,7 +1125,8 @@ struct MapButton: View {
 
 #Preview {
     MapButton()
-        .environment(AppCordinator())
+        .environment(PreviewSupport.coordinator)
+        .environment(PreviewSupport.expeditionLog)
 }
 
 
@@ -1585,14 +1548,14 @@ import Foundation
 
 struct AnimalCatalog {
     let scientificName: String
-    let biome: String
+    let biome: Int
     let wikimediaPageID: Int
     let commonName: String?
     let conservationStatus: String?
 
     init(
         scientificName: String,
-        biome: String,
+        biome: Int,
         wikimediaPageID: Int,
         commonName: String? = nil,
         conservationStatus: String? = nil
@@ -1610,13 +1573,13 @@ let animalCatalog: [AnimalCatalog] = [
     // AMAZON
     AnimalCatalog(
         scientificName: "Inia geoffrensis",
-        biome: "Amazônia",
+        biome: 2,
         wikimediaPageID: 1458187
     ),
 
     AnimalCatalog(
         scientificName: "Cacajao rubicundus",
-        biome: "Amazônia",
+        biome: 2,
         wikimediaPageID: 1257420,
         commonName: "Uacari-vermelho",
         conservationStatus: "least concern"
@@ -1625,52 +1588,52 @@ let animalCatalog: [AnimalCatalog] = [
     // CERRADO
     AnimalCatalog(
         scientificName: "Chrysocyon brachyurus",
-        biome: "Cerrado",
+        biome: 1,
         wikimediaPageID: 33061605
     ),
 
     AnimalCatalog(
         scientificName: "Myrmecophaga tridactyla",
-        biome: "Cerrado",
+        biome: 1,
         wikimediaPageID: 112286751
     ),
 
     // CAATINGA
     AnimalCatalog(
         scientificName: "Anodorhynchus leari",
-        biome: "Caatinga",
+        biome: 5,
         wikimediaPageID: 180012045
     ),
 
     AnimalCatalog(
         scientificName: "Tolypeutes tricinctus",
-        biome: "Caatinga",
+        biome: 5,
         wikimediaPageID: 165855470
     ),
 
     // ATLANTIC FOREST
     AnimalCatalog(
         scientificName: "Leontopithecus rosalia",
-        biome: "Mata Atlântica",
+        biome: 4,
         wikimediaPageID: 127755134
     ),
 
     AnimalCatalog(
         scientificName: "Bradypus torquatus",
-        biome: "Mata Atlântica",
+        biome: 4,
         wikimediaPageID: 195086874
     ),
 
     // PANTANAL
     AnimalCatalog(
         scientificName: "Pteronura brasiliensis",
-        biome: "Pantanal",
+        biome: 6,
         wikimediaPageID: 60637166
     ),
 
     AnimalCatalog(
         scientificName: "Panthera onca",
-        biome: "Pantanal",
+        biome: 6,
         wikimediaPageID: 44247575,
         commonName: "Onça-pintada"
     ),
@@ -1678,13 +1641,13 @@ let animalCatalog: [AnimalCatalog] = [
     // PAMPA
     AnimalCatalog(
         scientificName: "Xanthopsar flavus",
-        biome: "Pampa",
+        biome: 3,
         wikimediaPageID: 20154213
     ),
 
     AnimalCatalog(
         scientificName: "Ceratophrys ornata",
-        biome: "Pampa",
+        biome: 3,
         wikimediaPageID: 3376971
     )
 ]
@@ -5780,7 +5743,7 @@ final class Animal {
 
     var commonName: String
     var scientificName: String
-    var biome: String
+    var biome: Int
     var conservationStatus: String
 
     var imageURL: String?
@@ -5795,7 +5758,7 @@ final class Animal {
         taxonID: Int,
         commonName: String,
         scientificName: String,
-        biome: String,
+        biome: Int,
         conservationStatus: String,
         imageURL: String? = nil,
         imageSourceURL: String? = nil,
@@ -5860,7 +5823,7 @@ final class Expedition {
 
     var id: UUID
 
-    var biome: String
+    var biome: Int
 
     var animal: Animal
 
@@ -5874,7 +5837,7 @@ final class Expedition {
     var photos: [ExpeditionPhotoModel]
 
     init(
-        biome: String,
+        biome: Int,
         animal: Animal,
         overallRating: Int,
         challenge1Completed: Bool,
@@ -5962,11 +5925,13 @@ struct MissionPin: Identifiable {
                    missionObjective2: "O lobo-guará está escondido entre o capim-dourado.",
                    missionObjective3: "Fotografe o lobo sem assustá-lo",
                    posX: 350.0, posY: 158.0),
+        
         MissionPin(biomeId: 1, animalName: "Tamanduá-bandeira", scientificName: "Myrmecophaga tridactyla", assetsName: "PinTamandua",
                    missionObjective1: "O jardineiro do cerrado",
                    missionObjective2: "O tamanduá cava cupinzeiros e fertiliza o solo.",
                    missionObjective3: "Fotografe o tamanduá se alimentando",
                    posX: 262.0, posY: 285.0),
+        
         // AMAZÔNIA
         MissionPin(biomeId: 2, animalName: "Boto-cor-de-rosa", scientificName: "Inia geoffrensis", assetsName: "PinBoto",
                    missionObjective1: "A lenda do rio",
@@ -6475,7 +6440,7 @@ struct ExpeditionView: View {
                 ExpeditionAnimalRegisteredView(
                     animalName: vm.missionAnimal?.displayName ?? "Animal",
                     scientificName: vm.missionAnimal?.scientificName ?? "",
-                    biome: missionAnimalModel?.biome ?? "Cerrado"
+                    biome: missionAnimalModel?.biome ?? 2
                 ) {
                     registerAnimal()
                     vm.returnToStart()
@@ -7579,7 +7544,7 @@ struct AnimalDetailView: View {
             taxonID: 47107,
             commonName: "Tamanduá-bandeira",
             scientificName: "Myrmecophaga tridactyla",
-            biome: "Cerrado",
+            biome: 2,
             conservationStatus: "Vulnerável",
             imageURL:"https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f6/Myrmecophaga_tridactyla_86003248.jpg/1280px-Myrmecophaga_tridactyla_86003248.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
             discovered: true
@@ -7728,7 +7693,7 @@ enum PreviewSupport {
                 taxonID: 1,
                 commonName: "Boto-cor-de-rosa",
                 scientificName: "Inia geoffrensis",
-                biome: "Amazônia",
+                biome: 2,
                 conservationStatus: "Em perigo",
                 discovered: true
             ),
@@ -7737,7 +7702,7 @@ enum PreviewSupport {
                 taxonID: 2,
                 commonName: "Uacari-vermelho",
                 scientificName: "Cacajao rubicundus",
-                biome: "Amazônia",
+                biome: 2,
                 conservationStatus: "Pouco preocupante",
                 discovered: true
             ),
@@ -7747,7 +7712,7 @@ enum PreviewSupport {
                 taxonID: 3,
                 commonName: "Lobo-guará",
                 scientificName: "Chrysocyon brachyurus",
-                biome: "Cerrado",
+                biome: 1,
                 conservationStatus: "Quase ameaçado",
                 discovered: true
             ),
@@ -7756,7 +7721,7 @@ enum PreviewSupport {
                 taxonID: 47107,
                 commonName: "Tamanduá-bandeira",
                 scientificName: "Myrmecophaga tridactyla",
-                biome: "Cerrado",
+                biome: 1,
                 conservationStatus: "Vulnerável",
                 discovered: true
             ),
@@ -7766,7 +7731,7 @@ enum PreviewSupport {
                 taxonID: 5,
                 commonName: "Arara-azul",
                 scientificName: "Anodorhynchus leari",
-                biome: "Caatinga",
+                biome: 5,
                 conservationStatus: "Em perigo",
                 discovered: true
             ),
@@ -7775,7 +7740,7 @@ enum PreviewSupport {
                 taxonID: 6,
                 commonName: "Tatu-bola",
                 scientificName: "Tolypeutes tricinctus",
-                biome: "Caatinga",
+                biome: 5,
                 conservationStatus: "Vulnerável",
                 discovered: true
             ),
@@ -7785,7 +7750,7 @@ enum PreviewSupport {
                 taxonID: 7,
                 commonName: "Mico-leão-dourado",
                 scientificName: "Leontopithecus rosalia",
-                biome: "Mata Atlântica",
+                biome: 4,
                 conservationStatus: "Em perigo",
                 discovered: true
             ),
@@ -7794,7 +7759,7 @@ enum PreviewSupport {
                 taxonID: 8,
                 commonName: "Preguiça-de-coleira",
                 scientificName: "Bradypus torquatus",
-                biome: "Mata Atlântica",
+                biome: 4,
                 conservationStatus: "Vulnerável",
                 discovered: true
             ),
@@ -7804,7 +7769,7 @@ enum PreviewSupport {
                 taxonID: 9,
                 commonName: "Ariranha",
                 scientificName: "Pteronura brasiliensis",
-                biome: "Pantanal",
+                biome: 6,
                 conservationStatus: "Em perigo",
                 discovered: true
             ),
@@ -7813,7 +7778,7 @@ enum PreviewSupport {
                 taxonID: 10,
                 commonName: "Onça-pintada",
                 scientificName: "Panthera onca",
-                biome: "Pantanal",
+                biome: 6,
                 conservationStatus: "Quase ameaçado",
                 discovered: true
             ),
@@ -7823,7 +7788,7 @@ enum PreviewSupport {
                 taxonID: 11,
                 commonName: "Veste-amarela",
                 scientificName: "Xanthopsar flavus",
-                biome: "Pampa",
+                biome: 3,
                 conservationStatus: "Vulnerável",
                 discovered: true
             ),
@@ -7832,7 +7797,7 @@ enum PreviewSupport {
                 taxonID: 12,
                 commonName: "Sapo-de-chifres",
                 scientificName: "Ceratophrys ornata",
-                biome: "Pampa",
+                biome: 3,
                 conservationStatus: "Vulnerável",
                 discovered: true
             )
@@ -8128,7 +8093,7 @@ final class ExpeditionService {
     
     
     func finishExpedition(
-        biome: String,
+        biome: Int,
         animal: Animal,
         challenge1Completed: Bool,
         challenge2Completed: Bool,

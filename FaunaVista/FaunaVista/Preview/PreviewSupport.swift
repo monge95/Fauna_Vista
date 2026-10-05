@@ -60,7 +60,7 @@ enum PreviewSupport {
                 taxonID: 1,
                 commonName: "Boto-cor-de-rosa",
                 scientificName: "Inia geoffrensis",
-                biome: "Amazônia",
+                biome: 2,
                 conservationStatus: "Em perigo",
                 discovered: true
             ),
@@ -69,7 +69,7 @@ enum PreviewSupport {
                 taxonID: 2,
                 commonName: "Uacari-vermelho",
                 scientificName: "Cacajao rubicundus",
-                biome: "Amazônia",
+                biome: 2,
                 conservationStatus: "Pouco preocupante",
                 discovered: true
             ),
@@ -79,7 +79,7 @@ enum PreviewSupport {
                 taxonID: 3,
                 commonName: "Lobo-guará",
                 scientificName: "Chrysocyon brachyurus",
-                biome: "Cerrado",
+                biome: 1,
                 conservationStatus: "Quase ameaçado",
                 discovered: true
             ),
@@ -88,7 +88,7 @@ enum PreviewSupport {
                 taxonID: 47107,
                 commonName: "Tamanduá-bandeira",
                 scientificName: "Myrmecophaga tridactyla",
-                biome: "Cerrado",
+                biome: 1,
                 conservationStatus: "Vulnerável",
                 discovered: true
             ),
@@ -98,7 +98,7 @@ enum PreviewSupport {
                 taxonID: 5,
                 commonName: "Arara-azul",
                 scientificName: "Anodorhynchus leari",
-                biome: "Caatinga",
+                biome: 5,
                 conservationStatus: "Em perigo",
                 discovered: true
             ),
@@ -107,7 +107,7 @@ enum PreviewSupport {
                 taxonID: 6,
                 commonName: "Tatu-bola",
                 scientificName: "Tolypeutes tricinctus",
-                biome: "Caatinga",
+                biome: 5,
                 conservationStatus: "Vulnerável",
                 discovered: true
             ),
@@ -117,7 +117,7 @@ enum PreviewSupport {
                 taxonID: 7,
                 commonName: "Mico-leão-dourado",
                 scientificName: "Leontopithecus rosalia",
-                biome: "Mata Atlântica",
+                biome: 4,
                 conservationStatus: "Em perigo",
                 discovered: true
             ),
@@ -126,7 +126,7 @@ enum PreviewSupport {
                 taxonID: 8,
                 commonName: "Preguiça-de-coleira",
                 scientificName: "Bradypus torquatus",
-                biome: "Mata Atlântica",
+                biome: 4,
                 conservationStatus: "Vulnerável",
                 discovered: true
             ),
@@ -136,7 +136,7 @@ enum PreviewSupport {
                 taxonID: 9,
                 commonName: "Ariranha",
                 scientificName: "Pteronura brasiliensis",
-                biome: "Pantanal",
+                biome: 6,
                 conservationStatus: "Em perigo",
                 discovered: true
             ),
@@ -145,7 +145,7 @@ enum PreviewSupport {
                 taxonID: 10,
                 commonName: "Onça-pintada",
                 scientificName: "Panthera onca",
-                biome: "Pantanal",
+                biome: 6,
                 conservationStatus: "Quase ameaçado",
                 discovered: true
             ),
@@ -155,7 +155,7 @@ enum PreviewSupport {
                 taxonID: 11,
                 commonName: "Veste-amarela",
                 scientificName: "Xanthopsar flavus",
-                biome: "Pampa",
+                biome: 3,
                 conservationStatus: "Vulnerável",
                 discovered: true
             ),
@@ -164,7 +164,7 @@ enum PreviewSupport {
                 taxonID: 12,
                 commonName: "Sapo-de-chifres",
                 scientificName: "Ceratophrys ornata",
-                biome: "Pampa",
+                biome: 3,
                 conservationStatus: "Vulnerável",
                 discovered: true
             )

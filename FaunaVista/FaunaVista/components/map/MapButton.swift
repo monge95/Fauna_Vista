@@ -40,5 +40,6 @@ struct MapButton: View {
 
 #Preview {
     MapButton()
-        .environment(AppCordinator())
+        .environment(PreviewSupport.coordinator)
+        .environment(PreviewSupport.expeditionLog)
 }

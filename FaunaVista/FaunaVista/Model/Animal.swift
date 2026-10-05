@@ -17,7 +17,7 @@ final class Animal {
 
     var commonName: String
     var scientificName: String
-    var biome: String
+    var biome: Int
     var conservationStatus: String
 
     var imageURL: String?
@@ -32,7 +32,7 @@ final class Animal {
         taxonID: Int,
         commonName: String,
         scientificName: String,
-        biome: String,
+        biome: Int,
         conservationStatus: String,
         imageURL: String? = nil,
         imageSourceURL: String? = nil,
