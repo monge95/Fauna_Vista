@@ -70,6 +70,7 @@ struct MapView: View {
                     .padding(.horizontal, 70)
                     ZStack{
                     Image("cloud")
+                            .padding(.bottom,30)
                         
                         
                         MapButton()

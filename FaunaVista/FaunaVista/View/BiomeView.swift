@@ -19,12 +19,29 @@ struct BiomeView: View {
                 Image("BackGroundBiome")
                     .resizable()
                     .frame(width: geo.size.width + 10, height: geo.size.height+10)
-                .position(x: geo.size.width / 2, y: geo.size.height / 2)             }
+                .position(x: geo.size.width / 2, y: geo.size.height / 2)
+            }
             .ignoresSafeArea()
             
-            MapBiome(mapPice: log.activeBiomeId)
-            
-            
+            VStack{
+                ForEach(MapPiece.todosOsBiomas){ bio in
+                    if log.activeBiomeId == bio.id{
+                        Text(bio.name)
+                            .font(.custom("Belanosima-SemiBold", size: 35))
+                            .foregroundColor(Color("BackGroundColor"))
+                            .frame(maxWidth: .infinity, alignment: .center)
+                    }
+                }
+                Text("Explore, registre as espécies \n deste bioma")
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundColor(Color("BackGroundColor"))
+                    .multilineTextAlignment(.center)
+                    .frame(maxWidth: .infinity, alignment: .center)
+                
+                Spacer()
+                MapBiome(mapPice: log.activeBiomeId)
+                Spacer()
+            }
             
             
             

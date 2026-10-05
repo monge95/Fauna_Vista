@@ -10,6 +10,7 @@ struct ExpeditionView: View {
     @StateObject private var vm = ExpeditionViewModel()
     @Environment(AppCordinator.self) private var coordinator
     @Environment(\.modelContext) private var modelContext
+    @Environment(ExpeditionLog.self) private var log
     @Query private var animals: [Animal]
 
     private var missionAnimalModel: Animal? {
@@ -41,6 +42,11 @@ struct ExpeditionView: View {
             }
         }
         .navigationBarBackButtonHidden(vm.gameState != .start)
+        .onAppear {
+            let level = ExpeditionLevel.level(for: log.activeScientificName)
+                ?? ExpeditionLevel.all[0]   // fallback para não quebrar
+            vm.configure(level: level)
+        }
     }
 
     // Marca como descoberto e salva a expedição (missões + 3 fotos) no SwiftData.

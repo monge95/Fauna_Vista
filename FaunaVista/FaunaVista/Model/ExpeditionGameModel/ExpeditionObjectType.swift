@@ -43,10 +43,32 @@ enum ExpeditionObjectType: String, CaseIterable, Identifiable { // elementos em 
     case vegetacao28
     case vegetacao29
     case vegetacao30
-
+ 
     var id: String { rawValue }
 
-    var displayName: String { // nome do objeto na View do APP
+    // vegetacao12 → 12. objetoTeste1 → nil.
+    var slotNumber: Int? {
+        guard rawValue.hasPrefix("vegetacao") else { return nil }
+        return Int(rawValue.dropFirst("vegetacao".count))
+    }
+
+    var displayName: String { slotNumber == nil ? "Fauna" : "Vegetação" }
+
+    var positionName: String {
+        if let n = slotNumber { return "Vegetacao_\(n)" }
+        return "Posicao_Animal_1"
+    }
+
+    var category: ExpeditionObjectCategory {
+        slotNumber == nil ? .fauna : .vegetation
+    }
+
+    // Modelo 3D do slot, conforme a fase atual.
+    func modelName(in level: ExpeditionLevel) -> String? {
+        guard let n = slotNumber else { return nil }
+        return level.treeSlots.contains(n) ? level.treeModel : level.grassModel
+    }
+   /* var displayName: String { // nome do objeto na View do APP
         switch self {
         case .objetoTeste1:
             return "Tamanduá Bandeira"
@@ -315,7 +337,9 @@ enum ExpeditionObjectType: String, CaseIterable, Identifiable { // elementos em 
             return .vegetation
         }
     }
-
+*/
+    
+    
     static func fromPositionName(_ name: String) -> ExpeditionObjectType? {
         let normalized = name
             .folding(options: .diacriticInsensitive, locale: .current)

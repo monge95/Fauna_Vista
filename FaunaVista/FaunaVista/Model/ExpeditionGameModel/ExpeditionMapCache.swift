@@ -11,49 +11,42 @@ import RealityKit
 import Combine
 
 
-// MARK: - CACHE DO MAPA
 @MainActor
 final class ExpeditionMapCache {
     static let shared = ExpeditionMapCache()
-    private var templateEntity: Entity?
-    private var loadingTask: Task<Entity, Error>?
+    private var templates: [String: Entity] = [:]
+    private var tasks: [String: Task<Entity, Error>] = [:]
     private init() {}
 
-    func preload() {
-        guard templateEntity == nil, loadingTask == nil else { return }
-        loadingTask = Task {
-            try await self.loadFromDisk()
-        }
+    func preload(fileName: String) {
+        // Descarta mapas de outras fases.
+        templates = templates.filter { $0.key == fileName }
+        tasks = tasks.filter { $0.key == fileName }
+
+        guard templates[fileName] == nil, tasks[fileName] == nil else { return }
+        tasks[fileName] = Task { try await self.loadFromDisk(fileName) }
     }
 
-    func makeInstance() async throws -> Entity {
-        if let templateEntity {
-            return templateEntity.clone(recursive: true)
+    func makeInstance(fileName: String) async throws -> Entity {
+        if let t = templates[fileName] { return t.clone(recursive: true) }
+        if let task = tasks[fileName] {
+            return try await task.value.clone(recursive: true)
         }
-        if let loadingTask {
-            let entity = try await loadingTask.value
-            return entity.clone(recursive: true)
-        }
-        let entity = try await loadFromDisk()
-        return entity.clone(recursive: true)
+        return try await loadFromDisk(fileName).clone(recursive: true)
     }
-    private func loadFromDisk() async throws -> Entity {
+
+    private func loadFromDisk(_ fileName: String) async throws -> Entity {
         guard let url = Bundle.main.url(
-            forResource: ExpeditionConfig.mapFileName,
+            forResource: fileName,
             withExtension: ExpeditionConfig.mapFileExtension
         ) else {
-            throw NSError(
-                domain: "ExpeditionMapCache",
-                code: 1,
-                userInfo: [
-                    NSLocalizedDescriptionKey:
-                        "Não encontrei \(ExpeditionConfig.mapFileName).\(ExpeditionConfig.mapFileExtension) no bundle."
-                ]
-            )
+            throw NSError(domain: "ExpeditionMapCache", code: 1,
+                          userInfo: [NSLocalizedDescriptionKey:
+                                        "Não encontrei \(fileName).\(ExpeditionConfig.mapFileExtension) no bundle."])
         }
         let entity = try await Entity(contentsOf: url)
-        templateEntity = entity
-        loadingTask = nil
+        templates[fileName] = entity
+        tasks[fileName] = nil
         return entity
     }
 }

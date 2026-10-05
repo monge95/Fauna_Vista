@@ -22,7 +22,7 @@ final class ExpeditionAnimalCache {
             preload(animal)
         }
     }
-    private func preload(_ animal: ExpeditionAnimalDefinition) {
+     func preload(_ animal: ExpeditionAnimalDefinition) {
         guard cache[animal.id] == nil, tasks[animal.id] == nil else { return }
         tasks[animal.id] = Task {
             try await loadFromDisk(animal)

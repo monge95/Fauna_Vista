@@ -11,60 +11,39 @@ import RealityKit
 import Combine
 
 
-// MARK: - CACHE DOS OBJETOS 3D
 @MainActor
 final class ExpeditionObjectCache {
     static let shared = ExpeditionObjectCache()
-    private var cache: [ExpeditionObjectType: Entity] = [:]
-    private var tasks: [ExpeditionObjectType: Task<Entity, Error>] = [:]
-    
+    private var cache: [String: Entity] = [:]
+    private var tasks: [String: Task<Entity, Error>] = [:]
     private init() {}
-    func preloadAll() {
-        for objectType in ExpeditionObjectType.allCases {
-            preload(objectType)
-        }
+
+    func preload(modelNames: [String]) {
+        for name in Set(modelNames) { preload(name) }
     }
 
-    private func preload(_ objectType: ExpeditionObjectType) {
-        guard cache[objectType] == nil, tasks[objectType] == nil else { return }
-
-        tasks[objectType] = Task {
-            try await loadFromDisk(objectType)
-        }
+    private func preload(_ name: String) {
+        guard cache[name] == nil, tasks[name] == nil else { return }
+        tasks[name] = Task { try await loadFromDisk(name) }
     }
 
-    func makeInstance(for objectType: ExpeditionObjectType) async throws -> Entity {
-        if let cached = cache[objectType] {
-            return cached.clone(recursive: true)
+    func makeInstance(modelName: String) async throws -> Entity {
+        if let cached = cache[modelName] { return cached.clone(recursive: true) }
+        if let task = tasks[modelName] {
+            return try await task.value.clone(recursive: true)
         }
-
-        if let task = tasks[objectType] {
-            let entity = try await task.value
-            return entity.clone(recursive: true)
-        }
-
-        let entity = try await loadFromDisk(objectType)
-        return entity.clone(recursive: true)
+        return try await loadFromDisk(modelName).clone(recursive: true)
     }
 
-    private func loadFromDisk(_ objectType: ExpeditionObjectType) async throws -> Entity {
-        guard let url = Bundle.main.url(
-            forResource: objectType.modelName,
-            withExtension: "usdz"
-        ) else {
-            throw NSError(
-                domain: "ExpeditionObjectCache",
-                code: 1,
-                userInfo: [
-                    NSLocalizedDescriptionKey:
-                        "Não encontrei \(objectType.modelName).usdz no bundle."
-                ]
-            )
+    private func loadFromDisk(_ name: String) async throws -> Entity {
+        guard let url = Bundle.main.url(forResource: name, withExtension: "usdz") else {
+            throw NSError(domain: "ExpeditionObjectCache", code: 1,
+                          userInfo: [NSLocalizedDescriptionKey:
+                                        "Não encontrei \(name).usdz no bundle."])
         }
-
         let entity = try await Entity(contentsOf: url)
-        cache[objectType] = entity
-        tasks[objectType] = nil
+        cache[name] = entity
+        tasks[name] = nil
         return entity
     }
 }
