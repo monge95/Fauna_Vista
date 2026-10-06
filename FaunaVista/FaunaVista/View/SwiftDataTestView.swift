@@ -20,6 +20,19 @@
                     .font(.title)
 
                 Text("Saved animals: \(animals.count)")
+                
+                Button {
+                    createTestExpedition()
+                } label: {
+                    Text("Criar expedição teste - Tamanduá")
+                        .font(.headline)
+                        .foregroundStyle(.white)
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(Color("buttonColor"))
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                }
+                .padding(.horizontal)
 
                 List {
                     ForEach(animals) { animal in
@@ -116,6 +129,61 @@
                         "Error initializing catalog: \(error)"
                     )
                 }
+            }
+        }
+        private func createTestExpedition() {
+
+            let scientificName = "Myrmecophaga tridactyla"
+
+            guard let animal = animals.first(where: {
+                $0.scientificName == scientificName
+            }) else {
+                print("❌ Tamanduá não encontrado")
+                return
+            }
+
+            let photos = [
+                ExpeditionPhotoModel(
+                    image: nil,
+                    rating: 0
+                ),
+                ExpeditionPhotoModel(
+                    image: nil,
+                    rating: 0
+                ),
+                ExpeditionPhotoModel(
+                    image: nil,
+                    rating: 0
+                )
+            ]
+
+            let repository = ExpeditionRepository(
+                modelContext: modelContext
+            )
+
+            let service = ExpeditionService(
+                repository: repository
+            )
+
+            do {
+                try service.finishExpedition(
+                    biome: animal.biome,
+                    animal: animal,
+                    challenge1Completed: true,
+                    challenge2Completed: true,
+                    challenge3Completed: false,
+                    photos: photos
+                )
+
+                print("✅ Expedição teste criada para \(animal.commonName)")
+
+            } catch ExpeditionServiceError.expeditionAlreadyExists {
+
+                print("⚠️ Já existe uma expedição para \(animal.commonName)")
+
+            } catch {
+
+                print("❌ Erro ao criar expedição teste: \(error)")
             }
         }
     }
