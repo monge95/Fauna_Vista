@@ -21,7 +21,7 @@ struct MissionChallengeCard: View {
                 .frame(width: 44, height: 44)
                 .background {
                     Circle()
-                        .fill(FaunaPalette.teal)
+                        .fill(Color("buttonColor"))
                 }
 
             Text(objective)
