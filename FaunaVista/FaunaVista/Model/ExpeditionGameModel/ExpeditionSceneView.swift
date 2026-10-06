@@ -671,7 +671,7 @@ final class ExpeditionSceneView: ARView {
                 print(
                     "⚠️ Nenhuma posição para \(animal.displayName). " +
                     "Use pos1_\(animal.id), pos2_\(animal.id), " +
-                    "posAction_\(animal.id)"
+                    "posaction_\(animal.id)"
                 )
                 continue
             }
@@ -782,7 +782,7 @@ final class ExpeditionSceneView: ARView {
     ) -> Bool {
         let normalized = normalizeMarkerName(name)
         guard normalized.hasPrefix("pos"),
-              !normalized.hasPrefix("posAction")
+              !normalized.hasPrefix("posaction")
         else { return false }
 
         let remainder = normalized.dropFirst(3)
@@ -800,9 +800,9 @@ final class ExpeditionSceneView: ARView {
         for animal: ExpeditionAnimalDefinition
     ) -> Bool {
         let normalized = normalizeMarkerName(name)
-        guard normalized.hasPrefix("posAction") else { return false }
+        guard normalized.hasPrefix("posaction") else { return false }
 
-        let suffix = String(normalized.dropFirst("posAction".count))
+        let suffix = String(normalized.dropFirst("posaction".count))
             .trimmingCharacters(in: CharacterSet(charactersIn: "_"))
 
         return normalizeAnimalID(suffix) == normalizeAnimalID(animal.id)
@@ -840,7 +840,7 @@ final class ExpeditionSceneView: ARView {
             if name == "camera_inicio" ||
                 name == "camera_final" ||
                 name.hasPrefix("posicao_animal_") ||
-                name.hasPrefix("posAction") ||
+                name.hasPrefix("posaction") ||
                 isAnyAnimalRouteMarker(name) {
                 entity.removeFromParent()
             }
@@ -850,7 +850,7 @@ final class ExpeditionSceneView: ARView {
     private func isAnyAnimalRouteMarker(_ name: String) -> Bool {
         let normalized = normalizeMarkerName(name)
         guard normalized.hasPrefix("pos"),
-              !normalized.hasPrefix("posAction")
+              !normalized.hasPrefix("posaction")
         else { return false }
 
         let remainder = normalized.dropFirst(3)
