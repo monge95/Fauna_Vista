@@ -32,6 +32,23 @@ struct ViewFactory{
         // fluuxo secundario 
         case .information:
             InformationView()
+        
+        // fluuxo Onearding
+        case .startExpedition:
+            Text("ola")
+            
+        case .exploreTerritories:
+            Text("ola")
+            
+        case .findSpecies:
+            Text("")
+            
+        case .observeImg:
+            Text("")
+        
+        case .endOnboarding:
+            Text("")
         }
+    
     }
 }

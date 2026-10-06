@@ -4,6 +4,13 @@
 //
 //  Created by Gabriel Groppo on 01/10/26.
 //
+//
+//  AnimalCard.swift
+//  FaunaVista
+//
+//  Created by Gabriel Groppo on 01/10/26.
+//
+
 import SwiftUI
 
 struct AnimalCard: View {
@@ -23,13 +30,12 @@ struct AnimalCard: View {
                 .padding(.top, 16)
 
             Spacer(minLength: 8)
-            
-                
+
             animalIllustration
-            
+
             Spacer(minLength: 8)
 
-            Text(animal.biome)
+            Text(biomeName)
                 .font(.system(size: 16))
                 .foregroundStyle(biomeTextColor)
                 .frame(maxWidth: .infinity)
@@ -51,16 +57,39 @@ struct AnimalCard: View {
         )
     }
 
+    // MARK: - Bioma (id Int → nome e cores)
+
+    /// Converte o id do bioma no nome, usando a sua MapPiece
+    private var biomeName: String {
+        MapPiece.todosOsBiomas
+            .first { $0.id == animal.biome }?.name ?? "Bioma"
+    }
+
+    private var biomeColor: Color {
+        switch animal.biome {
+        case 2:  return Color("AmazonColor")
+        case 1:  return Color("CerradoColor")
+        case 5:  return Color("CaatingaColor")
+        case 4:  return Color("AtlanticForestColor")
+        case 6:  return Color("PantanalColor")
+        case 3:  return Color("PampaColor")
+        default: return .gray
+        }
+    }
+
+    private var biomeTextColor: Color {
+        switch animal.biome {
+        case 2, 6, 5: return .white   
+        default:      return .black
+        }
+    }
+
     private var animalIllustration: some View {
         ZStack {
-
             Image(illustrationName)
                 .resizable()
                 .scaledToFit()
                 .frame(width: 140, height: 90)
-                
-
-            
         }
     }
 
@@ -69,43 +98,5 @@ struct AnimalCard: View {
             for: animal.scientificName,
             discovered: animal.discovered
         )
-    }
-
-
-    private var biomeColor: Color {
-        switch animal.biome {
-
-        case "Amazônia":
-            return Color("AmazonColor")
-
-        case "Cerrado":
-            return Color("CerradoColor")
-
-        case "Caatinga":
-            return Color("CaatingaColor")
-
-        case "Mata Atlântica":
-            return Color("AtlanticForestColor")
-
-        case "Pantanal":
-            return Color("PantanalColor")
-
-        case "Pampa":
-            return Color("PampaColor")
-
-        default:
-            return .gray
-        }
-    }
-
-    private var biomeTextColor: Color {
-        switch animal.biome {
-
-        case "Amazônia", "Pantanal", "Caatinga":
-            return .white
-
-        default:
-            return .black
-        }
     }
 }

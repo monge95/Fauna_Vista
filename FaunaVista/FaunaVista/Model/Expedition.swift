@@ -13,7 +13,7 @@ final class Expedition {
 
     var id: UUID
 
-    var biome: String
+    var biome: Int
 
     var animal: Animal
 
@@ -27,7 +27,7 @@ final class Expedition {
     var photos: [ExpeditionPhotoModel]
 
     init(
-        biome: String,
+        biome: Int,
         animal: Animal,
         overallRating: Int,
         challenge1Completed: Bool,

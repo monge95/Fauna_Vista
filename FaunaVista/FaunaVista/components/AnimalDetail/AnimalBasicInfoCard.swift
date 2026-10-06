@@ -4,6 +4,12 @@
 //
 //  Created by Gabriel Groppo on 02/10/26.
 //
+//
+//  AnimalBasicInfoCard.swift
+//  FaunaVista
+//
+//  Created by Gabriel Groppo on 02/10/26.
+//
 
 import SwiftUI
 
@@ -30,7 +36,7 @@ struct AnimalBasicInfoCard: View {
                         .font(.system(size: 18, weight: .bold))
 
                     AnimalTag(
-                        text: animal.biome,
+                        text: biomeName,
                         backgroundColor: biomeColor,
                         textColor: biomeTextColor
                     )
@@ -58,45 +64,34 @@ struct AnimalBasicInfoCard: View {
         }
     }
 
+    // MARK: - Bioma (id Int → nome e cores)
+
+    /// Converte o id do bioma no nome, usando a sua MapPiece
+    private var biomeName: String {
+        MapPiece.todosOsBiomas
+            .first { $0.id == animal.biome }?.name ?? "Bioma"
+    }
 
     private var biomeColor: Color {
         switch animal.biome {
-
-        case "Amazônia":
-            return Color("AmazonColor")
-
-        case "Cerrado":
-            return Color("CerradoColor")
-
-        case "Caatinga":
-            return Color("CaatingaColor")
-
-        case "Mata Atlântica":
-            return Color("AtlanticForestColor")
-
-        case "Pantanal":
-            return Color("PantanalColor")
-
-        case "Pampa":
-            return Color("PampaColor")
-
-        default:
-            return .gray
+        case 2:  return Color("AmazonColor")          // Amazônia
+        case 1:  return Color("CerradoColor")         // Cerrado
+        case 5:  return Color("CaatingaColor")        // Caatinga
+        case 4:  return Color("AtlanticForestColor")  // Mata Atlântica
+        case 6:  return Color("PantanalColor")        // Pantanal
+        case 3:  return Color("PampaColor")           // Pampa
+        default: return .gray
         }
     }
-
 
     private var biomeTextColor: Color {
         switch animal.biome {
-
-        case "Amazônia", "Mata Atlântica":
-            return .white
-
-        default:
-            return .black
+        case 2, 4: return .white   // Amazônia e Mata Atlântica
+        default:   return .black
         }
     }
 
+    // MARK: - Conservação (continua String, então não mudou)
 
     private var conservationStatusColor: Color {
         switch animal.conservationStatus.lowercased() {

@@ -23,7 +23,7 @@ final class ExpeditionService {
     
     
     func finishExpedition(
-        biome: String,
+        biome: Int,
         animal: Animal,
         challenge1Completed: Bool,
         challenge2Completed: Bool,
