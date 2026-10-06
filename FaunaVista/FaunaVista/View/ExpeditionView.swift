@@ -79,7 +79,7 @@ struct ExpeditionView: View {
             } catch ExpeditionServiceError.expeditionAlreadyExists {
                 // Já existe expedição deste animal: mantém a anterior.
             } catch {
-                print("❌ Erro ao salvar expedição:", error)
+                print("Erro ao salvar expedição:", error)
             }
         }
 
