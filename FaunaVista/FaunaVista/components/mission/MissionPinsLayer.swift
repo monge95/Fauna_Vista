@@ -55,11 +55,22 @@ struct MissionPinsLayer: View {
         Button {
             selectedPin = pin
         } label: {
-            Image(pin.assetsName)
-                .resizable()
-                .scaledToFit()
-                .frame(width: 44, height: 49)
-                .clipped()
+            if let animal = findAnimal(for: pin),
+               let expedition = findExpedition(for: animal) {
+                Image(pin.assetsNameDiscovered)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 44, height: 49)
+                    .clipped()
+
+            }else{
+                Image(pin.assetsName)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 44, height: 49)
+                    .clipped()
+                
+            }
         }
         .position(
             x: pin.posX,
