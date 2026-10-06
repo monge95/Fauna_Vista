@@ -41,6 +41,12 @@ struct BiomeView: View {
                 Spacer()
                 MapBiome(mapPice: log.activeBiomeId)
                 Spacer()
+                GeometryReader{ geo in
+                    MissionProgress() 
+                        .padding(.horizontal, geo.size.width * 0.15)
+                    
+                }
+                    
             }
             
             
