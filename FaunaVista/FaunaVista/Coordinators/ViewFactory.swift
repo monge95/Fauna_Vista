@@ -35,7 +35,7 @@ struct ViewFactory{
         
         // fluuxo Onearding
         case .startExpedition:
-            Text("ola")
+            StartExpedition()
             
         case .exploreTerritories:
             Text("ola")
