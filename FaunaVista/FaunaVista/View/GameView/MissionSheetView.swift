@@ -8,36 +8,58 @@
 import SwiftUI
 
 struct MissionSheetView: View {
+
     let pin: MissionPin
     let onStart: () -> Void
 
     var body: some View {
         VStack(spacing: 16) {
-            Text(pin.missionObjective1)
-                .font(.title2.bold())
-                .multilineTextAlignment(.center)
 
-            Text(pin.animalName)
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
+            MissionAnimalIdentification(
+                scientificName: pin.scientificName
+            )
 
-            VStack(alignment: .leading, spacing: 10) {
-                Text(pin.missionObjective2)
-                Text(pin.missionObjective3).bold()
+            VStack(alignment: .leading, spacing: 12) {
+
+                Text("Desafios")
+                    .font(.system(size: 20, weight: .bold))
+
+                MissionChallengeCard(
+                    number: 1,
+                    objective: pin.missionObjective1
+                )
+
+                MissionChallengeCard(
+                    number: 2,
+                    objective: pin.missionObjective2
+                )
+
+                MissionChallengeCard(
+                    number: 3,
+                    objective: pin.missionObjective3
+                )
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
+            .frame(
+                maxWidth: .infinity,
+                alignment: .leading
+            )
+
+            Spacer()
 
             Button(action: onStart) {
-                Text("Começar expedição")
+                Text("Iniciar expedição")
                     .font(.headline)
                     .foregroundStyle(.white)
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 16)
-                    .background(FaunaPalette.teal, in: Capsule())
+                    .background(
+                        FaunaPalette.teal,
+                        in: Capsule()
+                    )
             }
         }
         .foregroundStyle(.black)
         .padding(24)
-        .presentationDetents([.medium])
+        .presentationDetents([.large])
     }
 }
