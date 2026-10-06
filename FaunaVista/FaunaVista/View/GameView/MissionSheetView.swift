@@ -9,11 +9,31 @@ import SwiftUI
 
 struct MissionSheetView: View {
 
+    @Environment(\.dismiss) private var dismiss
+
     let pin: MissionPin
     let onStart: () -> Void
 
     var body: some View {
         VStack(spacing: 16) {
+
+            HStack {
+                Button {
+                    dismiss()
+                } label: {
+                    Image(systemName: "xmark")
+                        .font(.system(size: 22, weight: .bold))
+                        .foregroundStyle(.red)
+                        .frame(width: 44, height: 44)
+                        .background {
+                            Circle()
+                                .fill(.white)
+                        }
+                }
+                .buttonStyle(.plain)
+
+                Spacer()
+            }
 
             MissionAnimalIdentification(
                 scientificName: pin.scientificName
@@ -53,13 +73,17 @@ struct MissionSheetView: View {
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 16)
                     .background(
-                        FaunaPalette.teal,
+                        Color("buttonColor"),
                         in: Capsule()
                     )
             }
         }
         .foregroundStyle(.black)
         .padding(24)
+        .background {
+            Color("CardBackground")
+                .ignoresSafeArea()
+        }
         .presentationDetents([.large])
     }
 }
