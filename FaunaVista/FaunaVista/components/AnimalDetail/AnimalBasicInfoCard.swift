@@ -45,7 +45,7 @@ struct AnimalBasicInfoCard: View {
                 Spacer()
 
                 VStack(alignment: .leading, spacing: 6) {
-                    Text("Grau de ameaça")
+                    Text("Grau de extinção")
                         .font(.system(size: 18, weight: .bold))
 
                     AnimalTag(
