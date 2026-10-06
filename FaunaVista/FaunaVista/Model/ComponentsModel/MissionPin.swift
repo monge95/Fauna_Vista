@@ -13,6 +13,7 @@ struct MissionPin: Identifiable {
     let biomeId: Int
 
     let animalName: String
+    let scientificName: String
     let assetsName: String
     let assetsNameDiscovered: String
     
@@ -32,6 +33,7 @@ struct MissionPin: Identifiable {
             animalName: "Lobo-guará",
             scientificName: "Chrysocyon brachyurus",
             assetsName: "PinLobo",
+            assetsNameDiscovered: "pinLoboDiscovered",
             missionObjective1: "Fotografe o animal parado",
             missionObjective2: "Fotografe o animal em movimento",
             missionObjective3: "Fotografe o animal dormindo",
@@ -44,6 +46,7 @@ struct MissionPin: Identifiable {
             animalName: "Tamanduá-bandeira",
             scientificName: "Myrmecophaga tridactyla",
             assetsName: "PinTamandua",
+            assetsNameDiscovered: "pinOnçaDiscovered",
             missionObjective1: "Fotografe o animal parado",
             missionObjective2: "Fotografe o animal em movimento",
             missionObjective3: "Fotografe o animal se alimentando",
@@ -59,6 +62,7 @@ struct MissionPin: Identifiable {
             animalName: "Boto-cor-de-rosa",
             scientificName: "Inia geoffrensis",
             assetsName: "PinBoto",
+            assetsNameDiscovered: "PinBotodiscovered",
             missionObjective1: "Fotografe o animal parado",
             missionObjective2: "Fotografe o animal em movimento",
             missionObjective3: "Fotografe o animal subindo à superfície para respirar",
@@ -71,6 +75,7 @@ struct MissionPin: Identifiable {
             animalName: "Uacari-vermelho",
             scientificName: "Cacajao rubicundus",
             assetsName: "PinUacari",
+            assetsNameDiscovered: "pinUracaridiscovered",
             missionObjective1: "Fotografe o animal parado",
             missionObjective2: "Fotografe o animal em movimento",
             missionObjective3: "Fotografe o animal pendurado em um galho",
@@ -86,6 +91,7 @@ struct MissionPin: Identifiable {
             animalName: "Veste-amarela",
             scientificName: "Xanthopsar flavus",
             assetsName: "PinVeste",
+            assetsNameDiscovered: "pinVesteDiscovered",
             missionObjective1: "Fotografe o animal parado",
             missionObjective2: "Fotografe o animal em movimento",
             missionObjective3: "Fotografe o animal voando",
@@ -98,6 +104,7 @@ struct MissionPin: Identifiable {
             animalName: "Sapo-de-chifres",
             scientificName: "Ceratophrys ornata",
             assetsName: "PinSapo",
+            assetsNameDiscovered: "pinSapoDiscovered",
             missionObjective1: "Fotografe o animal parado",
             missionObjective2: "Fotografe o animal em movimento",
             missionObjective3: "Fotografe o animal capturando um inseto com a língua",
@@ -113,6 +120,7 @@ struct MissionPin: Identifiable {
             animalName: "Mico-leão-dourado",
             scientificName: "Leontopithecus rosalia",
             assetsName: "PinMico",
+            assetsNameDiscovered: "pinPreguiçaDiscovered",
             missionObjective1: "Fotografe o animal parado",
             missionObjective2: "Fotografe o animal em movimento",
             missionObjective3: "Fotografe o animal capturando um inseto na árvore",
@@ -125,6 +133,7 @@ struct MissionPin: Identifiable {
             animalName: "Preguiça-de-coleira",
             scientificName: "Bradypus torquatus",
             assetsName: "PinPreguiça",
+            assetsNameDiscovered: "pinMicoDiscovered",
             missionObjective1: "Fotografe o animal parado",
             missionObjective2: "Fotografe o animal em movimento",
             missionObjective3: "Fotografe o animal descendo da árvore",
@@ -140,6 +149,7 @@ struct MissionPin: Identifiable {
             animalName: "Tatu-bola",
             scientificName: "Tolypeutes tricinctus",
             assetsName: "PinTatu",
+            assetsNameDiscovered: "pinTatuDiscovered",
             missionObjective1: "Fotografe o animal parado",
             missionObjective2: "Fotografe o animal em movimento",
             missionObjective3: "Fotografe o animal se enrolando em uma bola",
@@ -152,6 +162,7 @@ struct MissionPin: Identifiable {
             animalName: "Arara-azul-de-lear",
             scientificName: "Anodorhynchus leari",
             assetsName: "PinArara",
+            assetsNameDiscovered: "pinAraraDiscovered",
             missionObjective1: "Fotografe o animal parado",
             missionObjective2: "Fotografe o animal em movimento",
             missionObjective3: "Fotografe o animal se alimentando em uma árvore",
@@ -167,6 +178,7 @@ struct MissionPin: Identifiable {
             animalName: "Onça-pintada",
             scientificName: "Panthera onca",
             assetsName: "PinOnça",
+            assetsNameDiscovered: "pinOnçaDiscovered",
             missionObjective1: "Fotografe o animal parado",
             missionObjective2: "Fotografe o animal em movimento",
             missionObjective3: "Fotografe o animal entrando na água",
@@ -179,6 +191,7 @@ struct MissionPin: Identifiable {
             animalName: "Ariranha",
             scientificName: "Pteronura brasiliensis",
             assetsName: "PinAriranha",
+            assetsNameDiscovered: "pinAriranhaDiscovered",
             missionObjective1: "Fotografe o animal parado",
             missionObjective2: "Fotografe o animal em movimento",
             missionObjective3: "Fotografe o animal saindo da água",
