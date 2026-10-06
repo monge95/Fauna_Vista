@@ -13,16 +13,16 @@ struct MissionPin: Identifiable {
     let biomeId: Int
 
     let animalName: String
-    let scientificName: String
     let assetsName: String
-
+    let assetsNameDiscovered: String
+    
     let missionObjective1: String
     let missionObjective2: String
     let missionObjective3: String
 
     let posX: CGFloat
     let posY: CGFloat
-
+    
     static let allMissionPins: [MissionPin] = [
 
         // CERRADO
