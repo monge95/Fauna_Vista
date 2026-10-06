@@ -3,13 +3,7 @@
 //  FaunaVista
 //
 //  Created by Pedro Monge Silveira on 03/10/26.
-//
-//
-//  MissionProgress.swift
-//  FaunaVista
-//
-//  Created by Pedro Monge Silveira on 03/10/26.
-//
+
 
 import SwiftUI
 import SwiftData
