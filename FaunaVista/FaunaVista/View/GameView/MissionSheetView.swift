@@ -15,7 +15,7 @@ struct MissionSheetView: View {
     let onStart: () -> Void
 
     var body: some View {
-        VStack(spacing: 16) {
+        VStack(spacing: 12) {
 
             HStack {
                 Button {
@@ -79,7 +79,9 @@ struct MissionSheetView: View {
             }
         }
         .foregroundStyle(.black)
-        .padding(24)
+        .padding(.horizontal, 24)
+        .padding(.top, 16)
+        .padding(.bottom, 12)
         .background {
             Color("CardBackground")
                 .ignoresSafeArea()

@@ -6,50 +6,103 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct MissionPinsLayer: View {
-        @Environment(ExpeditionLog.self) private var log
-        @State private var selectedPin: MissionPin? = nil
-        @Environment(AppCordinator.self) private var coordinator
-        var body: some View {
-            Group {
-                if let activeBiomeId = log.activeBiomeId {
-                    ForEach(
-                        MissionPin.allMissionPins.filter { $0.biomeId == activeBiomeId }
-                    ) { pin in
-                        pinButton(for: pin)
+
+    @Environment(\.modelContext) private var modelContext
+    @Environment(ExpeditionLog.self) private var log
+    @Environment(AppCordinator.self) private var coordinator
+
+    @State private var selectedPin: MissionPin?
+
+    var body: some View {
+        Group {
+            if let activeBiomeId = log.activeBiomeId {
+                ForEach(
+                    MissionPin.allMissionPins.filter {
+                        $0.biomeId == activeBiomeId
                     }
+                ) { pin in
+                    pinButton(for: pin)
                 }
             }
-            .sheet(item: $selectedPin) { pin in
+        }
+        .sheet(item: $selectedPin) { pin in
+
+            if let animal = findAnimal(for: pin),
+               let expedition = findExpedition(for: animal) {
+
+                CompletedMissionSheetView(
+                    pin: pin,
+                    expedition: expedition
+                ) {
+                    // Refazer depois
+                }
+
+            } else {
+
                 MissionSheetView(pin: pin) {
                     log.activeScientificName = pin.scientificName
                     selectedPin = nil
                     coordinator.push(.Expedition)
-                 }
                 }
-                   // .padding(.bottom, 24)
-                
-            
-            
-        }
-
-        private func pinButton(for pin: MissionPin) -> some View {
-            Button {
-                selectedPin = pin     
-            } label: {
-                Image(pin.assetsName)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 44, height: 49)
-                    .clipped()
             }
-            .position(x: pin.posX, y: pin.posY)
         }
     }
+
+    private func pinButton(for pin: MissionPin) -> some View {
+        Button {
+            selectedPin = pin
+        } label: {
+            Image(pin.assetsName)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 44, height: 49)
+                .clipped()
+        }
+        .position(
+            x: pin.posX,
+            y: pin.posY
+        )
+    }
+
+    private func findAnimal(for pin: MissionPin) -> Animal? {
+
+        let scientificName = pin.scientificName
+
+        let descriptor = FetchDescriptor<Animal>(
+            predicate: #Predicate { animal in
+                animal.scientificName == scientificName
+            }
+        )
+
+        return try? modelContext.fetch(descriptor).first
+    }
+
+    private func findExpedition(for animal: Animal) -> Expedition? {
+
+        let repository = ExpeditionRepository(
+            modelContext: modelContext
+        )
+
+        let service = ExpeditionService(
+            repository: repository
+        )
+
+        do {
+            return try service.findExpedition(for: animal)
+        } catch {
+            print("❌ Erro buscando expedição:", error)
+            return nil
+        }
+    }
+}
 
 #Preview {
     MissionPinsLayer()
         .environment(PreviewSupport.coordinator)
-        .environment(PreviewSupport.expeditionLog(biomeId: 1))
+        .environment(
+            PreviewSupport.expeditionLog(biomeId: 1)
+        )
 }

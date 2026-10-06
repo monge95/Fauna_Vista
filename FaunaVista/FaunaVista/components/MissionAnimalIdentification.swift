@@ -17,8 +17,8 @@ struct MissionAnimalIdentification: View {
             Image(illustrationName)
                 .resizable()
                 .scaledToFit()
-                .frame(width: 140, height: 140)
-                .padding(16)
+                .frame(width: 115, height: 115)
+                .padding(12)
                 .background {
                     Circle()
                         .fill(.gray.opacity(0.15))
