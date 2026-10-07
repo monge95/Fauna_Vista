@@ -53,14 +53,14 @@ struct MissionPinsLayer: View {
 
     private func pinButton(for pin: MissionPin) -> some View {
         Button {
-            selectedPin = pin
-        } label: {
-            Image(pin.assetsName)
-                .resizable()
-                .scaledToFit()
-                .frame(width: 44, height: 49)
-                .clipped()
-        }
+              selectedPin = pin
+          } label: {
+              Image(isDiscovered(pin) ? pin.assetsNameDiscovered : pin.assetsName)
+                  .resizable()
+                  .scaledToFit()
+                  .frame(width: 44, height: 49)
+                  .clipped()
+          }
         .position(
             x: pin.posX,
             y: pin.posY
@@ -97,7 +97,13 @@ struct MissionPinsLayer: View {
             return nil
         }
     }
+    
+    private func isDiscovered(_ pin: MissionPin) -> Bool {
+        guard let animal = findAnimal(for: pin) else { return false }
+        return findExpedition(for: animal) != nil
+    }
 }
+
 
 #Preview {
     MissionPinsLayer()
