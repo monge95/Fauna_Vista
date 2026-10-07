@@ -1,4 +1,54 @@
 ========================================
+ARQUIVO: ./elizaEstudies/MyTool/main.swift
+========================================
+import Foundation
+
+var nota = 9
+
+if (nota >= 9) {
+    print("Excelente")
+    
+} else if (nota >= 7) {
+    print("Bom trabalho")
+    
+} else {
+    print("Vamos estudar mais")
+}
+           
+var diaDaSemana = 2
+
+switch diaDaSemana {
+    
+case 1:
+    print("Segunda-feira")
+    
+case 2:
+print("Terça-feira")
+    
+case 3:
+print("Quarta-feira")
+    
+default:
+    print("Outro dia foda")
+}
+
+var mes = 6
+if (mes == 12) {
+    print("verão")
+    
+} else if (mes == 4) {
+    print("outono")
+    
+} else if (mes == 6) {
+    print("inverno")
+    
+} else if (mes == 10) {
+    print("primavera")
+}
+
+
+
+========================================
 ARQUIVO: ./FaunaVista/FaunaVista/Coordinators/CoordinatorView.swift
 ========================================
 //
@@ -488,7 +538,7 @@ final class ExpeditionRepository {
 
 
 ========================================
-ARQUIVO: ./FaunaVista/FaunaVista/Components/AnimalDetail/AnimalDetailHeader.swift
+ARQUIVO: ./FaunaVista/FaunaVista/components/AnimalDetail/AnimalDetailHeader.swift
 ========================================
 //
 //  AnimalDetailHeader.swift
@@ -538,7 +588,7 @@ struct AnimalDetailHeader: View {
 
 
 ========================================
-ARQUIVO: ./FaunaVista/FaunaVista/Components/AnimalDetail/AnimalInformationCard.swift
+ARQUIVO: ./FaunaVista/FaunaVista/components/AnimalDetail/AnimalInformationCard.swift
 ========================================
 //
 //  AnimalInformationCard.swift
@@ -609,7 +659,7 @@ struct AnimalInformationCard: View {
 
 
 ========================================
-ARQUIVO: ./FaunaVista/FaunaVista/Components/AnimalDetail/AnimalDetailImage.swift
+ARQUIVO: ./FaunaVista/FaunaVista/components/AnimalDetail/AnimalDetailImage.swift
 ========================================
 //
 //  AnimalDetailImage.swift
@@ -699,7 +749,7 @@ struct AnimalDetailImage: View {
 
 
 ========================================
-ARQUIVO: ./FaunaVista/FaunaVista/Components/AnimalDetail/AnimalBasicInfoCard.swift
+ARQUIVO: ./FaunaVista/FaunaVista/components/AnimalDetail/AnimalBasicInfoCard.swift
 ========================================
 //
 //  AnimalBasicInfoCard.swift
@@ -834,7 +884,7 @@ struct AnimalBasicInfoCard: View {
 
 
 ========================================
-ARQUIVO: ./FaunaVista/FaunaVista/Components/AnimalDetail/AnimalTag.swift
+ARQUIVO: ./FaunaVista/FaunaVista/components/AnimalDetail/AnimalTag.swift
 ========================================
 //
 //  AnimalTag.swift
@@ -868,7 +918,7 @@ struct AnimalTag: View {
 
 
 ========================================
-ARQUIVO: ./FaunaVista/FaunaVista/Components/AnimalCard.swift
+ARQUIVO: ./FaunaVista/FaunaVista/components/AnimalCard.swift
 ========================================
 //
 //  AnimalCard.swift
@@ -975,7 +1025,7 @@ struct AnimalCard: View {
 
 
 ========================================
-ARQUIVO: ./FaunaVista/FaunaVista/Components/mission/MissionPinsLayer.swift
+ARQUIVO: ./FaunaVista/FaunaVista/components/mission/MissionPinsLayer.swift
 ========================================
 //
 //  MissionPinsLayer.swift
@@ -1035,7 +1085,7 @@ struct MissionPinsLayer: View {
 
 
 ========================================
-ARQUIVO: ./FaunaVista/FaunaVista/Components/mission/MissionProgress .swift
+ARQUIVO: ./FaunaVista/FaunaVista/components/mission/MissionProgress .swift
 ========================================
 //
 //  MissionProgress .swift
@@ -1043,45 +1093,158 @@ ARQUIVO: ./FaunaVista/FaunaVista/Components/mission/MissionProgress .swift
 //
 //  Created by Pedro Monge Silveira on 03/10/26.
 //
+//
+//  MissionProgress.swift
+//  FaunaVista
+//
+//  Created by Pedro Monge Silveira on 03/10/26.
+//
 
 import SwiftUI
+import SwiftData
 
 struct MissionProgress: View {
+
+    @Environment(\.modelContext) private var modelContext
+    @Environment(ExpeditionLog.self) private var log
+
     
-    
+    private let maxChallenges = 6
+
+    @State private var percentage: Int = 0
+
     var body: some View {
-        VStack{
+        VStack(alignment: .leading, spacing: 8) {
             Text("Progresso")
                 .font(.system(size: 18, weight: .bold))
-                .frame(maxWidth: .infinity, alignment: .leading)
-                
-            HStack{
+
+            HStack {
                 Text("Espécies registradas")
                     .font(.system(size: 12, weight: .regular))
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                
-                
-                Text("%")
+
+                Spacer()
+
+                Text("\(percentage)%")
                     .font(.system(size: 12, weight: .regular))
-                    .frame(maxWidth: .infinity, alignment: .trailing)
-                
             }
+
             
+            GeometryReader { geo in
+                ZStack(alignment: .leading) {
+                    Capsule()
+                        .fill(Color.green.opacity(0.25))
+                        .frame(height: 10)
+
+                    Capsule()
+                        .fill(Color.green)
+                        .frame(width: geo.size.width * CGFloat(percentage) / 100, height: 10)
+                        .animation(.easeInOut(duration: 0.4), value: percentage)
+                }
+            }
+            .frame(height: 10)
         }
-        .padding(10)
-        .frame(maxWidth: .infinity, alignment: .center)
+        .padding(14)
+        .frame(maxWidth: .infinity, alignment: .leading)
         .background(Color.backGround)
-        .cornerRadius(10)
+        .cornerRadius(16)
+        .task(id: log.activeBiomeId) {
+            calculateProgress()
+        }
+    }
+
+    private func calculateProgress() {
+        guard let biomeId = log.activeBiomeId else {
+            percentage = 0
+            return
+        }
+
+        let descriptor = FetchDescriptor<Expedition>(
+            predicate: #Predicate { $0.biome == biomeId }
+        )
+
+        let expeditions = (try? modelContext.fetch(descriptor)) ?? []
+
+        let trues = expeditions.reduce(0) { sum, expedition in
+            sum
+                + (expedition.challenge1Completed ? 1 : 0)
+                + (expedition.challenge2Completed ? 1 : 0)
+                + (expedition.challenge3Completed ? 1 : 0)
+        }
+
+    
+        percentage = trues * 100 / maxChallenges
     }
 }
 
 #Preview {
     MissionProgress()
+        .modelContainer(seedPreviewContainer())
+        .environment(previewLog())
+}
+
+/// Instância local do log, só para o preview, com o bioma já setado
+private func previewLog() -> ExpeditionLog {
+    let log = ExpeditionLog()
+    log.activeBiomeId = 0
+    return log
+}
+
+/// Cria um banco em memória já populado com dados de teste
+private func seedPreviewContainer() -> ModelContainer {
+    let container = try! ModelContainer(
+        for: Animal.self, Expedition.self, ExpeditionPhotoModel.self,
+        configurations: ModelConfiguration(isStoredInMemoryOnly: true)
+    )
+
+    let context = container.mainContext
+
+    let animal1 = Animal(
+        taxonID: 12345,
+        commonName: "Lobo-guará",
+        scientificName: "Chrysocyon brachyurus",
+        biome: 0,
+        conservationStatus: "Vulnerável"
+    )
+
+    let animal2 = Animal(
+        taxonID: 12346,
+        commonName: "Tamanduá-bandeira",
+        scientificName: "Myrmecophaga tridactyla",
+        biome: 0,
+        conservationStatus: "Vulnerável"
+    )
+
+    context.insert(animal1)
+    context.insert(animal2)
+
+    // Expedição 1: 2 desafios completos
+    context.insert(Expedition(
+        biome: 0,
+        animal: animal1,
+        overallRating: 3,
+        challenge1Completed: true,
+        challenge2Completed: false,
+        challenge3Completed: true
+    ))
+
+    // Expedição 2: 1 desafio completo
+    context.insert(Expedition(
+        biome: 0,
+        animal: animal2,
+        overallRating: 2,
+        challenge1Completed: true,
+        challenge2Completed: false,
+        challenge3Completed: false
+    ))
+
+    // 3 trues → 3 * 100 / 6 = 50%
+
+    return container
 }
 
 
 ========================================
-ARQUIVO: ./FaunaVista/FaunaVista/Components/map/MapButton.swift
+ARQUIVO: ./FaunaVista/FaunaVista/components/map/MapButton.swift
 ========================================
 //
 //  mapButoon.swift
@@ -1131,7 +1294,7 @@ struct MapButton: View {
 
 
 ========================================
-ARQUIVO: ./FaunaVista/FaunaVista/Components/map/MapBiome.swift
+ARQUIVO: ./FaunaVista/FaunaVista/components/map/MapBiome.swift
 ========================================
 //
 //  MapBiome.swift
@@ -5908,8 +6071,8 @@ struct MissionPin: Identifiable {
     let biomeId: Int
     
     let animalName: String
-    let scientificName: String
     let assetsName: String
+    let assetsNameDiscovered: String
     
     let missionObjective1: String
     let missionObjective2: String
@@ -5917,72 +6080,72 @@ struct MissionPin: Identifiable {
     
     let posX: CGFloat
     let posY: CGFloat
-   // let scientificName: String
+    
     static let allMissionPins: [MissionPin] = [
         // CERRADO
-        MissionPin(biomeId: 1, animalName: "Lobo-guará", scientificName: "Chrysocyon brachyurus", assetsName: "PinLobo",
+        MissionPin(biomeId: 1, animalName: "Lobo-guará", assetsName: "PinLobo",assetsNameDiscovered: "pinLoboDiscovered",
                    missionObjective1: "O guardião do cerrado",
                    missionObjective2: "O lobo-guará está escondido entre o capim-dourado.",
                    missionObjective3: "Fotografe o lobo sem assustá-lo",
                    posX: 350.0, posY: 158.0),
         
-        MissionPin(biomeId: 1, animalName: "Tamanduá-bandeira", scientificName: "Myrmecophaga tridactyla", assetsName: "PinTamandua",
+        MissionPin(biomeId: 1, animalName: "Tamanduá-bandeira", assetsName: "PinTamandua",assetsNameDiscovered: "pinTamanduaDiscovered",
                    missionObjective1: "O jardineiro do cerrado",
                    missionObjective2: "O tamanduá cava cupinzeiros e fertiliza o solo.",
                    missionObjective3: "Fotografe o tamanduá se alimentando",
                    posX: 262.0, posY: 285.0),
         
         // AMAZÔNIA
-        MissionPin(biomeId: 2, animalName: "Boto-cor-de-rosa", scientificName: "Inia geoffrensis", assetsName: "PinBoto",
+        MissionPin(biomeId: 2, animalName: "Boto-cor-de-rosa", assetsName: "PinBoto",assetsNameDiscovered: "pinBotoDiscovered",
                    missionObjective1: "A lenda do rio",
                    missionObjective2: "O boto aparece no rio quando o sol se põe.",
                    missionObjective3: "Fotografe o boto na superfície",
                    posX: 280.0, posY: 100.0),
-        MissionPin(biomeId: 2, animalName: "Uacari-vermelho", scientificName: "Cacajao rubicundus", assetsName: "PinUacari",
+        MissionPin(biomeId: 2, animalName: "Uacari-vermelho", assetsName: "PinUacari",assetsNameDiscovered: "pinDiscovered",
                    missionObjective1: "O desenho do céu",
                    missionObjective2: "As araras voam em dupla pela copa densa.",
                    missionObjective3: "Fotografe a arara voando",
                    posX: 108.0, posY: 140.0),
         // PAMPA
-        MissionPin(biomeId: 3, animalName: "Veste-amarela", scientificName: "Xanthopsar flavus", assetsName: "PinVeste",
+        MissionPin(biomeId: 3, animalName: "Veste-amarela", assetsName: "PinVeste",assetsNameDiscovered: "pinVesteDiscovered",
                    missionObjective1: "O sentinela dos campos",
                    missionObjective2: "O quero-quero avisa todo mundo quando alguém chega.",
                    missionObjective3: "Fotografe o quero-quero no chão",
                    posX: 237.0, posY: 405.0),
-        MissionPin(biomeId: 3, animalName: "Sapo-de-chifres", scientificName: "Ceratophrys ornata", assetsName: "PinSapo",
+        MissionPin(biomeId: 3, animalName: "Sapo-de-chifres", assetsName: "PinSapo",assetsNameDiscovered: "pinSapoDiscovered",
                    missionObjective1: "O corredor do pampa",
                    missionObjective2: "O veado corre livre entre os campos abertos.",
                    missionObjective3: "Fotografe o veado em movimento",
                    posX: 260.0, posY: 460.0),
         // MATA ATLÂNTICA
-        MissionPin(biomeId: 4, animalName: "Mico-leão-dourado", scientificName: "Leontopithecus rosalia", assetsName: "PinMico",
+        MissionPin(biomeId: 4, animalName: "Mico-leão-dourado", assetsName: "PinMico",assetsNameDiscovered: "pinMicoDiscovered",
                    missionObjective1: "O tesouro da floresta",
                    missionObjective2: "O mico vive só nas copas da Mata Atlântica.",
                    missionObjective3: "Fotografe o mico na árvore",
                    posX: 392.0, posY: 280.0),
-        MissionPin(biomeId: 4, animalName: "Preguiça-de-coleira", scientificName: "Bradypus torquatus", assetsName: "PinPreguiça",
+        MissionPin(biomeId: 4, animalName: "Preguiça-de-coleira", assetsName: "PinPreguiça",assetsNameDiscovered: "pinPreguiçaDiscovered",
                    missionObjective1: "A plantadora de araucárias",
                    missionObjective2: "A gralha enterra pinhões e planta novas árvores.",
                    missionObjective3: "Fotografe a gralha perto da araucária",
                    posX: 280.0, posY: 380.0),
         // CAATINGA
-        MissionPin(biomeId: 5, animalName: "Tatu-bola", scientificName: "Tolypeutes tricinctus", assetsName: "PinTatu",
+        MissionPin(biomeId: 5, animalName: "Tatu-bola", assetsName: "PinTatu",assetsNameDiscovered: "pinTatuDiscovered",
                    missionObjective1: "O campeão da defesa",
                    missionObjective2: "O tatu-bola se enrola numa bola perfeita.",
                    missionObjective3: "Fotografe o tatu enrolado",
                    posX: 400.0, posY: 210.0),
-        MissionPin(biomeId: 5, animalName: "Arara-azul-de-lear", scientificName: "Anodorhynchus leari", assetsName: "PinArara",
+        MissionPin(biomeId: 5, animalName: "Arara-azul-de-lear", assetsName: "PinArara",assetsNameDiscovered: "pinAraraDiscovered",
                    missionObjective1: "A joia da caatinga",
                    missionObjective2: "Essa arara só existe na caatinga brasileira.",
                    missionObjective3: "Fotografe a arara azul",
                    posX: 410.0, posY: 150.0),
         // PANTANAL
-        MissionPin(biomeId: 6, animalName: "Onça-pintada", scientificName: "Panthera onca", assetsName: "PinOnça",
+        MissionPin(biomeId: 6, animalName: "Onça-pintada", assetsName: "PinOnça",assetsNameDiscovered: "pinOnçaDiscovered",
                    missionObjective1: "A rainha do pantanal",
                    missionObjective2: "A onça é a maior felina das Américas.",
                    missionObjective3: "Fotografe a onça à beira do rio",
                    posX: 225.0, posY: 260.0),
-        MissionPin(biomeId: 6, animalName: "Ariranha", scientificName: "Pteronura brasiliensis", assetsName: "PinAriranha",
+        MissionPin(biomeId: 6, animalName: "Ariranha", assetsName: "PinAriranha",assetsNameDiscovered: "pinAriranhaDiscovered",
                    missionObjective1: "O gigante azul",
                    missionObjective2: "A maior arara do mundo vive no pantanal.",
                    missionObjective3: "Fotografe a arara no buriti",
@@ -6132,6 +6295,12 @@ struct BiomeView: View {
                 Spacer()
                 MapBiome(mapPice: log.activeBiomeId)
                 Spacer()
+                GeometryReader{ geo in
+                    MissionProgress() 
+                        .padding(.horizontal, geo.size.width * 0.15)
+                    
+                }
+                    
             }
             
             
