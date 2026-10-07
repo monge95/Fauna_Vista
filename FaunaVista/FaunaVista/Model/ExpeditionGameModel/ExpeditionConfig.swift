@@ -15,7 +15,7 @@ import Combine
 struct ExpeditionConfig {
     static let mapFileName = "MapaCerrado" // "FaunaVistaMap" , vai variar de acordo com o mapa selecionado
     static let mapFileExtension = "usdz"
-    static let cameraSpeed: Float = 0.9
+    static let cameraSpeed: Float = 35
     static let lookSensitivity: Float = 0.006 // sensibilidade no zoom mínimo (1x)
     static let lookSensitivityAtMaxZoom: Float = 0.001 // sensibilidade no zoom máximo (5x)
     static let cameraFieldOfView: CGFloat = 65

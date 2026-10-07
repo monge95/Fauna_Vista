@@ -295,7 +295,7 @@ struct ExpeditionAnimalConfig {
             displayName: "Tatu-bola",
             scientificName: "Tolypeutes tricinctus",
             enabled: true,
-            speed: 4.0,
+            speed: 6,
             waitAtPosition: 0.9,
             actionDuration: 7.0,
             loopRoute: true,
