@@ -7,7 +7,8 @@
 
 import SwiftUI
 
-struct StartExpedition: View {
+struct StartOnboarding: View {
+    @Environment(AppCoordinator.self) private var coordinator
     var body: some View {
         ZStack {
             Image("ExpedicaoComecaImg")
@@ -27,9 +28,9 @@ struct StartExpedition: View {
                 
                 Spacer()
                 
-                Button {
-                    
-                } label: {
+                Button (action: {
+                    coordinator.push(.exploreTerritories)
+                }) {
                     Text("Avançar")
                         .font(.system(size: 18, weight: .medium))
                         .foregroundStyle(.white)
@@ -40,7 +41,7 @@ struct StartExpedition: View {
                 }
                 .padding(.horizontal, 80)
             }
-            .padding(.bottom, 50)
+            .padding(.bottom, 70)
             .padding(.top, 150)
             
         }
@@ -48,5 +49,5 @@ struct StartExpedition: View {
 }
 
 #Preview {
-    StartExpedition()
+    StartOnboarding()
 }

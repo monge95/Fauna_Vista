@@ -1,66 +1,69 @@
 //
-//  Encontre.swift
+//  Observe.swift
 //  FaunaVista
 //
-//  Created by Joice Cardoso on 05/10/26.
+//  Created by Joice Cardoso on 06/10/26.
 //
 
 import SwiftUI
 
-struct Encontre: View {
+struct ObserveImg: View {
+    @Environment(AppCoordinator.self) private var coordinator
     var body: some View {
         ZStack {
-            Image("EncontreImg")
+            Image("ObserveImg")
                 .resizable()
                 .scaledToFill()
                 .ignoresSafeArea()
             
             VStack(spacing: 10) {
-                Text("Explore novos\nterritórios")
+                Text("Observar\nFotografar\nIdentificar")
                     .font(
                         .custom("Belanosima-SemiBold", size: 34))
                     .multilineTextAlignment(.center)
                     .foregroundStyle(Color("TextOnboarding"))
                     .padding(.top, 80)
                 
-                Text("Procure animais que enfrentam \n riscos de desaparecer da mata \n e descubra sua importância")
+                Text("Encontre uma espécie, registre\no momento e descubra quem\nestá diante da sua câmera")
                     .font(.system(size: 16))
                     .multilineTextAlignment(.center)
                     .foregroundStyle(Color("TextOnboarding"))
+                
                 
                 Spacer()
                 
                 HStack(spacing: 30) {
                     
-                    Button {
-                        
-                    } label: {
+                    Button (action: {
+                        coordinator.pop()
+                    }) {
                         Image(systemName: "chevron.left")
                             .font(.system(size: 25, weight: .bold))
                             .foregroundStyle(.white)
                             .frame(width: 50, height: 50)
                     }
                     .glassEffect(.regular, in: .circle)
-                    .padding(.bottom, 50)
+                    .padding(.bottom, 70)
                     
                     
-                    Button {
-                        
-                    } label: {
+                    Button (action: {
+                        coordinator.push(.endOnboarding)
+                    }) {
                         Image(systemName: "chevron.right")
                             .font(.system(size: 25, weight: .bold))
                             .foregroundStyle(.white)
                             .frame(width: 50, height: 50)
                     }
                     .glassEffect(.regular, in: .circle)
-                    .padding(.bottom, 50)
+                    .padding(.bottom, 70)
                     
                 }
+                
             }
         }
+        .navigationBarBackButtonHidden(true)
     }
 }
-
 #Preview {
-    Encontre()
+    ObserveImg()
 }

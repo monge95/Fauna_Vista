@@ -8,7 +8,7 @@ import SwiftData
 
 struct ExpeditionView: View {
     @StateObject private var vm = ExpeditionViewModel()
-    @Environment(AppCordinator.self) private var coordinator
+    @Environment(AppCoordinator.self) private var coordinator
     @Environment(\.modelContext) private var modelContext
     @Environment(ExpeditionLog.self) private var log
     @Query private var animals: [Animal]
@@ -37,7 +37,7 @@ struct ExpeditionView: View {
                 ) {
                     registerAnimal()
                     vm.returnToStart()
-                    coordinator.rezet()   // limpa o path e abre a aba Coleção
+                    coordinator.reset()   // limpa o path e abre a aba Coleção
                 }
             }
         }

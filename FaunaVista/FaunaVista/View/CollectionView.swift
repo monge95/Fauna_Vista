@@ -9,7 +9,7 @@ import SwiftUI
 import SwiftData
 
 struct CollectionView: View {
-    @Environment(AppCordinator.self) private var coordinator
+    @Environment(AppCoordinator.self) private var coordinator
     @Query private var animals: [Animal]
 
     private let columns = [
