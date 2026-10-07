@@ -86,7 +86,7 @@ struct CompletedMissionSheetView: View {
             "Deseja realmente refazer a expedição?",
             isPresented: $showRedoConfirmation
         ) {
-            Button("Cancelar", role: .cancel) { }
+            Button("Cancelar", role: .cancel) {  }
 
             Button("Refazer", role: .destructive) {
                 onRedo()
@@ -119,3 +119,4 @@ struct CompletedMissionSheetView: View {
         .buttonStyle(.plain)
     }
 }
+

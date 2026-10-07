@@ -37,7 +37,16 @@ struct MissionPinsLayer: View {
                     pin: pin,
                     expedition: expedition
                 ) {
-                    // Refazer depois
+                  
+                    let repository = ExpeditionRepository(modelContext: modelContext)
+                    let service = ExpeditionService(repository: repository)
+                    try? service.redoExpedition(for: animal)
+
+                    log.activeBiomeId = pin.biomeId
+                    log.activeScientificName = pin.scientificName
+                    
+                 selectedPin = nil
+                    coordinator.push(.Expedition)
                 }
 
             } else {

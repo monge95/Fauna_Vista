@@ -16,9 +16,9 @@ struct CompletedMissionChallengeCard: View {
         HStack(spacing: 16) {
 
             Image(systemName: "checkmark")
-                .font(.system(size: 22, weight: .bold))
+                .font(.system(size: 20, weight: .bold))
                 .foregroundStyle(.white)
-                .frame(width: 44, height: 44)
+                .frame(width: 38, height: 38)
                 .background {
                     Circle()
                         .fill(
@@ -29,7 +29,7 @@ struct CompletedMissionChallengeCard: View {
                 }
 
             Text(objective)
-                .font(.system(size: 15))
+                .font(.system(size: 13))
                 .foregroundStyle(.black)
                 .multilineTextAlignment(.leading)
                 .frame(
@@ -39,9 +39,9 @@ struct CompletedMissionChallengeCard: View {
         }
         .padding(.horizontal, 16)
         .frame(maxWidth: .infinity)
-        .frame(minHeight: 76)
+        .frame(minHeight: 50)
         .background {
-            RoundedRectangle(cornerRadius: 18)
+            RoundedRectangle(cornerRadius: 15)
                 .fill(.white)
         }
     }
