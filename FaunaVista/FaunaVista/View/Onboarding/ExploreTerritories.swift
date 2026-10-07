@@ -7,7 +7,8 @@
 
 import SwiftUI
 
-struct Explore: View {
+struct ExploreTerritories: View {
+    @Environment(AppCoordinator.self) private var coordinator
     var body: some View {
         ZStack {
             Image("ExploreImg")
@@ -29,37 +30,38 @@ struct Explore: View {
                 Spacer()
                 HStack(spacing: 30) {
                     
-                    Button {
-                        
-                    } label: {
+                    Button (action: {
+                        coordinator.pop()
+                    }) {
                         Image(systemName: "chevron.left")
                             .font(.system(size: 25, weight: .bold))
                             .foregroundStyle(.white)
                             .frame(width: 50, height: 50)
                     }
                     .glassEffect(.regular, in: .circle)
-                    .padding(.bottom, 50)
+                    .padding(.bottom, 70)
                     
                     
-                    Button {
-                        
-                    } label: {
+                    Button (action: {
+                        coordinator.push(.findSpecies)
+                    }) {
                         Image(systemName: "chevron.right")
                             .font(.system(size: 25, weight: .bold))
                             .foregroundStyle(.white)
                             .frame(width: 50, height: 50)
                     }
                     .glassEffect(.regular, in: .circle)
-                    .padding(.bottom, 50)
+                    .padding(.bottom, 70)
                     
                 }
             
             }
     
         }
+        .navigationBarBackButtonHidden(true)
     }
 }
 
 #Preview {
-    Explore()
+    ExploreTerritories()
 }

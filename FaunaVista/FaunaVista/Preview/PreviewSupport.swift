@@ -42,8 +42,8 @@ enum PreviewSupport {
     }
 
     @MainActor
-    static var coordinator: AppCordinator {
-        AppCordinator()
+    static var coordinator: AppCoordinator {
+        AppCoordinator()
     }
 
     @MainActor

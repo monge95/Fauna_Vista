@@ -33,21 +33,21 @@ struct ViewFactory{
         case .information:
             InformationView()
         
-        // fluuxo Onearding
-        case .startExpedition:
-            StartExpedition()
+        // fluxo Onearding
+        case .startOnboarding:
+            StartOnboarding()
             
         case .exploreTerritories:
-            Text("ola")
+            ExploreTerritories()
             
         case .findSpecies:
-            Text("")
+            FindSpecies()
             
         case .observeImg:
-            Text("")
+            ObserveImg()
         
         case .endOnboarding:
-            Text("")
+            EndOnboarding()
         }
     
     }

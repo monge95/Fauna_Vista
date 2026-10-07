@@ -14,7 +14,7 @@
 import SwiftUI
 
 struct MapBiome: View {
-    @Environment(AppCordinator.self) private var coordinator
+    @Environment(AppCoordinator.self) private var coordinator
 
     @State var mapPice: Int? = 0
     
@@ -54,7 +54,7 @@ struct MapBiome: View {
 }
 #Preview {
     MapBiome(mapPice: 2)
-        .environment(AppCordinator())
+        .environment(AppCoordinator())
         .environment(PreviewSupport.expeditionLog(biomeId: 4))
 
 }

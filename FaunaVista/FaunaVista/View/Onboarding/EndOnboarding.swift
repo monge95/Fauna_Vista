@@ -7,7 +7,12 @@
 
 import SwiftUI
 
-struct Comecou: View {
+struct EndOnboarding: View {
+    @Environment(AppCoordinator.self) private var coordinator
+    @AppStorage("hasCompletedOnboarding")
+    
+    private var hasCompletedOnboarding = false
+    
     var body: some View {
         ZStack {
             Image("ComecouImg")
@@ -30,11 +35,12 @@ struct Comecou: View {
                 Spacer()
                 
                 Button {
-                    
+                    coordinator.reset()
+                    hasCompletedOnboarding = true
                 } label: {
                     Text("Iniciar")
                         .font(.system(size: 18, weight: .medium))
-                        .foregroundStyle(.texIcon)
+                        .foregroundStyle(.textIcon)
                         .frame(maxWidth: .infinity)
                         .frame(height: 46)
                         .background (Color("TextOnboarding"))
@@ -42,14 +48,15 @@ struct Comecou: View {
                 }
                 .padding(.horizontal, 80)
             }
-            .padding(.bottom, 50)
+            .padding(.bottom, 70)
             .padding(.top, 150)
             
         }
+        .navigationBarBackButtonHidden(true)
     }
 }
 
 #Preview {
-    Comecou()
+    EndOnboarding()
 }
 

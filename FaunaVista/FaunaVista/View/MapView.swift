@@ -8,7 +8,7 @@ import SwiftUI
 import SwiftData
 
 struct MapView: View {
-    @Environment(AppCordinator.self) private var coordinator
+    @Environment(AppCoordinator.self) private var coordinator
     
     
     
@@ -27,14 +27,7 @@ struct MapView: View {
                                 .foregroundColor(Color("BackGroundColor"))
                                 .frame(maxWidth: .infinity, alignment: .leading)
                             
-                            Text("Toque no bioma para explorar")
-                                .font(.system(size: 14, weight: .semibold))
-                                .foregroundColor(.black)
-                                .padding(5)
-                                .padding(.horizontal, 10)
-                                .background(Color("LightGreenProgress"))
-                                .cornerRadius(20)
-                                .frame(maxWidth: .infinity, alignment: .leading)
+                            
                         }
                         Button(action: {
                             coordinator.push(.information)
@@ -68,6 +61,17 @@ struct MapView: View {
                         .shadow(color: .black.opacity(0.15), radius: 4, x: 2, y: 4)
                     }
                     .padding(.horizontal, 70)
+                    
+                    Text("Toque no bioma para explorar")
+                        .font(.system(size: 14, weight: .semibold))
+                        .foregroundColor(.black)
+                        .padding(5)
+                        .padding(.horizontal, 10)
+                        .background(Color("LightGreenProgress"))
+                        .cornerRadius(20)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.leading, 70)
+                    
                     ZStack{
                     Image("cloud")
                             .padding(.bottom,30)
