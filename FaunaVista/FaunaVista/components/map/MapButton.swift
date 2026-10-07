@@ -7,7 +7,7 @@
 import SwiftUI
 
 struct MapButton: View {
-    @Environment(AppCordinator.self) private var coordinator
+    @Environment(AppCoordinator.self) private var coordinator
     
     @Environment(ExpeditionLog.self) private var log
     

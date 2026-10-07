@@ -21,7 +21,7 @@ enum AppRoute: Hashable{
     
     case information
     
-    case startExpedition
+    case startOnboarding
     case exploreTerritories
     case findSpecies
     case observeImg

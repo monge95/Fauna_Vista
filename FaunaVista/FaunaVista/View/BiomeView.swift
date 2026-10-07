@@ -9,7 +9,7 @@ import SwiftUI
 
 
 struct BiomeView: View {
-    @Environment(AppCordinator.self) private var coordinator
+    @Environment(AppCoordinator.self) private var coordinator
    
     @Environment(ExpeditionLog.self) private var log
 
@@ -46,15 +46,8 @@ struct BiomeView: View {
                         .padding(.horizontal, geo.size.width * 0.15)
                     
                 }
-                    
             }
-            
-            
-            
         }
-        
-        
-        
     }
 }
 

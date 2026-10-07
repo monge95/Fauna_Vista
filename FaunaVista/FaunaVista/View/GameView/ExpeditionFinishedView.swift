@@ -1,7 +1,7 @@
 //
 //  ExpeditionFinishedView.swift
 //  Tela "Análise das fotos": escolher as fotos com checkmark.
-//
+//  
 
 import SwiftUI
 

@@ -12,9 +12,7 @@ struct MissionPinsLayer: View {
 
     @Environment(\.modelContext) private var modelContext
     @Environment(ExpeditionLog.self) private var log
-    @Environment(AppCordinator.self) private var coordinator
-    
-
+    @Environment(AppCoordinator.self) private var coordinator
 
     @State private var selectedPin: MissionPin?
 
