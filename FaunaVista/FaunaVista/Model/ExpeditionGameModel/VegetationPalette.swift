@@ -28,6 +28,8 @@ enum VegetationModel: String, CaseIterable, Identifiable {
     case gramaCerrado                               // arquivo: gramaCerrado.usdz
     case arvoreCerrado1 = "arvorecerrado1"
     case gramaPantanal = "gramaPantanal"
+    case gramaCaatinga = "gramaCaatinga"
+    case cactoCaatinga = "cactoCaatinga"
     // arquivo: arvorecerrado1.usdz
     // case gramaCerrado2
     // case arvoreCerrado2 = "arvorecerrado2"
@@ -50,6 +52,11 @@ enum VegetationModel: String, CaseIterable, Identifiable {
             return .tree
         case .gramaPantanal:
             return .grass
+        case .gramaCaatinga:
+            return .grass
+        case .cactoCaatinga:
+            return .tree
+
         // case .gramaCerrado2, .gramaAmazonia: return .grass
         // case .arvoreCerrado2, .arvoreAmazonia1, ...: return .tree
         }
@@ -135,10 +142,14 @@ extension VegetationPalette {
         trees: [.arvoreCerrado1],
         grasses: [.gramaPantanal]
     )
+    static let caatinga = VegetationPalette(
+        trees: [.cactoCaatinga],
+        grasses: [.gramaCaatinga]
+    )
 
     // static let amazonia = VegetationPalette(
     //     trees:   [.arvoreAmazonia1, .arvoreAmazonia2, .palmeiraAmazonia],
     //     grasses: [.gramaAmazonia]
     // )
-    // static let pampa, mataAtlantica, caatinga, pantanal ...
+    // static let pampa, mataAtlantica, caatinga, pantanal
 }
