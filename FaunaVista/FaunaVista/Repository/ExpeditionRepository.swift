@@ -64,6 +64,5 @@ final class ExpeditionRepository {
 
         try modelContext.save()
 
-        print("Expedition deleted for: \(expedition.animal.commonName)")
     }
 }
