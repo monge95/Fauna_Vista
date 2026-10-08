@@ -8,7 +8,7 @@ import SwiftData
 
 struct ExpeditionView: View {
     @StateObject private var vm = ExpeditionViewModel()
-    @Environment(AppCordinator.self) private var coordinator
+    @Environment(AppCoordinator.self) private var coordinator
     @Environment(\.modelContext) private var modelContext
     @Environment(ExpeditionLog.self) private var log
     @Query private var animals: [Animal]
@@ -33,11 +33,12 @@ struct ExpeditionView: View {
                 ExpeditionAnimalRegisteredView(
                     animalName: vm.missionAnimal?.displayName ?? "Animal",
                     scientificName: vm.missionAnimal?.scientificName ?? "",
-                    biome: missionAnimalModel?.biome ?? "Cerrado"
+                    biome: missionAnimalModel?.biome ?? 2
                 ) {
-                    registerAnimal()
-                    vm.returnToStart()
-                    coordinator.rezet()   // limpa o path e abre a aba Coleção
+                    if let animal = registerAnimal() {
+                        vm.returnToStart()
+                        coordinator.push(.registro(animal))
+                    }
                 }
             }
         }
@@ -50,8 +51,8 @@ struct ExpeditionView: View {
     }
 
     // Marca como descoberto e salva a expedição (missões + 3 fotos) no SwiftData.
-    private func registerAnimal() {
-        guard let animal = missionAnimalModel else { return }
+    private func registerAnimal() -> Animal? {
+        guard let animal = missionAnimalModel else { return nil}
         animal.discovered = true
 
         let selected = vm.selectedPhotos
@@ -79,10 +80,11 @@ struct ExpeditionView: View {
             } catch ExpeditionServiceError.expeditionAlreadyExists {
                 // Já existe expedição deste animal: mantém a anterior.
             } catch {
-                print("❌ Erro ao salvar expedição:", error)
+                print("Erro ao salvar expedição:", error)
             }
         }
 
         try? modelContext.save()
+        return animal
     }
 }

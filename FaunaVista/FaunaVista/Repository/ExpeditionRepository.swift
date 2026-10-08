@@ -48,7 +48,7 @@ final class ExpeditionRepository {
         return try modelContext.fetch(descriptor).first
     }
     
-    func findByBiome(_ biome: String) throws -> [Expedition] {
+    func findByBiome(_ biome: Int) throws -> [Expedition] {
 
         let descriptor = FetchDescriptor<Expedition>(
             predicate: #Predicate { expedition in
@@ -64,6 +64,5 @@ final class ExpeditionRepository {
 
         try modelContext.save()
 
-        print("Expedition deleted for: \(expedition.animal.commonName)")
     }
 }

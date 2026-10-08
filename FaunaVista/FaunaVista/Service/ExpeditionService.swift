@@ -23,7 +23,7 @@ final class ExpeditionService {
     
     
     func finishExpedition(
-        biome: String,
+        biome: Int,
         animal: Animal,
         challenge1Completed: Bool,
         challenge2Completed: Bool,
@@ -54,6 +54,10 @@ final class ExpeditionService {
         try repository.createExpedition(expedition)
     }
     
+    func findExpedition(for animal: Animal) throws -> Expedition? {
+        try repository.findByAnimal(animal)
+    }
+    
     func redoExpedition(for animal: Animal) throws {
 
         guard let expedition = try repository.findByAnimal(animal) else {
@@ -62,4 +66,5 @@ final class ExpeditionService {
 
         try repository.deleteExpedition(expedition)
     }
+    
 }

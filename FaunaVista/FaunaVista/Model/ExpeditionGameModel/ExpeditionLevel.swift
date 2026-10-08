@@ -50,9 +50,9 @@ struct ExpeditionLevel: Identifiable {
 
         // CAATINGA
         ExpeditionLevel(id: "caatinga1", scientificName: "Anodorhynchus leari",
-                        animalID: "animal_9", mapFileName: "MapaCaatinga"),
+                        animalID: "animal_9", mapFileName: "MapaCaatinga", vegetation: .caatinga),
         ExpeditionLevel(id: "caatinga2", scientificName: "Tolypeutes tricinctus",
-                        animalID: "animal_10", mapFileName: "MapaCaatinga2"),
+                        animalID: "animal_10", mapFileName: "MapaCaatinga2", vegetation: .caatinga),
 
         // PANTANAL
         ExpeditionLevel(id: "pantanal1", scientificName: "Pteronura brasiliensis",

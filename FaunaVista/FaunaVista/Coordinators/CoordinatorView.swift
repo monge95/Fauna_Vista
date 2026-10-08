@@ -8,10 +8,13 @@ import SwiftUI
 import SwiftData
 
 struct CoordinatorView: View{
-    @State private var coordinator = AppCordinator()
+    @Environment(AppCoordinator.self) private var coordinator
     @Environment(\.modelContext) private var modelContext
    
     var body: some View{
+        
+        @Bindable var coordinator = coordinator
+        
         TabView(selection: $coordinator.selectedView) {
             NavigationStack(path: $coordinator.pathMapa) {
                 MapView()
@@ -45,8 +48,8 @@ struct CoordinatorView: View{
         .environment(coordinator)
         .onAppear {
                     let appearance = UITabBarAppearance()
-                    appearance.stackedLayoutAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor.texIcon]
-                    appearance.stackedLayoutAppearance.selected.titleTextAttributes = [.foregroundColor: UIColor.white]
+            appearance.stackedLayoutAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor.button]
+            appearance.stackedLayoutAppearance.selected.titleTextAttributes = [.foregroundColor: UIColor.button]
                     UITabBar.appearance().standardAppearance = appearance
         }
         .task {

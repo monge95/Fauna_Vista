@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AnimalDetailHeader: View {
 
-    @Environment(\.dismiss) private var dismiss
+    @Environment(AppCoordinator.self) private var coordinator
 
     let title: String
 
@@ -17,7 +17,7 @@ struct AnimalDetailHeader: View {
         ZStack {
             HStack {
                 Button {
-                    dismiss()
+                    coordinator.reset()
                 } label: {
                     Image(systemName: "chevron.left")
                         .font(.system(size: 28, weight: .bold))

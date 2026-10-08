@@ -22,11 +22,11 @@ struct ExpeditionGameView: View {
 
     private var aimColor: Color {
         if vm.isVegetationDetected {
-            return .green
+            return .gray
         }
 
         if vm.isTargetDetected {
-            return .red
+            return .green
         }
 
         return .white

@@ -4,7 +4,7 @@
 //
 //  Created by Felipe Colares Cardoso on 02/10/26.
 //
-
+// TELA "GANHOU" DO FIGMA
 //
 //  ExpeditionAnimalRegisteredView.swift
 //
@@ -14,8 +14,26 @@ import SwiftUI
 struct ExpeditionAnimalRegisteredView: View {
     let animalName: String
     let scientificName: String
-    let biome: String
+    let biome: Int
     let onViewCollection: () -> Void
+    
+    private var biomeName: String {
+           MapPiece.todosOsBiomas
+               .first { $0.id == biome }?.name ?? "Bioma"
+       }
+
+    private var biomeColor: Color {
+        switch biome {
+        case 2:  return Color("AmazonColor")
+        case 1:  return Color("CerradoColor")
+        case 5:  return Color("CaatingaColor")
+        case 4:  return Color("AtlanticForestColor")
+        case 6:  return Color("PantanalColor")
+        case 3:  return Color("PampaColor")
+        default: return .gray
+        }
+    }
+
 
     var body: some View {
         ZStack {
@@ -37,12 +55,30 @@ struct ExpeditionAnimalRegisteredView: View {
                     .font(.footnote.italic())
                     .foregroundStyle(.secondary)
 
-                Image(IllustrationAnimal.imageName(for: scientificName, discovered: true))
+                ZStack(alignment: .bottom) {
+
+                    Image(AnimalScenario.backgroundName(for: scientificName))
+                        .resizable()
+                        .scaledToFit()
+
+                    Image(AnimalScenario.groundName(for: scientificName))
+                        .resizable()
+                        .scaledToFit()
+                    
+                    Image(
+                        IllustrationAnimal.imageName(
+                            for: scientificName,
+                            discovered: true
+                        )
+                    )
                     .resizable()
                     .scaledToFit()
-                    .frame(height: 200)
 
-                Label(biome, systemImage: "mappin")
+                    
+                }
+                .frame(height: 200)
+
+                Label(biomeName, systemImage: "mappin")
                     .font(.system(size: 17, weight: .medium))
 
                 Button(action: onViewCollection) {

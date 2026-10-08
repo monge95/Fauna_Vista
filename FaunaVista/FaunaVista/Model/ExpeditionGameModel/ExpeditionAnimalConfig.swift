@@ -295,20 +295,20 @@ struct ExpeditionAnimalConfig {
             displayName: "Tatu-bola",
             scientificName: "Tolypeutes tricinctus",
             enabled: true,
-            speed: 3.4,
-            waitAtPosition: 2.0,
+            speed: 6,
+            waitAtPosition: 0.9,
             actionDuration: 7.0,
             loopRoute: true,
             randomActionEnabled: true,
             randomActionChance: 0.35,
-            animationTimelineStartFrame: 0,
-            animationTimelineEndFrame: 140,
+            animationTimelineStartFrame: 1,
+            animationTimelineEndFrame: 200,
             idleStartFrame: 0,
             idleEndFrame: 50, // pode mudar de animal pra animal
             walkingStartFrame: 51, // pode mudar de animal pra animal
-            walkingEndFrame: 100, // pode mudar de animal pra animal
-            actionStartFrame: 101,// pode mudar de animal pra animal
-            actionEndFrame: 140,// pode mudar de animal pra animal
+            walkingEndFrame: 73, // pode mudar de animal pra animal
+            actionStartFrame: 75,// pode mudar de animal pra animal
+            actionEndFrame: 200,// pode mudar de animal pra animal
             idleLoops: true, // Idle e Walking ficam em loop.
             walkingLoops: true,  // Action toca uma vez e depois volta para Idle.
             actionLoops: false,

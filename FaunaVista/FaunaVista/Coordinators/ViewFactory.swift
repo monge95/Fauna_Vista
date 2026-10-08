@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ViewFactory{
-    
+
     @ViewBuilder
     static func viewBuilder(for route: AppRoute) -> some View{
         switch route {
@@ -19,19 +19,34 @@ struct ViewFactory{
         case .Expedition:
             ExpeditionView()
                     
-        case .Analyze:
-            AnalyzeView()
                     
         case .CheckExpedition:
             CheckExpeditionView()
                     
-        case .registro:
-            RegistroView()
+        case .registro(let animal):
+            AnimalDetailView(animal: animal)
             
             
         // fluuxo secundario 
         case .information:
             InformationView()
+        
+        // fluxo Onearding
+        case .startOnboarding:
+            StartOnboarding()
+            
+        case .exploreTerritories:
+            ExploreTerritories()
+            
+        case .findSpecies:
+            FindSpecies()
+            
+        case .observeImg:
+            ObserveImg()
+        
+        case .endOnboarding:
+            EndOnboarding()
         }
+    
     }
 }

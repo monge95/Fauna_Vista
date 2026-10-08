@@ -1,7 +1,7 @@
 //
 //  ExpeditionMissionCheckView.swift
 //  Missões + as 3 fotos enviadas. Checkmark verde nas cumpridas.
-//
+//  TELA "CHECK" DO FIGMA
 
 import SwiftUI
 
