@@ -6,7 +6,7 @@ import SwiftUI
 
 // MARK: - TELA INICIAL (onboarding da expedição)
 struct ExpeditionStartView: View {
-    @ObservedObject var vm: ExpeditionViewModel
+    var vm: ExpeditionViewState
 
     var body: some View {
         ZStack {
@@ -152,5 +152,5 @@ private struct TipRow: View {
 }
 
 #Preview {
-    ExpeditionStartView(vm: ExpeditionViewModel())
+    ExpeditionStartView(vm: ExpeditionViewState())
 }

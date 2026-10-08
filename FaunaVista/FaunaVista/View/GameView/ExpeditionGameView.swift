@@ -16,7 +16,7 @@ import Combine
 // ============================================================
 
 struct ExpeditionGameView: View {
-    @ObservedObject var vm: ExpeditionViewModel
+    var vm: ExpeditionViewState
     @State private var flashVisible = false
     @State private var debugAxis: ExpeditionDebugAxis = .x
 
