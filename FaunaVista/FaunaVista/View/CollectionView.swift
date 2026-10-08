@@ -75,12 +75,12 @@ struct CollectionView: View {
                     ForEach(orderedAnimals) { animal in
 
                         if animal.discovered {
-                            NavigationLink {
-                                AnimalDetailView(animal: animal)
-                            } label: {
+                            Button(action: {
+                                coordinator.push(.registro(animal))
+                            }) {
+                                
                                 AnimalCard(animal: animal)
                             }
-                            .buttonStyle(.plain)
 
                         } else {
                             AnimalCard(animal: animal)
@@ -95,7 +95,6 @@ struct CollectionView: View {
         }
         .background(
             Color("CollectionBackground")
-                .ignoresSafeArea()
         )
     }
     
