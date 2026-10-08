@@ -1,8 +1,7 @@
-
-//  ExpeditionView.swift
-//  FaunaVista
+// ExpeditionView.swift
+// FaunaVista
 //
-//  Orquestra o fluxo todo da expedição.
+// Orquestra o fluxo todo da expedição.
 //
 
 import SwiftUI
@@ -28,8 +27,7 @@ struct ExpeditionView: View {
 
     private var missionAnimalModel: Animal? {
 
-        guard let name =
-                vm.missionAnimal?.scientificName
+        guard let name = vm.missionAnimal?.scientificName
         else {
             return nil
         }
@@ -43,64 +41,108 @@ struct ExpeditionView: View {
 
     var body: some View {
 
-        Group {
+        ZStack {
 
-            switch vm.gameState {
+            Group {
 
-            case .start:
+                switch vm.gameState {
 
-                ExpeditionStartView(
-                    vm: vm
-                )
+                case .start:
 
-            case .playing:
+                    ExpeditionStartView(
+                        vm: vm
+                    )
 
-                ExpeditionGameView(
-                    vm: vm
-                )
+                case .playing:
 
-            case .finished:
+                    ExpeditionGameView(
+                        vm: vm
+                    )
 
-                ExpeditionFinishedView(
-                    vm: vm
-                )
+                case .finished:
 
-            case .missionCheck:
+                    ExpeditionFinishedView(
+                        vm: vm
+                    )
 
-                ExpeditionMissionCheckView(
-                    vm: vm
-                )
+                case .missionCheck:
 
-            case .registered:
+                    ExpeditionMissionCheckView(
+                        vm: vm
+                    )
 
-                ExpeditionAnimalRegisteredView(
-                    animalName:
-                        vm.missionAnimal?.displayName
-                        ?? "Animal",
+                case .registered:
+                                    // Verifica se o usuário tem fotos e completou pelo menos o primeiro desafio (índice 0)
+                                    let isDiscovered = !vm.selectedPhotos.isEmpty && (vm.missionResults.first?.completed == true)
 
-                    scientificName:
-                        vm.missionAnimal?.scientificName
-                        ?? "",
+                                    ExpeditionAnimalRegisteredView(
+                                        animalName:
+                                            vm.missionAnimal?.displayName
+                                            ?? "Animal",
 
-                    biome:
-                        missionAnimalModel?.biome
-                        ?? 2
-                ) {
+                                        scientificName:
+                                            vm.missionAnimal?.scientificName
+                                            ?? "",
 
-                    if let animal = registerAnimal() {
+                                        biome:
+                                            missionAnimalModel?.biome
+                                            ?? 2,
+                                            
+                                        isDiscovered: isDiscovered
 
-                        vm.returnToStart()
+                                    ) {
 
-                        coordinator.push(
-                            .registro(animal)
+                                        if isDiscovered {
+                                            if let animal = registerAnimal() {
+                                                vm.returnToStart()
+                                                coordinator.push(
+                                                    .registro(animal)
+                                                )
+                                            }
+                                        } else {
+                                            vm.cancelExpedition()
+                                            coordinator.pop()
+                                        }
+                                    }
+                }
+            }
+
+            // MARK: - Transição para iniciar a expedição
+
+            if vm.isStartingExpedition {
+
+                Color.black
+                    .opacity(vm.transitionOpacity)
+                    .ignoresSafeArea()
+                    .zIndex(10)
+                    .allowsHitTesting(true)
+
+                if vm.countdownNumber > 0 {
+
+                    Text("Começando em \(vm.countdownNumber)")
+                        .font(
+                            .system(
+                                size: 46,
+                                weight: .bold,
+                                design: .rounded
+                            )
                         )
-                    }
+                        .foregroundStyle(.white)
+                        .transition(.opacity)
+                        .zIndex(11)
                 }
             }
         }
+
+        .animation(
+            .easeInOut(duration: 0.4),
+            value: vm.countdownNumber
+        )
+
         .navigationBarBackButtonHidden(
             vm.gameState != .start
         )
+
         .onAppear {
 
             let level =
@@ -130,6 +172,7 @@ struct ExpeditionView: View {
             vm.selectedPhotos
 
         // A expedição precisa de exatamente 3 fotos.
+
         if selected.count == 3 {
 
             let results =
@@ -216,4 +259,3 @@ struct ExpeditionView: View {
             PreviewSupport.expeditionLog
         )
 }
-

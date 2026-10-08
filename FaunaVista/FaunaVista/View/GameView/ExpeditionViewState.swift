@@ -35,6 +35,14 @@ final class ExpeditionViewState {
     var missionResults: [(mission: ExpeditionMission, completed: Bool)] { game.missionResults }
     var allMissionsCompleted: Bool { game.allMissionsCompleted }
 
+    // MARK: - Transição de início
+
+    private(set) var isStartingExpedition = false
+    private(set) var countdownNumber = 0
+    private(set) var transitionOpacity: Double = 0
+
+    @ObservationIgnored private var startTransitionTask: Task<Void, Never>?
+
     // MARK: - Estado de apresentação
 
     private(set) var photoFlashID = 0
@@ -89,6 +97,71 @@ final class ExpeditionViewState {
     func confirmSelection() { game.confirmSelection() }
     func backToSelection()  { game.backToSelection() }
     func showRegistered()   { game.showRegistered() }
+
+    // Cancela a expedição sem registrar o animal.
+    // Usado quando o jogador terminou sem tirar nenhuma foto.
+    func cancelExpedition() {
+        startTransitionTask?.cancel()
+        startTransitionTask = nil
+        isStartingExpedition = false
+        countdownNumber = 0
+        transitionOpacity = 0
+
+        stopTimer()
+        releaseScene()
+        game.returnToStart()
+        updateDetection(objectName: nil, distance: nil, stars: 0)
+    }
+
+    // MARK: - Transição de início
+
+    func startExpeditionWithCountdown() {
+        guard !isStartingExpedition else { return }
+
+        startTransitionTask?.cancel()
+
+        isStartingExpedition = true
+        countdownNumber = max(1, Int(ExpeditionConfig.startCountdownDuration.rounded()))
+        transitionOpacity = 0
+
+        startTransitionTask = Task { @MainActor [weak self] in
+            guard let self else { return }
+
+            do {
+                let countdownStart = max(1, Int(ExpeditionConfig.startCountdownDuration.rounded()))
+
+                for number in stride(from: countdownStart, through: 1, by: -1) {
+                    self.countdownNumber = number
+                    try await Task.sleep(nanoseconds: UInt64(ExpeditionConfig.startCountdownStepDuration * 1_000_000_000))
+                }
+
+                self.countdownNumber = 0
+
+                withAnimation(.easeIn(duration: ExpeditionConfig.startFadeInDuration)) {
+                    self.transitionOpacity = 1
+                }
+
+                try await Task.sleep(nanoseconds: UInt64(ExpeditionConfig.startFadeInDuration * 1_000_000_000))
+
+                self.startGame()
+
+                withAnimation(.easeOut(duration: ExpeditionConfig.startFadeOutDuration)) {
+                    self.transitionOpacity = 0
+                }
+
+                try await Task.sleep(nanoseconds: UInt64(ExpeditionConfig.startFadeOutDuration * 1_000_000_000))
+
+                self.isStartingExpedition = false
+
+            } catch {
+                self.isStartingExpedition = false
+                self.countdownNumber = 0
+                self.transitionOpacity = 0
+            }
+
+            self.startTransitionTask = nil
+        }
+    }
 
     // MARK: - Cena 3D
 
@@ -278,10 +351,17 @@ final class ExpeditionViewState {
             verticalDelta: direction * ExpeditionConfig.debugCameraMoveStep
         )
     }
+
+    deinit {
+        startTransitionTask?.cancel()
+        timer?.invalidate()
+    }
 }//
 //  ExpeditionViewState.swift
 //  FaunaVista
 //
 //  Created by Felipe Colares Cardoso on 08/10/26.
 //
+
+
 

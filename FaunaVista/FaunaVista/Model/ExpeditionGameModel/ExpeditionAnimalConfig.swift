@@ -263,7 +263,7 @@ struct ExpeditionAnimalConfig {
             id: "animal_9",
             modelName: "arara_azul",
             displayName: "Arara-Azul",
-            scientificName: "Andorhynchus leari",
+            scientificName: "Anodorhynchus leari",
             enabled: true,
             speed: 3.4,
             waitAtPosition: 2.0,
