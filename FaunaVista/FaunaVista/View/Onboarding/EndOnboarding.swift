@@ -35,7 +35,7 @@ struct EndOnboarding: View {
                 Spacer()
                 
                 Button {
-                    coordinator.reset()
+                    coordinator.resetOnboarding()
                     hasCompletedOnboarding = true
                 } label: {
                     Text("Iniciar")

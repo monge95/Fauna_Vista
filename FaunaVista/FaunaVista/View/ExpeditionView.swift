@@ -35,9 +35,10 @@ struct ExpeditionView: View {
                     scientificName: vm.missionAnimal?.scientificName ?? "",
                     biome: missionAnimalModel?.biome ?? 2
                 ) {
-                    registerAnimal()
-                    vm.returnToStart()
-                    coordinator.reset()   // limpa o path e abre a aba Coleção
+                    if let animal = registerAnimal() {
+                        vm.returnToStart()
+                        coordinator.push(.registro(animal))
+                    }
                 }
             }
         }
@@ -50,8 +51,8 @@ struct ExpeditionView: View {
     }
 
     // Marca como descoberto e salva a expedição (missões + 3 fotos) no SwiftData.
-    private func registerAnimal() {
-        guard let animal = missionAnimalModel else { return }
+    private func registerAnimal() -> Animal? {
+        guard let animal = missionAnimalModel else { return nil}
         animal.discovered = true
 
         let selected = vm.selectedPhotos
@@ -84,5 +85,6 @@ struct ExpeditionView: View {
         }
 
         try? modelContext.save()
+        return animal
     }
 }

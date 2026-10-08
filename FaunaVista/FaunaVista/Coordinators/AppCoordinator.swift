@@ -48,6 +48,14 @@ class AppCoordinator {
         pathColecao = NavigationPath()
         pathOnboarding = NavigationPath()
 
+        selectedView = .Collection
+        isOnboarding = false
+    }
+    func resetOnboarding() {
+        pathMapa = NavigationPath()
+        pathColecao = NavigationPath()
+        pathOnboarding = NavigationPath()
+
         selectedView = .Map
         isOnboarding = false
     }

@@ -21,7 +21,7 @@ class ExpeditionLog{
     
     var MissionAccomplished: Bool = false
     
-  
+    
     
     func AddPhoto(registroFotografico:RegistroFotografico) {
         if capturedPhotos.count < 10 {
