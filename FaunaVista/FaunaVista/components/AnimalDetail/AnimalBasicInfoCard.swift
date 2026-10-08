@@ -4,12 +4,6 @@
 //
 //  Created by Gabriel Groppo on 02/10/26.
 //
-//
-//  AnimalBasicInfoCard.swift
-//  FaunaVista
-//
-//  Created by Gabriel Groppo on 02/10/26.
-//
 
 import SwiftUI
 
@@ -91,7 +85,6 @@ struct AnimalBasicInfoCard: View {
         }
     }
 
-    // MARK: - Conservação (continua String, então não mudou)
 
     private var conservationStatusColor: Color {
         switch animal.conservationStatus.lowercased() {
