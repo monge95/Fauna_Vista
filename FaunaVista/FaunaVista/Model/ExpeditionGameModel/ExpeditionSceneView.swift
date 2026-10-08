@@ -12,7 +12,7 @@ import Combine
 
 
 final class ExpeditionSceneView: ARView {
-    weak var vm: ExpeditionViewModel?
+    weak var vm: ExpeditionViewState?
 
     // Ciclo de vida da cena.
     private var displayLinkProxy: ExpeditionDisplayLinkProxy?

@@ -1,5 +1,7 @@
-//
+
 //  ExpeditionView.swift
+//  FaunaVista
+//
 //  Orquestra o fluxo todo da expedição.
 //
 
@@ -7,84 +9,211 @@ import SwiftUI
 import SwiftData
 
 struct ExpeditionView: View {
-    @StateObject private var vm = ExpeditionViewModel()
-    @Environment(AppCoordinator.self) private var coordinator
-    @Environment(\.modelContext) private var modelContext
-    @Environment(ExpeditionLog.self) private var log
-    @Query private var animals: [Animal]
+
+    @State private var vm = ExpeditionViewState()
+
+    @Environment(AppCoordinator.self)
+    private var coordinator
+
+    @Environment(\.modelContext)
+    private var modelContext
+
+    @Environment(ExpeditionLog.self)
+    private var log
+
+    @Query
+    private var animals: [Animal]
+
+    // MARK: - Animal da missão no SwiftData
 
     private var missionAnimalModel: Animal? {
-        guard let name = vm.missionAnimal?.scientificName else { return nil }
-        return animals.first { $0.scientificName == name }
+
+        guard let name =
+                vm.missionAnimal?.scientificName
+        else {
+            return nil
+        }
+
+        return animals.first {
+            $0.scientificName == name
+        }
     }
 
+    // MARK: - Body
+
     var body: some View {
+
         Group {
+
             switch vm.gameState {
+
             case .start:
-                ExpeditionStartView(vm: vm)
+
+                ExpeditionStartView(
+                    vm: vm
+                )
+
             case .playing:
-                ExpeditionGameView(vm: vm)
+
+                ExpeditionGameView(
+                    vm: vm
+                )
+
             case .finished:
-                ExpeditionFinishedView(vm: vm)
+
+                ExpeditionFinishedView(
+                    vm: vm
+                )
+
             case .missionCheck:
-                ExpeditionMissionCheckView(vm: vm)
+
+                ExpeditionMissionCheckView(
+                    vm: vm
+                )
+
             case .registered:
+
                 ExpeditionAnimalRegisteredView(
-                    animalName: vm.missionAnimal?.displayName ?? "Animal",
-                    scientificName: vm.missionAnimal?.scientificName ?? "",
-                    biome: missionAnimalModel?.biome ?? 2
+                    animalName:
+                        vm.missionAnimal?.displayName
+                        ?? "Animal",
+
+                    scientificName:
+                        vm.missionAnimal?.scientificName
+                        ?? "",
+
+                    biome:
+                        missionAnimalModel?.biome
+                        ?? 2
                 ) {
+
                     if let animal = registerAnimal() {
+
                         vm.returnToStart()
-                        coordinator.push(.registro(animal))
+
+                        coordinator.push(
+                            .registro(animal)
+                        )
                     }
                 }
             }
         }
-        .navigationBarBackButtonHidden(vm.gameState != .start)
+        .navigationBarBackButtonHidden(
+            vm.gameState != .start
+        )
         .onAppear {
-            let level = ExpeditionLevel.level(for: log.activeScientificName)
-                ?? ExpeditionLevel.all[0]   // fallback para não quebrar
-            vm.configure(level: level)
+
+            let level =
+                ExpeditionLevel.level(
+                    for: log.activeScientificName
+                )
+                ?? ExpeditionLevel.all[0]
+
+            vm.configure(
+                level: level
+            )
         }
     }
 
-    // Marca como descoberto e salva a expedição (missões + 3 fotos) no SwiftData.
+    // MARK: - Registrar animal
+
     private func registerAnimal() -> Animal? {
-        guard let animal = missionAnimalModel else { return nil}
+
+        guard let animal = missionAnimalModel
+        else {
+            return nil
+        }
+
         animal.discovered = true
 
-        let selected = vm.selectedPhotos
-        // ExpeditionRepository exige exatamente 3 fotos.
+        let selected =
+            vm.selectedPhotos
+
+        // A expedição precisa de exatamente 3 fotos.
         if selected.count == 3 {
-            let r = vm.missionResults.map(\.completed)
-            let photos = selected.map {
-                ExpeditionPhotoModel(
-                    image: $0.image.jpegData(compressionQuality: 0.8),
-                    rating: $0.stars
+
+            let results =
+                vm.missionResults.map(\.completed)
+
+            let photos =
+                selected.map {
+
+                    ExpeditionPhotoModel(
+                        image:
+                            $0.image.jpegData(
+                                compressionQuality: 0.8
+                            ),
+
+                        rating:
+                            $0.stars
+                    )
+                }
+
+            let service =
+                ExpeditionService(
+                    repository:
+                        ExpeditionRepository(
+                            modelContext:
+                                modelContext
+                        )
                 )
-            }
-            let service = ExpeditionService(
-                repository: ExpeditionRepository(modelContext: modelContext)
-            )
+
             do {
+
                 try service.finishExpedition(
-                    biome: animal.biome,
-                    animal: animal,
-                    challenge1Completed: r[0],
-                    challenge2Completed: r[1],
-                    challenge3Completed: r[2],
-                    photos: photos
+
+                    biome:
+                        animal.biome,
+
+                    animal:
+                        animal,
+
+                    challenge1Completed:
+                        results[0],
+
+                    challenge2Completed:
+                        results[1],
+
+                    challenge3Completed:
+                        results[2],
+
+                    photos:
+                        photos
                 )
+
             } catch ExpeditionServiceError.expeditionAlreadyExists {
-                // Já existe expedição deste animal: mantém a anterior.
+
+                // A expedição desse animal já existe.
+                // Mantém o registro anterior.
+
             } catch {
-                print("Erro ao salvar expedição:", error)
+
+                print(
+                    "Erro ao salvar expedição:",
+                    error
+                )
             }
         }
 
         try? modelContext.save()
+
         return animal
     }
 }
+
+// MARK: - Preview
+
+#Preview {
+
+    ExpeditionView()
+        .modelContainer(
+            PreviewSupport.container
+        )
+        .environment(
+            PreviewSupport.coordinator
+        )
+        .environment(
+            PreviewSupport.expeditionLog
+        )
+}
+

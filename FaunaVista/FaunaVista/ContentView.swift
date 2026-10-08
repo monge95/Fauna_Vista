@@ -8,7 +8,6 @@ import Combine
 
 struct ContentView: View {
     @AppStorage("onboardingConcluido") var onboardingConcluido: Bool = false
-    @StateObject private var vm = ExpeditionViewModel()
     var body: some View {
         Group {
             if onboardingConcluido {
