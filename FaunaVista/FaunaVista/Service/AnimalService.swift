@@ -58,7 +58,9 @@ final class AnimalService {
                     taxon,
                     biome: catalogAnimal.biome,
                     commonName: catalogAnimal.commonName,
-                    conservationStatus: catalogAnimal.conservationStatus,
+                    conservationStatus: catalogAnimal.conservationStatus
+                        ?? taxon.conservationStatus?.statusName,
+                    
                     imageURL: imageURL,
                     imageSourceURL: imageSourceURL,
                     imageAuthor: imageAuthor,
