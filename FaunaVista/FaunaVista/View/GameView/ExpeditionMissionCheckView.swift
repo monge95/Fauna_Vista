@@ -7,6 +7,28 @@ import SwiftUI
 
 struct ExpeditionMissionCheckView: View {
     @ObservedObject var vm: ExpeditionViewModel
+    
+    private var currentMissionPin: MissionPin? {
+        guard let scientificName = vm.missionAnimal?.scientificName else {
+            return nil
+        }
+
+        return MissionPin.allMissionPins.first {
+            $0.scientificName == scientificName
+        }
+    }
+    
+    private var missionObjectives: [String] {
+        guard let pin = currentMissionPin else {
+            return []
+        }
+
+        return [
+            pin.missionObjective1,
+            pin.missionObjective2,
+            pin.missionObjective3
+        ]
+    }
 
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -34,21 +56,41 @@ struct ExpeditionMissionCheckView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.top, 8)
 
-                    ForEach(vm.missionResults, id: \.mission.id) { result in
-                        HStack(spacing: 12) {
-                            Image(systemName: result.completed ? "checkmark.circle.fill" : "circle")
-                                .font(.system(size: 30))
-                                .foregroundStyle(result.completed ? Color.green : Color.gray.opacity(0.4))
+                    ForEach(
+                        Array(vm.missionResults.enumerated()),
+                        id: \.element.mission.id
+                    ) { index, result in
 
-                            Text(result.mission.title)
-                                .font(.system(size: 12))
-                                .fixedSize(horizontal: false, vertical: true)
+                        HStack(spacing: 12) {
+
+                            Image(
+                                systemName: result.completed
+                                    ? "checkmark.circle.fill"
+                                    : "circle"
+                            )
+                            .font(.system(size: 30))
+                            .foregroundStyle(
+                                result.completed
+                                    ? Color.green
+                                    : Color.gray.opacity(0.4)
+                            )
+
+                            Text(
+                                missionObjectives.indices.contains(index)
+                                    ? missionObjectives[index]
+                                    : result.mission.title
+                            )
+                            .font(.system(size: 12))
+                            .fixedSize(horizontal: false, vertical: true)
 
                             Spacer(minLength: 0)
                         }
                         .padding(12)
-                        .background(.white, in: RoundedRectangle(cornerRadius: 14))
-                    }
+                        .background(
+                            .white,
+                            in: RoundedRectangle(cornerRadius: 14)
+                        )
+                    } 
 
                     Text("Fotos enviadas")
                         .font(.system(size: 17, weight: .bold))
