@@ -10,6 +10,8 @@ import SwiftUI
 struct ExpeditionMissionCheckView: View {
 
     let vm: ExpeditionViewState
+    
+    @Environment(AppCoordinator.self) private var coordinator
    // @ObservedObject var vm: ExpeditionViewModel
     
     private var currentMissionPin: MissionPin? {
@@ -111,7 +113,7 @@ struct ExpeditionMissionCheckView: View {
                             .white,
                             in: RoundedRectangle(cornerRadius: 14)
                         )
-                    } 
+                    }
 
                     // MARK: - Fotos
 
@@ -161,23 +163,32 @@ struct ExpeditionMissionCheckView: View {
                 .padding(.bottom, 110)
             }
 
-            // MARK: - Próximo
+            // MARK: - Próximo / voltar aos biomas
+
+            if vm.selectedPhotos.isEmpty {
+                Text("Nenhuma foto foi enviada. O animal não será descoberto.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 24)
+                    .padding(.bottom, 76)
+            }
 
             Button {
-                vm.showRegistered()
-            } label: {
+                            vm.showRegistered()
+                        } label: {
 
-                Text("Próximo")
-                    .font(.headline)
-                    .foregroundStyle(.white)
-                    .padding(.vertical, 16)
-                    .frame(maxWidth: 260)
-                    .background(
-                        FaunaPalette.teal,
-                        in: Capsule()
-                    )
-            }
-            .padding(.bottom, 24)
+                            Text(vm.selectedPhotos.isEmpty ? "Avançar" : "Próximo")
+                                .font(.headline)
+                                .foregroundStyle(.white)
+                                .padding(.vertical, 16)
+                                .frame(maxWidth: 260)
+                                .background(
+                                    FaunaPalette.teal,
+                                    in: Capsule()
+                                )
+                        }
+                        .padding(.bottom, 24)
         }
 
         // MARK: - Voltar
@@ -185,7 +196,12 @@ struct ExpeditionMissionCheckView: View {
         .overlay(alignment: .topLeading) {
 
             Button {
-                vm.backToSelection()
+                if vm.selectedPhotos.isEmpty {
+                    vm.cancelExpedition()
+                    coordinator.pop()
+                } else {
+                    vm.backToSelection()
+                }
             } label: {
 
                 Image(systemName: "chevron.left")
@@ -215,4 +231,7 @@ struct ExpeditionMissionCheckView: View {
     ExpeditionMissionCheckView(
         vm: ExpeditionViewState()
     )
+    .environment(AppCoordinator())
 }
+
+

@@ -55,15 +55,25 @@ struct ExpeditionStartView: View {
                 .background(.white, in: RoundedRectangle(cornerRadius: 20))
 
                 Button {
-                    vm.startGame()
+                    vm.startExpeditionWithCountdown()
                 } label: {
-                    Text("Começar Expedição")
+                    Text(
+                        vm.isStartingExpedition
+                            ? (vm.countdownNumber > 0
+                                ? "Começando em \(vm.countdownNumber)"
+                                : "Começando…")
+                            : "Começar Expedição"
+                    )
                         .font(.headline)
                         .foregroundStyle(.white)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 16)
-                        .background(FaunaPalette.teal, in: Capsule())
+                        .background(
+                            vm.isStartingExpedition ? Color.gray : FaunaPalette.teal,
+                            in: Capsule()
+                        )
                 }
+                .disabled(vm.isStartingExpedition)
             }
             .foregroundStyle(.black)
             .padding(.horizontal, 20)
