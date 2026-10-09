@@ -1,4 +1,71 @@
 ========================================
+ARQUIVO: ./FaunaVista/FaunaVista/Coordinators/AppCoordinator.swift
+========================================
+//
+//  AppCoordinator.swift
+//  FaunaVista
+//
+//  Created by Pedro Monge Silveira on 28/09/26.
+//
+
+import SwiftUI
+import Observation
+
+@Observable
+class AppCoordinator {
+
+    var selectedView: AppTap = .Map
+
+    var pathMapa = NavigationPath()
+    var pathColecao = NavigationPath()
+    var pathOnboarding = NavigationPath()
+
+    var isOnboarding = false
+
+    func push(_ route: AppRoute) {
+
+        if isOnboarding {
+            pathOnboarding.append(route)
+        } else if selectedView == .Map {
+            pathMapa.append(route)
+        } else {
+            pathColecao.append(route)
+        }
+    }
+
+    func pop() {
+
+        if isOnboarding && !pathOnboarding.isEmpty {
+            pathOnboarding.removeLast()
+
+        } else if selectedView == .Map && !pathMapa.isEmpty {
+            pathMapa.removeLast()
+
+        } else if selectedView == .Collection && !pathColecao.isEmpty {
+            pathColecao.removeLast()
+        }
+    }
+
+    func reset() {
+        pathMapa = NavigationPath()
+        pathColecao = NavigationPath()
+        pathOnboarding = NavigationPath()
+
+        selectedView = .Collection
+        isOnboarding = false
+    }
+    func resetOnboarding() {
+        pathMapa = NavigationPath()
+        pathColecao = NavigationPath()
+        pathOnboarding = NavigationPath()
+
+        selectedView = .Map
+        isOnboarding = false
+    }
+}
+
+
+========================================
 ARQUIVO: ./FaunaVista/FaunaVista/Coordinators/CoordinatorView.swift
 ========================================
 //
@@ -11,10 +78,13 @@ import SwiftUI
 import SwiftData
 
 struct CoordinatorView: View{
-    @State private var coordinator = AppCordinator()
+    @Environment(AppCoordinator.self) private var coordinator
     @Environment(\.modelContext) private var modelContext
    
     var body: some View{
+        
+        @Bindable var coordinator = coordinator
+        
         TabView(selection: $coordinator.selectedView) {
             NavigationStack(path: $coordinator.pathMapa) {
                 MapView()
@@ -94,7 +164,7 @@ ARQUIVO: ./FaunaVista/FaunaVista/Coordinators/ViewFactory.swift
 import SwiftUI
 
 struct ViewFactory{
-    
+
     @ViewBuilder
     static func viewBuilder(for route: AppRoute) -> some View{
         switch route {
@@ -105,85 +175,34 @@ struct ViewFactory{
         case .Expedition:
             ExpeditionView()
                     
-        case .Analyze:
-            AnalyzeView()
-                    
         case .CheckExpedition:
             CheckExpeditionView()
                     
-        case .registro:
-            RegistroView()
+        case .registro(let animal):
+            AnimalDetailView(animal: animal)
             
             
         // fluuxo secundario 
         case .information:
             InformationView()
         
-        // fluuxo Onearding
-        case .startExpedition:
-            StartExpedition()
+        // fluxo Onearding
+        case .startOnboarding:
+            StartOnboarding()
             
         case .exploreTerritories:
-            Text("ola")
+            ExploreTerritories()
             
         case .findSpecies:
-            Text("")
+            FindSpecies()
             
         case .observeImg:
-            Text("")
+            ObserveImg()
         
         case .endOnboarding:
-            Text("")
+            EndOnboarding()
         }
     
-    }
-}
-
-
-========================================
-ARQUIVO: ./FaunaVista/FaunaVista/Coordinators/AppCordinator.swift
-========================================
-//
-//  AppCordinator.swift
-//  FaunaVista
-//
-//  Created by Pedro Monge Silveira on 28/09/26.
-//
-
-import SwiftUI
-import Observation
-
-@Observable
-class AppCordinator{
-    
-    var selectedView: AppTap = .Map
-    
-    var pathMapa = NavigationPath()
-    var pathColecao = NavigationPath()
-    
-    func push(_ route: AppRoute) {
-            if selectedView == .Map {
-                pathMapa.append(route)
-            } else {
-                pathColecao.append(route)
-            }
-        }
-    
-    func pop() {
-            if selectedView == .Map && !pathMapa.isEmpty {
-                pathMapa.removeLast()
-            } else if selectedView == .Collection && !pathColecao.isEmpty {
-                pathColecao.removeLast()
-            }
-        }
-    
-    func rezet() {
-            pathMapa = NavigationPath()
-            selectedView = .Collection
-        }
-    
-    func retunStart(){
-        
     }
 }
 
@@ -208,13 +227,12 @@ enum AppTap: Hashable {
 enum AppRoute: Hashable{
     case Biome
     case Expedition
-    case Analyze
     case CheckExpedition
-    case registro
+    case registro(Animal)
     
     case information
     
-    case startExpedition
+    case startOnboarding
     case exploreTerritories
     case findSpecies
     case observeImg
@@ -482,7 +500,6 @@ final class ExpeditionRepository {
 
         try modelContext.save()
 
-        print("Expedition deleted for: \(expedition.animal.commonName)")
     }
 }
 
@@ -592,7 +609,7 @@ import SwiftUI
 
 struct AnimalDetailHeader: View {
 
-    @Environment(\.dismiss) private var dismiss
+    @Environment(AppCoordinator.self) private var coordinator
 
     let title: String
 
@@ -600,7 +617,7 @@ struct AnimalDetailHeader: View {
         ZStack {
             HStack {
                 Button {
-                    dismiss()
+                    coordinator.reset()
                 } label: {
                     Image(systemName: "chevron.left")
                         .font(.system(size: 28, weight: .bold))
@@ -798,12 +815,6 @@ ARQUIVO: ./FaunaVista/FaunaVista/components/AnimalDetail/AnimalBasicInfoCard.swi
 //
 //  Created by Gabriel Groppo on 02/10/26.
 //
-//
-//  AnimalBasicInfoCard.swift
-//  FaunaVista
-//
-//  Created by Gabriel Groppo on 02/10/26.
-//
 
 import SwiftUI
 
@@ -885,7 +896,6 @@ struct AnimalBasicInfoCard: View {
         }
     }
 
-    // MARK: - Conservação (continua String, então não mudou)
 
     private var conservationStatusColor: Color {
         switch animal.conservationStatus.lowercased() {
@@ -1082,7 +1092,7 @@ struct MissionPinsLayer: View {
 
     @Environment(\.modelContext) private var modelContext
     @Environment(ExpeditionLog.self) private var log
-    @Environment(AppCordinator.self) private var coordinator
+    @Environment(AppCoordinator.self) private var coordinator
 
     @State private var selectedPin: MissionPin?
 
@@ -1107,7 +1117,16 @@ struct MissionPinsLayer: View {
                     pin: pin,
                     expedition: expedition
                 ) {
-                    // Refazer depois
+                  
+                    let repository = ExpeditionRepository(modelContext: modelContext)
+                    let service = ExpeditionService(repository: repository)
+                    try? service.redoExpedition(for: animal)
+
+                    log.activeBiomeId = pin.biomeId
+                    log.activeScientificName = pin.scientificName
+                    
+                 selectedPin = nil
+                    coordinator.push(.Expedition)
                 }
 
             } else {
@@ -1349,7 +1368,7 @@ ARQUIVO: ./FaunaVista/FaunaVista/components/map/MapButton.swift
 import SwiftUI
 
 struct MapButton: View {
-    @Environment(AppCordinator.self) private var coordinator
+    @Environment(AppCoordinator.self) private var coordinator
     
     @Environment(ExpeditionLog.self) private var log
     
@@ -1406,7 +1425,7 @@ ARQUIVO: ./FaunaVista/FaunaVista/components/map/MapBiome.swift
 import SwiftUI
 
 struct MapBiome: View {
-    @Environment(AppCordinator.self) private var coordinator
+    @Environment(AppCoordinator.self) private var coordinator
 
     @State var mapPice: Int? = 0
     
@@ -1446,7 +1465,7 @@ struct MapBiome: View {
 }
 #Preview {
     MapBiome(mapPice: 2)
-        .environment(AppCordinator())
+        .environment(AppCoordinator())
         .environment(PreviewSupport.expeditionLog(biomeId: 4))
 
 }
@@ -1653,9 +1672,9 @@ struct CompletedMissionChallengeCard: View {
         HStack(spacing: 16) {
 
             Image(systemName: "checkmark")
-                .font(.system(size: 22, weight: .bold))
+                .font(.system(size: 20, weight: .bold))
                 .foregroundStyle(.white)
-                .frame(width: 44, height: 44)
+                .frame(width: 38, height: 38)
                 .background {
                     Circle()
                         .fill(
@@ -1666,7 +1685,7 @@ struct CompletedMissionChallengeCard: View {
                 }
 
             Text(objective)
-                .font(.system(size: 15))
+                .font(.system(size: 13))
                 .foregroundStyle(.black)
                 .multilineTextAlignment(.leading)
                 .frame(
@@ -1676,9 +1695,9 @@ struct CompletedMissionChallengeCard: View {
         }
         .padding(.horizontal, 16)
         .frame(maxWidth: .infinity)
-        .frame(minHeight: 76)
+        .frame(minHeight: 50)
         .background {
-            RoundedRectangle(cornerRadius: 18)
+            RoundedRectangle(cornerRadius: 15)
                 .fill(.white)
         }
     }
@@ -1690,18 +1709,31 @@ ARQUIVO: ./FaunaVista/FaunaVista/MyApp.swift
 ========================================
 import SwiftUI
 import SwiftData
-@main struct MyApp: App {
+
+@main
+struct MyApp: App {
+
     @State private var log = ExpeditionLog()
-    @State private var coordinator = AppCordinator()
-    
+    @State private var coordinator = AppCoordinator()
+
+    @AppStorage("hasCompletedOnboarding")
+    private var hasCompletedOnboarding = false
+
     var body: some Scene {
         WindowGroup {
-            CoordinatorView()
-                .environment(coordinator)
-                .environment(log)
 
-            //SwiftDataTestView()
+            if hasCompletedOnboarding {
+                CoordinatorView()
+                    .environment(coordinator)
+                    .environment(log)
+                    .preferredColorScheme(.light)
 
+            } else {
+                OnboardingView()
+                    .environment(coordinator)
+                    .environment(log)
+                    .preferredColorScheme(.light)
+            }
         }
         .modelContainer(for: [
             Animal.self,
@@ -1710,7 +1742,6 @@ import SwiftData
         ])
     }
 }
-
 
 
 ========================================
@@ -2578,337 +2609,6 @@ enum ExpeditionObjectType: String, CaseIterable, Identifiable { // elementos em 
 
 
 ========================================
-ARQUIVO: ./FaunaVista/FaunaVista/Model/ExpeditionGameModel/ExpeditionViewModel.swift
-========================================
-//
-//  ExpeditionViewModel.swift
-//  Experiment Project
-//
-//  Created by Felipe Colares Cardoso on 01/10/26.
-//
-
-import SwiftUI
-import UIKit
-import RealityKit
-import Combine
- 
-// MARK: - ESTADO DO JOGO
-
-@MainActor
-final class ExpeditionViewModel: ObservableObject {
-    @Published var gameState: ExpeditionGameState = .start
-    @Published var timeRemaining: TimeInterval = 0
-    @Published var photosTaken = 0
-    @Published var photoCards: [ExpeditionPhoto] = []
-    @Published private(set) var photoFlashID = 0
-    @Published var cropRect: CGRect = .zero
-    @Published var isDetectedObjectScorable = true
-    @Published private(set) var level: ExpeditionLevel?
-
-    @Published var mapLoaded = false
-    @Published var travelDistance: Float = 0
-    @Published var travelDuration: TimeInterval = 0
-
-    // Debug da mira central.
-    @Published var detectedObjectName = "Nenhum objeto"
-    @Published var detectedObjectDistance: Float?
-    @Published var detectedObjectStars = 0
-    @Published var isTargetDetected = false
-    @Published var isVegetationDetected = false
-
-    // Ajuste manual da mira (ver ExpeditionConfig.aimDetectionOffset...).
-    @Published var aimOffsetMinZoom = ExpeditionConfig.aimDetectionOffsetAtMinZoom
-    @Published var aimOffsetMaxZoom = ExpeditionConfig.aimDetectionOffsetAtMaxZoom
-    // Deslocamento efetivo no zoom atual (usado pela bolinha de debug).
-    @Published var aimDetectionOffset: CGPoint = .zero
-
-    @Published var selectedPhotoIDs: [UUID] = []
-    
-    private weak var expeditionView: ExpeditionSceneView?
-    private var timer: Timer?
-    private var gameEndDate: Date?
-    private var pendingBuild = false
-    private var captureInProgress = false
-    // O tempo acabou enquanto uma foto ainda estava sendo processada:
-    // a partida só termina quando essa foto fechar.
-    private var finishRequested = false
-    
-    
-
-    var missionAnimal: ExpeditionAnimalDefinition? { level?.animal }
-    var requiredSelection: Int { min(ExpeditionConfig.photosToSubmit, photoCards.count) }
-    var selectedPhotos: [ExpeditionPhoto] { photoCards.filter { selectedPhotoIDs.contains($0.id) } }
-    var canSubmitSelection: Bool { requiredSelection > 0 && selectedPhotoIDs.count == requiredSelection }
-
-    func isSelected(_ photo: ExpeditionPhoto) -> Bool { selectedPhotoIDs.contains(photo.id) }
-
-    func toggleSelection(_ photo: ExpeditionPhoto) {
-        if let i = selectedPhotoIDs.firstIndex(of: photo.id) {
-            selectedPhotoIDs.remove(at: i)
-        } else if selectedPhotoIDs.count < requiredSelection {
-            selectedPhotoIDs.append(photo.id)
-        }
-    }
-
-    func confirmSelection() { if canSubmitSelection { gameState = .missionCheck } }
-    func backToSelection()  { gameState = .finished }
-    func showRegistered()   { gameState = .registered }
-
-    var missionResults: [(mission: ExpeditionMission, completed: Bool)] {
-        guard let id = missionAnimal?.id else {
-            return ExpeditionMission.allCases.map { ($0, false) }
-        }
-        return ExpeditionMission.allCases.map { ($0, $0.isCompleted(by: selectedPhotos, animalID: id)) }
-    }
-    var allMissionsCompleted: Bool { missionResults.allSatisfy { $0.completed } }
-    
-   // var missionAnimal: ExpeditionAnimalDefinition? {level?.animal }
-    init() {
-       // ExpeditionMapCache.shared.preload()
-       // ExpeditionObjectCache.shared.preloadAll()
-        //ExpeditionAnimalCache.shared.preloadAll()
-    }
-    
-    func configure(level: ExpeditionLevel) {
-        guard self.level?.id != level.id else { return }
-        self.level = level
-        ExpeditionMapCache.shared.preload(fileName: level.mapFileName)
-        ExpeditionObjectCache.shared.preload(modelNames: level.vegetationModelNames)
-        if let animal = level.animal {
-            ExpeditionAnimalCache.shared.preload(animal)
-        }
-    }
-    
-    func connect(_ view: ExpeditionSceneView) {
-        // Garante que nunca haja duas cenas vivas ao mesmo tempo.
-        if let old = expeditionView, old !== view {
-            old.teardown()
-        }
-
-        expeditionView = view
-
-        if gameState == .playing {
-            view.buildExpedition()
-            pendingBuild = false
-        } else {
-            buildIfNeeded()
-        }
-    }
-
-    func adjustAimOffset(atMaxZoom: Bool, deltaY: CGFloat) {
-        if atMaxZoom {
-            aimOffsetMaxZoom.y += deltaY
-        } else {
-            aimOffsetMinZoom.y += deltaY
-        }
-        print("🎯 aimDetectionOffsetAtMinZoom = (x: \(aimOffsetMinZoom.x), y: \(aimOffsetMinZoom.y))")
-        print("🎯 aimDetectionOffsetAtMaxZoom = (x: \(aimOffsetMaxZoom.x), y: \(aimOffsetMaxZoom.y))")
-    }
-
-    func updateCropRect(_ rect: CGRect) {
-        guard rect.width > 0, rect.height > 0 else { return }
-        cropRect = rect
-    }
-
-    func buildIfNeeded() {
-        guard pendingBuild, let expeditionView else { return }
-        pendingBuild = false
-        expeditionView.buildExpedition()
-        updateMapInformation()
-    }
-
-    func updateMapInformation() {
-        guard let expeditionView else { return }
-        travelDistance = expeditionView.travelDistance
-        travelDuration = expeditionView.travelDuration
-        mapLoaded = expeditionView.mapLoaded
-    }
-
-    func updateDetection(
-        objectName: String?,
-        distance: Float?,
-        stars: Int,
-        isScorable: Bool = true,
-        isVegetation: Bool = false
-    ) {
-        detectedObjectName = objectName ?? "Nenhum objeto"
-        detectedObjectDistance = distance
-        detectedObjectStars = stars
-        isTargetDetected = objectName != nil
-        isDetectedObjectScorable = isScorable
-        isVegetationDetected = isVegetation && objectName != nil
-    }
-
-    func startGame() {
-        stopTimer()
-
-        // Se sobrou alguma cena da partida anterior, derruba antes de começar.
-        releaseScene()
-
-        photosTaken = 0
-        photoCards.removeAll()
-        captureInProgress = false
-        finishRequested = false
-        pendingBuild = true
-
-        let duration = ExpeditionConfig.gameDuration
-        timeRemaining = duration
-        gameEndDate = Date().addingTimeInterval(duration)
-        gameState = .playing
-
-        startTimer()
-        buildIfNeeded()
-    }
-
-    private func startTimer() {
-        let newTimer = Timer(timeInterval: 0.1, repeats: true) { [weak self] _ in
-            Task { @MainActor in
-                self?.tick()
-            }
-        }
-
-        RunLoop.main.add(newTimer, forMode: .common)
-        timer = newTimer
-    }
-
-    private func tick() {
-        guard gameState == .playing, let end = gameEndDate else {
-            stopTimer()
-            return
-        }
-
-        let remaining = end.timeIntervalSinceNow
-
-        if remaining <= 0 {
-            timeRemaining = 0
-            finishGame()
-        } else {
-            timeRemaining = remaining
-        }
-    }
-    
-    
-    
-    private func stopTimer() {
-        timer?.invalidate()
-        timer = nil
-    }
-
-    func capturePhoto() {
-        guard
-            gameState == .playing,
-            !captureInProgress,
-            photosTaken < ExpeditionConfig.totalPhotos,
-            let expeditionView
-        else {
-            return
-        }
-
-        captureInProgress = true
-        photoFlashID += 1
-        playPhotoClickSound()
-
-        Task { @MainActor in
-            let result = await expeditionView.captureCurrentView(cropRect: cropRect)
-
-            photoCards.insert(
-                ExpeditionPhoto(
-                    image: result.image, stars: result.stars, objectName: result.objectName,
-                    distance: result.distance, isScorable: result.isScorable,
-                    animalID: result.animalID, pose: result.pose
-                ),
-                    at: 0
-            )
-
-            photosTaken += 1
-            captureInProgress = false
-
-            if finishRequested || photosTaken >= ExpeditionConfig.totalPhotos {
-                finishGame()
-            }
-        }
-    }
-
-    // MARK: - Som do clique da foto
-    private func playPhotoClickSound() {
-        // TODO: introduzir aqui o som do obturador.
-        // Este método é chamado uma única vez por foto aceita, junto ao flash.
-        // Exemplo futuro: carregar e reproduzir um arquivo de áudio do app.
-    }
-
-    // MARK: - Controles de debug
-    // Move o objeto atualmente em foco na mira ao longo do eixo escolhido.
-    // direction: +1 para o sentido positivo do eixo, -1 para o negativo.
-    func debugMoveFocusedObject(axis: ExpeditionDebugAxis, direction: Float) {
-        expeditionView?.debugMoveFocusedObject(
-            axis: axis,
-            delta: direction * ExpeditionConfig.debugObjectMoveStep
-        )
-    }
-
-    // Sobe (direction = +1) ou desce (direction = -1) a câmera.
-    func debugMoveCamera(direction: Float) {
-        expeditionView?.debugMoveCamera(
-            verticalDelta: direction * ExpeditionConfig.debugCameraMoveStep
-        )
-    }
-
-    func finishGame() {
-        stopTimer()
-
-        // Há uma foto sendo processada: espera ela fechar para não
-        // derrubar a cena no meio do snapshot. capturePhoto() chama
-        // finishGame() de novo quando terminar.
-        if captureInProgress {
-            finishRequested = true
-            return
-        }
-
-        gameEndDate = nil
-        timeRemaining = max(0, timeRemaining)
-        finishRequested = false
-
-        // Encerra a cena 3D de verdade (display link, animações, entidades).
-        releaseScene()
-
-        gameState = .finished
-    }
-
-    func returnToStart() {
-        stopTimer()
-        gameEndDate = nil
-        finishRequested = false
-
-        // Normalmente a cena já foi liberada em finishGame(); isto é só
-        // uma garantia (a chamada é idempotente).
-        releaseScene()
-
-        gameState = .start
-        photosTaken = 0
-        timeRemaining = 0
-        photoCards.removeAll()
-        captureInProgress = false
-        updateDetection(objectName: nil, distance: nil, stars: 0)
-    }
-
-    // Derruba a ExpeditionSceneView atual e solta a referência a ela.
-    private func releaseScene() {
-        let view = expeditionView
-        expeditionView = nil
-        view?.teardown()
-    }
-
-    // Chamado pela própria view ao terminar o teardown (inclusive quando o
-    // SwiftUI a destrói por conta própria).
-    func sceneViewDidTearDown(_ view: ExpeditionSceneView) {
-        if expeditionView === view {
-            expeditionView = nil
-        }
-    }
-}
-
-
-========================================
 ARQUIVO: ./FaunaVista/FaunaVista/Model/ExpeditionGameModel/ExpeditionMovementAxis.swift
 ========================================
 //
@@ -3360,7 +3060,7 @@ struct ExpeditionAnimalConfig {
             id: "animal_9",
             modelName: "arara_azul",
             displayName: "Arara-Azul",
-            scientificName: "Andorhynchus leari",
+            scientificName: "Anodorhynchus leari",
             enabled: true,
             speed: 3.4,
             waitAtPosition: 2.0,
@@ -4151,6 +3851,195 @@ enum ExpeditionDebugAxis: String, CaseIterable, Identifiable { // Eixo escolhido
 
 
 ========================================
+ARQUIVO: ./FaunaVista/FaunaVista/Model/ExpeditionGameModel/ExpeditionGame.swift
+========================================
+//
+//  ExpeditionGame.swift
+//  FaunaVista
+//
+//  Created by Felipe Colares Cardoso on 08/10/26.
+//
+
+//
+//  ExpeditionGame.swift
+//  FaunaVista
+//
+//  MODEL da expedição: estado e regras da partida.
+//  Não conhece Timer, RealityKit nem a cena 3D — isso fica no
+//  ExpeditionViewState (camada View).
+//
+
+import Foundation
+import Observation
+
+@Observable
+final class ExpeditionGame {
+
+    // MARK: - Resultado de um tick do relógio
+
+    enum TickResult {
+        case stopTimer   // partida não está rodando: o timer deve parar
+        case running     // segue jogando
+        case expired     // o tempo acabou
+    }
+
+    // MARK: - Estado
+
+    private(set) var gameState: ExpeditionGameState = .start
+    private(set) var level: ExpeditionLevel?
+    private(set) var timeRemaining: TimeInterval = 0
+    private(set) var photosTaken = 0
+    private(set) var photoCards: [ExpeditionPhoto] = []
+    private(set) var selectedPhotoIDs: [UUID] = []
+
+    private(set) var captureInProgress = false
+    // O tempo acabou enquanto uma foto ainda estava sendo processada:
+    // a partida só termina quando essa foto fechar.
+    private(set) var finishRequested = false
+
+    @ObservationIgnored private var gameEndDate: Date?
+
+    // MARK: - Derivados
+
+    var missionAnimal: ExpeditionAnimalDefinition? { level?.animal }
+    var requiredSelection: Int { min(ExpeditionConfig.photosToSubmit, photoCards.count) }
+    var selectedPhotos: [ExpeditionPhoto] { photoCards.filter { selectedPhotoIDs.contains($0.id) } }
+    var canSubmitSelection: Bool {
+        if requiredSelection == 0 {
+            return selectedPhotoIDs.isEmpty
+        }
+        return selectedPhotoIDs.count == requiredSelection
+    }
+
+    var missionResults: [(mission: ExpeditionMission, completed: Bool)] {
+        guard let id = missionAnimal?.id else {
+            return ExpeditionMission.allCases.map { ($0, false) }
+        }
+        return ExpeditionMission.allCases.map { ($0, $0.isCompleted(by: selectedPhotos, animalID: id)) }
+    }
+    
+    
+    var allMissionsCompleted: Bool { missionResults.allSatisfy { $0.completed } }
+
+    // MARK: - Nível
+
+    /// Retorna `true` se o nível mudou (a View então pré-carrega os assets).
+    func setLevel(_ newLevel: ExpeditionLevel) -> Bool {
+        guard level?.id != newLevel.id else { return false }
+        level = newLevel
+        return true
+    }
+
+    // MARK: - Seleção de fotos
+
+    func isSelected(_ photo: ExpeditionPhoto) -> Bool {
+        selectedPhotoIDs.contains(photo.id)
+    }
+
+    func toggleSelection(_ photo: ExpeditionPhoto) {
+        if let i = selectedPhotoIDs.firstIndex(of: photo.id) {
+            selectedPhotoIDs.remove(at: i)
+        } else if selectedPhotoIDs.count < requiredSelection {
+            selectedPhotoIDs.append(photo.id)
+        }
+    }
+
+    // MARK: - Transições de tela
+
+    func confirmSelection() { if canSubmitSelection { gameState = .missionCheck } }
+    func backToSelection()  { gameState = .finished }
+    func showRegistered()   { gameState = .registered }
+
+    // MARK: - Ciclo da partida
+
+    func start(duration: TimeInterval, now: Date = Date()) {
+        photosTaken = 0
+        photoCards.removeAll()
+        selectedPhotoIDs.removeAll()
+        captureInProgress = false
+        finishRequested = false
+
+        timeRemaining = duration
+        gameEndDate = now.addingTimeInterval(duration)
+        gameState = .playing
+    }
+
+    func tick(now: Date = Date()) -> TickResult {
+        guard gameState == .playing, let end = gameEndDate else {
+            return .stopTimer
+        }
+
+        let remaining = end.timeIntervalSince(now)
+
+        if remaining <= 0 {
+            timeRemaining = 0
+            return .expired
+        }
+
+        timeRemaining = remaining
+        return .running
+    }
+
+    // MARK: - Captura de foto
+
+    /// Reserva a captura. Retorna `false` se não for possível tirar foto agora.
+    func beginCapture() -> Bool {
+        guard
+            gameState == .playing,
+            !captureInProgress,
+            photosTaken < ExpeditionConfig.totalPhotos
+        else {
+            return false
+        }
+
+        captureInProgress = true
+        return true
+    }
+
+    /// Registra a foto pronta. Retorna `true` se a partida deve terminar agora.
+    func completeCapture(_ photo: ExpeditionPhoto) -> Bool {
+        photoCards.insert(photo, at: 0)
+        photosTaken += 1
+        captureInProgress = false
+
+        return finishRequested || photosTaken >= ExpeditionConfig.totalPhotos
+    }
+
+    // MARK: - Fim da partida
+
+    /// Retorna `false` quando há uma foto sendo processada: o fim fica pendente
+    /// e a View chama `finish()` de novo quando a foto fechar.
+    /// Retorna `true` quando a partida terminou de fato (a cena 3D deve ser liberada).
+    func finish() -> Bool {
+        if captureInProgress {
+            finishRequested = true
+            return false
+        }
+
+        gameEndDate = nil
+        timeRemaining = max(0, timeRemaining)
+        finishRequested = false
+        gameState = .finished
+        return true
+    }
+
+    func returnToStart() {
+        gameEndDate = nil
+        finishRequested = false
+
+        gameState = .start
+        photosTaken = 0
+        timeRemaining = 0
+        photoCards.removeAll()
+        selectedPhotoIDs.removeAll()
+        captureInProgress = false
+    }
+}
+
+
+
+
+========================================
 ARQUIVO: ./FaunaVista/FaunaVista/Model/ExpeditionGameModel/ExpeditionObjectCache.swift
 ========================================
 //
@@ -4325,7 +4214,7 @@ import Combine
 
 
 final class ExpeditionSceneView: ARView {
-    weak var vm: ExpeditionViewModel?
+    weak var vm: ExpeditionViewState?
 
     // Ciclo de vida da cena.
     private var displayLinkProxy: ExpeditionDisplayLinkProxy?
@@ -5876,6 +5765,13 @@ struct ExpeditionConfig {
     static let maximumZoom: Float = 5.0
     static let totalPhotos = 10
     static let gameDuration: TimeInterval = 60
+
+    // MARK: - Transição para iniciar a expedição
+    // Estes valores podem ser alterados livremente para ajustar a experiência.
+    static let startCountdownDuration: TimeInterval = 5.0
+    static let startCountdownStepDuration: TimeInterval = 1.0
+    static let startFadeInDuration: TimeInterval = 0.45
+    static let startFadeOutDuration: TimeInterval = 0.45
     static let photoCropSize: CGFloat = 280  // Tamanho do quadro de captura.
     // Distância válida para detectar um objeto.
     // Ajuste estes dois valores conforme o tamanho real dos seus modelos 3D.
@@ -5914,6 +5810,8 @@ struct ExpeditionConfig {
     static let maxLookLeftDegrees: Float = 50
     static let maxLookRightDegrees: Float = 50
 }
+
+
 
 
 ========================================
@@ -5976,13 +5874,7 @@ enum FaunaPalette {
     static let teal = Color(red: 0.06, green: 0.43, blue: 0.43)
     static let tealLight = Color(red: 0.64, green: 0.83, blue: 0.82)
     static let beige = Color(red: 0.94, green: 0.92, blue: 0.88)
-}//
-//  ExpeditionMission.swift
-//  FaunaVista
-//
-//  Created by Felipe Colares Cardoso on 02/10/26.
-//
-
+}
 
 
 ========================================
@@ -6592,7 +6484,7 @@ struct MissionPin: Identifiable {
             animalName: "Tamanduá-bandeira",
             scientificName: "Myrmecophaga tridactyla",
             assetsName: "PinTamandua",
-            assetsNameDiscovered: "pinOnçaDiscovered",
+            assetsNameDiscovered: "pinTamanduaDiscovered",
             missionObjective1: "Fotografe o animal parado",
             missionObjective2: "Fotografe o animal em movimento",
             missionObjective3: "Fotografe o animal se alimentando",
@@ -6666,7 +6558,7 @@ struct MissionPin: Identifiable {
             animalName: "Mico-leão-dourado",
             scientificName: "Leontopithecus rosalia",
             assetsName: "PinMico",
-            assetsNameDiscovered: "pinPreguiçaDiscovered",
+            assetsNameDiscovered: "pinMicoDiscovered",
             missionObjective1: "Fotografe o animal parado",
             missionObjective2: "Fotografe o animal em movimento",
             missionObjective3: "Fotografe o animal capturando um inseto na árvore",
@@ -6679,7 +6571,7 @@ struct MissionPin: Identifiable {
             animalName: "Preguiça-de-coleira",
             scientificName: "Bradypus torquatus",
             assetsName: "PinPreguiça",
-            assetsNameDiscovered: "pinMicoDiscovered",
+            assetsNameDiscovered: "pinPreguiçaDiscovered",
             missionObjective1: "Fotografe o animal parado",
             missionObjective2: "Fotografe o animal em movimento",
             missionObjective3: "Fotografe o animal descendo da árvore",
@@ -6857,7 +6749,7 @@ import SwiftUI
 
 
 struct BiomeView: View {
-    @Environment(AppCordinator.self) private var coordinator
+    @Environment(AppCoordinator.self) private var coordinator
    
     @Environment(ExpeditionLog.self) private var log
 
@@ -6894,15 +6786,8 @@ struct BiomeView: View {
                         .padding(.horizontal, geo.size.width * 0.15)
                     
                 }
-                    
             }
-            
-            
-            
         }
-        
-        
-        
     }
 }
 
@@ -6950,7 +6835,7 @@ import SwiftUI
 import SwiftData
 
 struct CollectionView: View {
-    @Environment(AppCordinator.self) private var coordinator
+    @Environment(AppCoordinator.self) private var coordinator
     @Query private var animals: [Animal]
 
     private let columns = [
@@ -7016,12 +6901,12 @@ struct CollectionView: View {
                     ForEach(orderedAnimals) { animal in
 
                         if animal.discovered {
-                            NavigationLink {
-                                AnimalDetailView(animal: animal)
-                            } label: {
+                            Button(action: {
+                                coordinator.push(.registro(animal))
+                            }) {
+                                
                                 AnimalCard(animal: animal)
                             }
-                            .buttonStyle(.plain)
 
                         } else {
                             AnimalCard(animal: animal)
@@ -7036,7 +6921,6 @@ struct CollectionView: View {
         }
         .background(
             Color("CollectionBackground")
-                .ignoresSafeArea()
         )
     }
     
@@ -7833,7 +7717,7 @@ import SwiftUI
 import SwiftData
 
 struct MapView: View {
-    @Environment(AppCordinator.self) private var coordinator
+    @Environment(AppCoordinator.self) private var coordinator
     
     
     
@@ -7852,14 +7736,7 @@ struct MapView: View {
                                 .foregroundColor(Color("BackGroundColor"))
                                 .frame(maxWidth: .infinity, alignment: .leading)
                             
-                            Text("Toque no bioma para explorar")
-                                .font(.system(size: 14, weight: .semibold))
-                                .foregroundColor(.black)
-                                .padding(5)
-                                .padding(.horizontal, 10)
-                                .background(Color("LightGreenProgress"))
-                                .cornerRadius(20)
-                                .frame(maxWidth: .infinity, alignment: .leading)
+                            
                         }
                         Button(action: {
                             coordinator.push(.information)
@@ -7893,6 +7770,17 @@ struct MapView: View {
                         .shadow(color: .black.opacity(0.15), radius: 4, x: 2, y: 4)
                     }
                     .padding(.horizontal, 70)
+                    
+                    Text("Toque no bioma para explorar")
+                        .font(.system(size: 14, weight: .semibold))
+                        .foregroundColor(.black)
+                        .padding(5)
+                        .padding(.horizontal, 10)
+                        .background(Color("LightGreenProgress"))
+                        .cornerRadius(20)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.leading, 70)
+                    
                     ZStack{
                     Image("cloud")
                             .padding(.bottom,30)
@@ -7917,93 +7805,266 @@ struct MapView: View {
 ========================================
 ARQUIVO: ./FaunaVista/FaunaVista/View/ExpeditionView.swift
 ========================================
+// ExpeditionView.swift
+// FaunaVista
 //
-//  ExpeditionView.swift
-//  Orquestra o fluxo todo da expedição.
+// Orquestra o fluxo todo da expedição.
 //
 
 import SwiftUI
 import SwiftData
 
 struct ExpeditionView: View {
-    @StateObject private var vm = ExpeditionViewModel()
-    @Environment(AppCordinator.self) private var coordinator
-    @Environment(\.modelContext) private var modelContext
-    @Environment(ExpeditionLog.self) private var log
-    @Query private var animals: [Animal]
+
+    @State private var vm = ExpeditionViewState()
+
+    @Environment(AppCoordinator.self)
+    private var coordinator
+
+    @Environment(\.modelContext)
+    private var modelContext
+
+    @Environment(ExpeditionLog.self)
+    private var log
+
+    @Query
+    private var animals: [Animal]
+
+    // MARK: - Animal da missão no SwiftData
 
     private var missionAnimalModel: Animal? {
-        guard let name = vm.missionAnimal?.scientificName else { return nil }
-        return animals.first { $0.scientificName == name }
+
+        guard let name = vm.missionAnimal?.scientificName
+        else {
+            return nil
+        }
+
+        return animals.first {
+            $0.scientificName == name
+        }
     }
 
+    // MARK: - Body
+
     var body: some View {
-        Group {
-            switch vm.gameState {
-            case .start:
-                ExpeditionStartView(vm: vm)
-            case .playing:
-                ExpeditionGameView(vm: vm)
-            case .finished:
-                ExpeditionFinishedView(vm: vm)
-            case .missionCheck:
-                ExpeditionMissionCheckView(vm: vm)
-            case .registered:
-                ExpeditionAnimalRegisteredView(
-                    animalName: vm.missionAnimal?.displayName ?? "Animal",
-                    scientificName: vm.missionAnimal?.scientificName ?? "",
-                    biome: missionAnimalModel?.biome ?? 2
-                ) {
-                    registerAnimal()
-                    vm.returnToStart()
-                    coordinator.rezet()   // limpa o path e abre a aba Coleção
+
+        ZStack {
+
+            Group {
+
+                switch vm.gameState {
+
+                case .start:
+
+                    ExpeditionStartView(
+                        vm: vm
+                    )
+
+                case .playing:
+
+                    ExpeditionGameView(
+                        vm: vm
+                    )
+
+                case .finished:
+
+                    ExpeditionFinishedView(
+                        vm: vm
+                    )
+
+                case .missionCheck:
+
+                    ExpeditionMissionCheckView(
+                        vm: vm
+                    )
+
+                case .registered:
+                                    // Verifica se o usuário tem fotos e completou pelo menos o primeiro desafio (índice 0)
+                                    let isDiscovered = !vm.selectedPhotos.isEmpty && (vm.missionResults.first?.completed == true)
+
+                                    ExpeditionAnimalRegisteredView(
+                                        animalName:
+                                            vm.missionAnimal?.displayName
+                                            ?? "Animal",
+
+                                        scientificName:
+                                            vm.missionAnimal?.scientificName
+                                            ?? "",
+
+                                        biome:
+                                            missionAnimalModel?.biome
+                                            ?? 2,
+                                            
+                                        isDiscovered: isDiscovered
+
+                                    ) {
+
+                                        if isDiscovered {
+                                            if let animal = registerAnimal() {
+                                                vm.returnToStart()
+                                                coordinator.push(
+                                                    .registro(animal)
+                                                )
+                                            }
+                                        } else {
+                                            vm.cancelExpedition()
+                                            coordinator.pop()
+                                        }
+                                    }
+                }
+            }
+
+            // MARK: - Transição para iniciar a expedição
+
+            if vm.isStartingExpedition {
+
+                Color.black
+                    .opacity(vm.transitionOpacity)
+                    .ignoresSafeArea()
+                    .zIndex(10)
+                    .allowsHitTesting(true)
+
+                if vm.countdownNumber > 0 {
+
+                    Text("Começando em \(vm.countdownNumber)")
+                        .font(
+                            .system(
+                                size: 46,
+                                weight: .bold,
+                                design: .rounded
+                            )
+                        )
+                        .foregroundStyle(.white)
+                        .transition(.opacity)
+                        .zIndex(11)
                 }
             }
         }
-        .navigationBarBackButtonHidden(vm.gameState != .start)
+
+        .animation(
+            .easeInOut(duration: 0.4),
+            value: vm.countdownNumber
+        )
+
+        .navigationBarBackButtonHidden(
+            vm.gameState != .start
+        )
+
         .onAppear {
-            let level = ExpeditionLevel.level(for: log.activeScientificName)
-                ?? ExpeditionLevel.all[0]   // fallback para não quebrar
-            vm.configure(level: level)
+
+            let level =
+                ExpeditionLevel.level(
+                    for: log.activeScientificName
+                )
+                ?? ExpeditionLevel.all[0]
+
+            vm.configure(
+                level: level
+            )
         }
     }
 
-    // Marca como descoberto e salva a expedição (missões + 3 fotos) no SwiftData.
-    private func registerAnimal() {
-        guard let animal = missionAnimalModel else { return }
+    // MARK: - Registrar animal
+
+    private func registerAnimal() -> Animal? {
+
+        guard let animal = missionAnimalModel
+        else {
+            return nil
+        }
+
         animal.discovered = true
 
-        let selected = vm.selectedPhotos
-        // ExpeditionRepository exige exatamente 3 fotos.
+        let selected =
+            vm.selectedPhotos
+
+        // A expedição precisa de exatamente 3 fotos.
+
         if selected.count == 3 {
-            let r = vm.missionResults.map(\.completed)
-            let photos = selected.map {
-                ExpeditionPhotoModel(
-                    image: $0.image.jpegData(compressionQuality: 0.8),
-                    rating: $0.stars
+
+            let results =
+                vm.missionResults.map(\.completed)
+
+            let photos =
+                selected.map {
+
+                    ExpeditionPhotoModel(
+                        image:
+                            $0.image.jpegData(
+                                compressionQuality: 0.8
+                            ),
+
+                        rating:
+                            $0.stars
+                    )
+                }
+
+            let service =
+                ExpeditionService(
+                    repository:
+                        ExpeditionRepository(
+                            modelContext:
+                                modelContext
+                        )
                 )
-            }
-            let service = ExpeditionService(
-                repository: ExpeditionRepository(modelContext: modelContext)
-            )
+
             do {
+
                 try service.finishExpedition(
-                    biome: animal.biome,
-                    animal: animal,
-                    challenge1Completed: r[0],
-                    challenge2Completed: r[1],
-                    challenge3Completed: r[2],
-                    photos: photos
+
+                    biome:
+                        animal.biome,
+
+                    animal:
+                        animal,
+
+                    challenge1Completed:
+                        results[0],
+
+                    challenge2Completed:
+                        results[1],
+
+                    challenge3Completed:
+                        results[2],
+
+                    photos:
+                        photos
                 )
+
             } catch ExpeditionServiceError.expeditionAlreadyExists {
-                // Já existe expedição deste animal: mantém a anterior.
+
+                // A expedição desse animal já existe.
+                // Mantém o registro anterior.
+
             } catch {
-                print("Erro ao salvar expedição:", error)
+
+                print(
+                    "Erro ao salvar expedição:",
+                    error
+                )
             }
         }
 
         try? modelContext.save()
+
+        return animal
     }
+}
+
+// MARK: - Preview
+
+#Preview {
+
+    ExpeditionView()
+        .modelContainer(
+            PreviewSupport.container
+        )
+        .environment(
+            PreviewSupport.coordinator
+        )
+        .environment(
+            PreviewSupport.expeditionLog
+        )
 }
 
 
@@ -8258,80 +8319,639 @@ struct RegistroView: View {
 
 
 ========================================
-ARQUIVO: ./FaunaVista/FaunaVista/View/GameView/ExpeditionMissionCheckView.swift
+ARQUIVO: ./FaunaVista/FaunaVista/View/GameView/ExpeditionViewState.swift
 ========================================
 //
+//  ExpeditionViewState.swift
+//  FaunaVista
+//
+//  Camada VIEW da expedição: tudo que é de tela e de infraestrutura
+//  (timer, cena 3D, flash, recorte, mira, debug).
+//  As regras do jogo ficam no Model (ExpeditionGame).
+//
+
+import SwiftUI
+import UIKit
+import RealityKit
+import Observation
+
+@MainActor
+@Observable
+final class ExpeditionViewState {
+
+    // MARK: - Model
+
+    let game = ExpeditionGame()
+
+    // Leitura do Model (as Views usam vm.gameState, vm.photoCards...)
+    var gameState: ExpeditionGameState { game.gameState }
+    var timeRemaining: TimeInterval { game.timeRemaining }
+    var photosTaken: Int { game.photosTaken }
+    var photoCards: [ExpeditionPhoto] { game.photoCards }
+    var selectedPhotoIDs: [UUID] { game.selectedPhotoIDs }
+    var level: ExpeditionLevel? { game.level }
+
+    var missionAnimal: ExpeditionAnimalDefinition? { game.missionAnimal }
+    var requiredSelection: Int { game.requiredSelection }
+    var selectedPhotos: [ExpeditionPhoto] { game.selectedPhotos }
+    var canSubmitSelection: Bool { game.canSubmitSelection }
+    var missionResults: [(mission: ExpeditionMission, completed: Bool)] { game.missionResults }
+    var allMissionsCompleted: Bool { game.allMissionsCompleted }
+
+    // MARK: - Transição de início
+
+    private(set) var isStartingExpedition = false
+    private(set) var countdownNumber = 0
+    private(set) var transitionOpacity: Double = 0
+
+    @ObservationIgnored private var startTransitionTask: Task<Void, Never>?
+
+    // MARK: - Estado de apresentação
+
+    private(set) var photoFlashID = 0
+    var cropRect: CGRect = .zero
+    var isDetectedObjectScorable = true
+
+    var mapLoaded = false
+    var travelDistance: Float = 0
+    var travelDuration: TimeInterval = 0
+
+    // Debug da mira central.
+    var detectedObjectName = "Nenhum objeto"
+    var detectedObjectDistance: Float?
+    var detectedObjectStars = 0
+    var isTargetDetected = false
+    var isVegetationDetected = false
+
+    // Ajuste manual da mira (ver ExpeditionConfig.aimDetectionOffset...).
+    var aimOffsetMinZoom = ExpeditionConfig.aimDetectionOffsetAtMinZoom
+    var aimOffsetMaxZoom = ExpeditionConfig.aimDetectionOffsetAtMaxZoom
+    // Deslocamento efetivo no zoom atual (usado pela bolinha de debug).
+    var aimDetectionOffset: CGPoint = .zero
+
+    // MARK: - Infraestrutura (não observada)
+
+    @ObservationIgnored private weak var expeditionView: ExpeditionSceneView?
+    @ObservationIgnored private var timer: Timer?
+    @ObservationIgnored private var pendingBuild = false
+
+    init() {
+        // ExpeditionMapCache.shared.preload()
+        // ExpeditionObjectCache.shared.preloadAll()
+        // ExpeditionAnimalCache.shared.preloadAll()
+    }
+
+    // MARK: - Nível
+
+    func configure(level: ExpeditionLevel) {
+        guard game.setLevel(level) else { return }
+        ExpeditionMapCache.shared.preload(fileName: level.mapFileName)
+        ExpeditionObjectCache.shared.preload(modelNames: level.vegetationModelNames)
+        if let animal = level.animal {
+            ExpeditionAnimalCache.shared.preload(animal)
+        }
+    }
+
+    // MARK: - Seleção de fotos (delegado ao Model)
+
+    func isSelected(_ photo: ExpeditionPhoto) -> Bool { game.isSelected(photo) }
+    func toggleSelection(_ photo: ExpeditionPhoto) { game.toggleSelection(photo) }
+
+    func confirmSelection() { game.confirmSelection() }
+    func backToSelection()  { game.backToSelection() }
+    func showRegistered()   { game.showRegistered() }
+
+    // Cancela a expedição sem registrar o animal.
+    // Usado quando o jogador terminou sem tirar nenhuma foto.
+    func cancelExpedition() {
+        startTransitionTask?.cancel()
+        startTransitionTask = nil
+        isStartingExpedition = false
+        countdownNumber = 0
+        transitionOpacity = 0
+
+        stopTimer()
+        releaseScene()
+        game.returnToStart()
+        updateDetection(objectName: nil, distance: nil, stars: 0)
+    }
+
+    // MARK: - Transição de início
+
+    func startExpeditionWithCountdown() {
+        guard !isStartingExpedition else { return }
+
+        startTransitionTask?.cancel()
+
+        isStartingExpedition = true
+        countdownNumber = max(1, Int(ExpeditionConfig.startCountdownDuration.rounded()))
+        transitionOpacity = 0
+
+        startTransitionTask = Task { @MainActor [weak self] in
+            guard let self else { return }
+
+            do {
+                let countdownStart = max(1, Int(ExpeditionConfig.startCountdownDuration.rounded()))
+
+                for number in stride(from: countdownStart, through: 1, by: -1) {
+                    self.countdownNumber = number
+                    try await Task.sleep(nanoseconds: UInt64(ExpeditionConfig.startCountdownStepDuration * 1_000_000_000))
+                }
+
+                self.countdownNumber = 0
+
+                withAnimation(.easeIn(duration: ExpeditionConfig.startFadeInDuration)) {
+                    self.transitionOpacity = 1
+                }
+
+                try await Task.sleep(nanoseconds: UInt64(ExpeditionConfig.startFadeInDuration * 1_000_000_000))
+
+                self.startGame()
+
+                withAnimation(.easeOut(duration: ExpeditionConfig.startFadeOutDuration)) {
+                    self.transitionOpacity = 0
+                }
+
+                try await Task.sleep(nanoseconds: UInt64(ExpeditionConfig.startFadeOutDuration * 1_000_000_000))
+
+                self.isStartingExpedition = false
+
+            } catch {
+                self.isStartingExpedition = false
+                self.countdownNumber = 0
+                self.transitionOpacity = 0
+            }
+
+            self.startTransitionTask = nil
+        }
+    }
+
+    // MARK: - Cena 3D
+
+    func connect(_ view: ExpeditionSceneView) {
+        // Garante que nunca haja duas cenas vivas ao mesmo tempo.
+        if let old = expeditionView, old !== view {
+            old.teardown()
+        }
+
+        expeditionView = view
+
+        if game.gameState == .playing {
+            view.buildExpedition()
+            pendingBuild = false
+        } else {
+            buildIfNeeded()
+        }
+    }
+
+    func buildIfNeeded() {
+        guard pendingBuild, let expeditionView else { return }
+        pendingBuild = false
+        expeditionView.buildExpedition()
+        updateMapInformation()
+    }
+
+    func updateMapInformation() {
+        guard let expeditionView else { return }
+        travelDistance = expeditionView.travelDistance
+        travelDuration = expeditionView.travelDuration
+        mapLoaded = expeditionView.mapLoaded
+    }
+
+    // Derruba a ExpeditionSceneView atual e solta a referência a ela.
+    private func releaseScene() {
+        let view = expeditionView
+        expeditionView = nil
+        view?.teardown()
+    }
+
+    // Chamado pela própria view ao terminar o teardown (inclusive quando o
+    // SwiftUI a destrói por conta própria).
+    func sceneViewDidTearDown(_ view: ExpeditionSceneView) {
+        if expeditionView === view {
+            expeditionView = nil
+        }
+    }
+
+    // MARK: - Mira e detecção
+
+    func adjustAimOffset(atMaxZoom: Bool, deltaY: CGFloat) {
+        if atMaxZoom {
+            aimOffsetMaxZoom.y += deltaY
+        } else {
+            aimOffsetMinZoom.y += deltaY
+        }
+        print("🎯 aimDetectionOffsetAtMinZoom = (x: \(aimOffsetMinZoom.x), y: \(aimOffsetMinZoom.y))")
+        print("🎯 aimDetectionOffsetAtMaxZoom = (x: \(aimOffsetMaxZoom.x), y: \(aimOffsetMaxZoom.y))")
+    }
+
+    func updateCropRect(_ rect: CGRect) {
+        guard rect.width > 0, rect.height > 0 else { return }
+        cropRect = rect
+    }
+
+    func updateDetection(
+        objectName: String?,
+        distance: Float?,
+        stars: Int,
+        isScorable: Bool = true,
+        isVegetation: Bool = false
+    ) {
+        detectedObjectName = objectName ?? "Nenhum objeto"
+        detectedObjectDistance = distance
+        detectedObjectStars = stars
+        isTargetDetected = objectName != nil
+        isDetectedObjectScorable = isScorable
+        isVegetationDetected = isVegetation && objectName != nil
+    }
+
+    // MARK: - Ciclo da partida
+
+    func startGame() {
+        stopTimer()
+
+        // Se sobrou alguma cena da partida anterior, derruba antes de começar.
+        releaseScene()
+
+        pendingBuild = true
+        game.start(duration: ExpeditionConfig.gameDuration)
+
+        startTimer()
+        buildIfNeeded()
+    }
+
+    func finishGame() {
+        stopTimer()
+
+        // Se há uma foto sendo processada, o Model adia o fim; capturePhoto()
+        // chama finishGame() de novo quando a foto fechar.
+        guard game.finish() else { return }
+
+        // Encerra a cena 3D de verdade (display link, animações, entidades).
+        releaseScene()
+    }
+
+    func returnToStart() {
+        stopTimer()
+
+        // Normalmente a cena já foi liberada em finishGame(); isto é só
+        // uma garantia (a chamada é idempotente).
+        releaseScene()
+
+        game.returnToStart()
+        updateDetection(objectName: nil, distance: nil, stars: 0)
+    }
+
+    // MARK: - Timer
+
+    private func startTimer() {
+        let newTimer = Timer(timeInterval: 0.1, repeats: true) { [weak self] _ in
+            Task { @MainActor in
+                self?.tick()
+            }
+        }
+
+        RunLoop.main.add(newTimer, forMode: .common)
+        timer = newTimer
+    }
+
+    private func tick() {
+        switch game.tick() {
+        case .stopTimer: stopTimer()
+        case .expired:   finishGame()
+        case .running:   break
+        }
+    }
+
+    private func stopTimer() {
+        timer?.invalidate()
+        timer = nil
+    }
+
+    // MARK: - Captura de foto
+
+    func capturePhoto() {
+        guard let expeditionView, game.beginCapture() else { return }
+
+        photoFlashID += 1
+        playPhotoClickSound()
+
+        Task { @MainActor in
+            let result = await expeditionView.captureCurrentView(cropRect: cropRect)
+
+            let photo = ExpeditionPhoto(
+                image: result.image, stars: result.stars, objectName: result.objectName,
+                distance: result.distance, isScorable: result.isScorable,
+                animalID: result.animalID, pose: result.pose
+            )
+
+            if game.completeCapture(photo) {
+                finishGame()
+            }
+        }
+    }
+
+    // MARK: - Som do clique da foto
+    private func playPhotoClickSound() {
+        // TODO: introduzir aqui o som do obturador.
+        // Este método é chamado uma única vez por foto aceita, junto ao flash.
+        // Exemplo futuro: carregar e reproduzir um arquivo de áudio do app.
+    }
+
+    // MARK: - Controles de debug
+    // Move o objeto atualmente em foco na mira ao longo do eixo escolhido.
+    // direction: +1 para o sentido positivo do eixo, -1 para o negativo.
+    func debugMoveFocusedObject(axis: ExpeditionDebugAxis, direction: Float) {
+        expeditionView?.debugMoveFocusedObject(
+            axis: axis,
+            delta: direction * ExpeditionConfig.debugObjectMoveStep
+        )
+    }
+
+    // Sobe (direction = +1) ou desce (direction = -1) a câmera.
+    func debugMoveCamera(direction: Float) {
+        expeditionView?.debugMoveCamera(
+            verticalDelta: direction * ExpeditionConfig.debugCameraMoveStep
+        )
+    }
+
+    deinit {
+        startTransitionTask?.cancel()
+        timer?.invalidate()
+    }
+}//
+//  ExpeditionViewState.swift
+//  FaunaVista
+//
+//  Created by Felipe Colares Cardoso on 08/10/26.
+//
+
+
+
+
+
+========================================
+ARQUIVO: ./FaunaVista/FaunaVista/View/GameView/AnimalScenario.swift
+========================================
+//
+//  AnimalScenario.swift
+//  FaunaVista
+//
+//  Created by Gabriel Groppo on 07/10/26.
+//
+
+import Foundation
+
+struct AnimalScenario {
+
+    static func backgroundName(for scientificName: String) -> String {
+        switch scientificName {
+
+        case "Myrmecophaga tridactyla":
+            return "TamanduaArara"
+
+        case "Chrysocyon brachyurus":
+            return "OncaLoboTatu"
+
+        case "Inia geoffrensis":
+            return "Agua"
+
+        case "Cacajao rubicundus":
+            return "Uacari"
+
+        case "Anodorhynchus leari":
+            return "TamanduaArara"
+
+        case "Tolypeutes tricinctus":
+            return "OncaLoboTatu"
+
+        case "Leontopithecus rosalia":
+            return "MicoPreguica"
+
+        case "Bradypus torquatus":
+            return "MicoPreguica"
+
+        case "Pteronura brasiliensis":
+            return "Agua"
+
+        case "Panthera onca":
+            return "OncaLoboTatu"
+
+        case "Xanthopsar flavus":
+            return "Veste"
+
+        case "Ceratophrys ornata":
+            return "Agua"
+
+        default:
+            return ""
+        }
+    }
+
+    static func groundName(for scientificName: String) -> String {
+        switch scientificName {
+
+        case "Myrmecophaga tridactyla":
+            return "Terra"
+
+        case "Chrysocyon brachyurus":
+            return "Terra"
+
+        case "Inia geoffrensis":
+            return "chao-boto"
+
+        case "Cacajao rubicundus":
+            return "Terra"
+
+        case "Anodorhynchus leari":
+            return "Galho"
+
+        case "Tolypeutes tricinctus":
+            return "Terra"
+
+        case "Leontopithecus rosalia":
+            return "Grama"
+
+        case "Bradypus torquatus":
+            return "chao-preguica"
+
+        case "Pteronura brasiliensis":
+            return "chao-ariranha"
+
+        case "Panthera onca":
+            return "Terra"
+
+        case "Xanthopsar flavus":
+            return "Galho"
+
+        case "Ceratophrys ornata":
+            return "Aguachao"
+
+        default:
+            return ""
+        }
+    }
+}
+
+
+========================================
+ARQUIVO: ./FaunaVista/FaunaVista/View/GameView/ExpeditionMissionCheckView.swift
+========================================
+
 //  ExpeditionMissionCheckView.swift
-//  Missões + as 3 fotos enviadas. Checkmark verde nas cumpridas.
+//  FaunaVista
+//
+//  Tela de verificação das missões e fotos selecionadas.
 //
 
 import SwiftUI
 
 struct ExpeditionMissionCheckView: View {
-    @ObservedObject var vm: ExpeditionViewModel
+
+    let vm: ExpeditionViewState
+    
+    @Environment(AppCoordinator.self) private var coordinator
+   // @ObservedObject var vm: ExpeditionViewModel
+    
+    private var currentMissionPin: MissionPin? {
+        guard let scientificName = vm.missionAnimal?.scientificName else {
+            return nil
+        }
+
+        return MissionPin.allMissionPins.first {
+            $0.scientificName == scientificName
+        }
+    }
+    
+    private var missionObjectives: [String] {
+        guard let pin = currentMissionPin else {
+            return []
+        }
+
+        return [
+            pin.missionObjective1,
+            pin.missionObjective2,
+            pin.missionObjective3
+        ]
+    }
 
     var body: some View {
         ZStack(alignment: .bottom) {
-            FaunaPalette.beige.ignoresSafeArea()
+
+            FaunaPalette.beige
+                .ignoresSafeArea()
 
             ScrollView {
+
                 VStack(spacing: 14) {
-                    Image(IllustrationAnimal.imageName(
-                        for: vm.missionAnimal?.scientificName ?? "",
-                        discovered: true
-                    ))
+
+                    // MARK: - Animal
+
+                    Image(
+                        IllustrationAnimal.imageName(
+                            for: vm.missionAnimal?.scientificName ?? "",
+                            discovered: true
+                        )
+                    )
                     .resizable()
                     .scaledToFit()
                     .frame(height: 190)
 
-                    Text(vm.missionAnimal?.displayName ?? "Animal")
-                        .font(.system(size: 20, weight: .bold))
+                    Text(
+                        vm.missionAnimal?.displayName ?? "Animal"
+                    )
+                    .font(.system(size: 20, weight: .bold))
 
-                    Text(vm.missionAnimal?.scientificName ?? "")
-                        .font(.footnote.italic())
-                        .foregroundStyle(.secondary)
+                    Text(
+                        vm.missionAnimal?.scientificName ?? ""
+                    )
+                    .font(.footnote.italic())
+                    .foregroundStyle(.secondary)
+
+                    // MARK: - Desafios
 
                     Text("Desafios")
                         .font(.system(size: 17, weight: .bold))
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .frame(
+                            maxWidth: .infinity,
+                            alignment: .leading
+                        )
                         .padding(.top, 8)
 
-                    ForEach(vm.missionResults, id: \.mission.id) { result in
-                        HStack(spacing: 12) {
-                            Image(systemName: result.completed ? "checkmark.circle.fill" : "circle")
-                                .font(.system(size: 30))
-                                .foregroundStyle(result.completed ? Color.green : Color.gray.opacity(0.4))
+                    ForEach(
+                        Array(vm.missionResults.enumerated()),
+                        id: \.element.mission.id
+                    ) { index, result in
 
-                            Text(result.mission.title)
-                                .font(.system(size: 12))
-                                .fixedSize(horizontal: false, vertical: true)
+                        HStack(spacing: 12) {
+
+                            Image(
+                                systemName: result.completed
+                                    ? "checkmark.circle.fill"
+                                    : "circle"
+                            )
+                            .font(.system(size: 30))
+                            .foregroundStyle(
+                                result.completed
+                                    ? Color.green
+                                    : Color.gray.opacity(0.4)
+                            )
+
+                            Text(
+                                missionObjectives.indices.contains(index)
+                                    ? missionObjectives[index]
+                                    : result.mission.title
+                            )
+                            .font(.system(size: 12))
+                            .fixedSize(horizontal: false, vertical: true)
 
                             Spacer(minLength: 0)
                         }
                         .padding(12)
-                        .background(.white, in: RoundedRectangle(cornerRadius: 14))
+                        .background(
+                            .white,
+                            in: RoundedRectangle(cornerRadius: 14)
+                        )
                     }
+
+                    // MARK: - Fotos
 
                     Text("Fotos enviadas")
                         .font(.system(size: 17, weight: .bold))
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .frame(
+                            maxWidth: .infinity,
+                            alignment: .leading
+                        )
                         .padding(.top, 8)
 
                     HStack(spacing: 10) {
+
                         ForEach(vm.selectedPhotos) { photo in
+
                             VStack(spacing: 4) {
+
                                 Color.clear
-                                    .aspectRatio(1, contentMode: .fit)
+                                    .aspectRatio(
+                                        1,
+                                        contentMode: .fit
+                                    )
                                     .overlay(
                                         Image(uiImage: photo.image)
                                             .resizable()
                                             .scaledToFill()
                                     )
-                                    .clipShape(RoundedRectangle(cornerRadius: 14))
+                                    .clipShape(
+                                        RoundedRectangle(
+                                            cornerRadius: 14
+                                        )
+                                    )
 
-                                Text(photo.pose?.displayName ?? "Sem animal")
-                                    .font(.caption2)
-                                    .foregroundStyle(.secondary)
+                                Text(
+                                    photo.pose?.displayName
+                                    ?? "Sem animal"
+                                )
+                                .font(.caption2)
+                                .foregroundStyle(.secondary)
                             }
                         }
                     }
@@ -8342,36 +8962,78 @@ struct ExpeditionMissionCheckView: View {
                 .padding(.bottom, 110)
             }
 
-            Button {
-                vm.showRegistered()
-            } label: {
-                Text("Próximo")
-                    .font(.headline)
-                    .foregroundStyle(.white)
-                    .padding(.vertical, 16)
-                    .frame(maxWidth: 260)
-                    .background(FaunaPalette.teal, in: Capsule())
+            // MARK: - Próximo / voltar aos biomas
+
+            if vm.selectedPhotos.isEmpty {
+                Text("Nenhuma foto foi enviada. O animal não será descoberto.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 24)
+                    .padding(.bottom, 76)
             }
-            .padding(.bottom, 24)
-        }
-        .overlay(alignment: .topLeading) {
+
             Button {
-                vm.backToSelection()
+                            vm.showRegistered()
+                        } label: {
+
+                            Text(vm.selectedPhotos.isEmpty ? "Avançar" : "Próximo")
+                                .font(.headline)
+                                .foregroundStyle(.white)
+                                .padding(.vertical, 16)
+                                .frame(maxWidth: 260)
+                                .background(
+                                    FaunaPalette.teal,
+                                    in: Capsule()
+                                )
+                        }
+                        .padding(.bottom, 24)
+        }
+
+        // MARK: - Voltar
+
+        .overlay(alignment: .topLeading) {
+
+            Button {
+                if vm.selectedPhotos.isEmpty {
+                    vm.cancelExpedition()
+                    coordinator.pop()
+                } else {
+                    vm.backToSelection()
+                }
             } label: {
+
                 Image(systemName: "chevron.left")
-                    .font(.system(size: 22, weight: .bold))
+                    .font(
+                        .system(
+                            size: 22,
+                            weight: .bold
+                        )
+                    )
                     .foregroundStyle(.green)
-                    .frame(width: 44, height: 44)
-                    .background(.ultraThinMaterial, in: Circle())
+                    .frame(
+                        width: 44,
+                        height: 44
+                    )
+                    .background(
+                        .ultraThinMaterial,
+                        in: Circle()
+                    )
             }
             .padding(.leading, 20)
             .padding(.top, 8)
         }
     }
 }
+
 #Preview {
-    ExpeditionMissionCheckView(vm: ExpeditionViewModel())
+    ExpeditionMissionCheckView(
+        vm: ExpeditionViewState()
+    )
+    .environment(AppCoordinator())
 }
+
+
 
 
 ========================================
@@ -8385,7 +9047,7 @@ import SwiftUI
 
 // MARK: - TELA INICIAL (onboarding da expedição)
 struct ExpeditionStartView: View {
-    @ObservedObject var vm: ExpeditionViewModel
+    var vm: ExpeditionViewState
 
     var body: some View {
         ZStack {
@@ -8434,15 +9096,25 @@ struct ExpeditionStartView: View {
                 .background(.white, in: RoundedRectangle(cornerRadius: 20))
 
                 Button {
-                    vm.startGame()
+                    vm.startExpeditionWithCountdown()
                 } label: {
-                    Text("Começar Expedição")
+                    Text(
+                        vm.isStartingExpedition
+                            ? (vm.countdownNumber > 0
+                                ? "Começando em \(vm.countdownNumber)"
+                                : "Começando…")
+                            : "Começar Expedição"
+                    )
                         .font(.headline)
                         .foregroundStyle(.white)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 16)
-                        .background(FaunaPalette.teal, in: Capsule())
+                        .background(
+                            vm.isStartingExpedition ? Color.gray : FaunaPalette.teal,
+                            in: Capsule()
+                        )
                 }
+                .disabled(vm.isStartingExpedition)
             }
             .foregroundStyle(.black)
             .padding(.horizontal, 20)
@@ -8531,7 +9203,7 @@ private struct TipRow: View {
 }
 
 #Preview {
-    ExpeditionStartView(vm: ExpeditionViewModel())
+    ExpeditionStartView(vm: ExpeditionViewState())
 }
 
 
@@ -8556,7 +9228,7 @@ import Combine
 // ============================================================
 
 struct ExpeditionSceneRepresentable: UIViewRepresentable {
-    @ObservedObject var vm: ExpeditionViewModel
+    var vm: ExpeditionViewState
 
     func makeUIView(context: Context) -> ExpeditionSceneView {
         let view = ExpeditionSceneView(frame: .zero)
@@ -8598,7 +9270,7 @@ import Combine
 // ============================================================
 
 struct ExpeditionGameView: View {
-    @ObservedObject var vm: ExpeditionViewModel
+    var vm: ExpeditionViewState
     @State private var flashVisible = false
     @State private var debugAxis: ExpeditionDebugAxis = .x
 
@@ -8924,17 +9596,17 @@ ARQUIVO: ./FaunaVista/FaunaVista/View/GameView/ExpeditionImageRegisteredView.swi
 //
 //  Created by Felipe Colares Cardoso on 02/10/26.
 //
-
+// TELA "GANHOU" DO FIGMA
 //
 //  ExpeditionAnimalRegisteredView.swift
 //
-
 import SwiftUI
 
 struct ExpeditionAnimalRegisteredView: View {
     let animalName: String
     let scientificName: String
     let biome: Int
+    let isDiscovered: Bool 
     let onViewCollection: () -> Void
     
     private var biomeName: String {
@@ -8942,17 +9614,17 @@ struct ExpeditionAnimalRegisteredView: View {
                .first { $0.id == biome }?.name ?? "Bioma"
        }
 
-       private var biomeColor: Color {
-           switch biome {
-           case 2:  return Color("AmazonColor")
-           case 1:  return Color("CerradoColor")
-           case 5:  return Color("CaatingaColor")
-           case 4:  return Color("AtlanticForestColor")
-           case 6:  return Color("PantanalColor")
-           case 3:  return Color("PampaColor")
-           default: return .gray
-           }
-       }
+    private var biomeColor: Color {
+        switch biome {
+        case 2:  return Color("AmazonColor")
+        case 1:  return Color("CerradoColor")
+        case 5:  return Color("CaatingaColor")
+        case 4:  return Color("AtlanticForestColor")
+        case 6:  return Color("PantanalColor")
+        case 3:  return Color("PampaColor")
+        default: return .gray
+        }
+    }
 
 
     var body: some View {
@@ -8960,31 +9632,57 @@ struct ExpeditionAnimalRegisteredView: View {
             FaunaPalette.tealLight.ignoresSafeArea()
 
             VStack(spacing: 14) {
-                Text("ANIMAL REGISTRADO")
+                Text(isDiscovered ? "ANIMAL REGISTRADO" : "EXPEDIÇÃO CONCLUÍDA")
                     .font(.system(size: 11, weight: .semibold))
                     .tracking(1)
                     .padding(.horizontal, 16)
                     .padding(.vertical, 6)
                     .background(Color.black.opacity(0.08), in: Capsule())
 
-                Text(animalName)
-                    .font(.system(size: 28, weight: .heavy))
-                    .multilineTextAlignment(.center)
+                if isDiscovered {
+                    Text(animalName)
+                        .font(.system(size: 28, weight: .heavy))
+                        .multilineTextAlignment(.center)
 
-                Text(scientificName)
-                    .font(.footnote.italic())
-                    .foregroundStyle(.secondary)
+                    Text(scientificName)
+                        .font(.footnote.italic())
+                        .foregroundStyle(.secondary)
+                }
 
-                Image(IllustrationAnimal.imageName(for: scientificName, discovered: true))
-                    .resizable()
-                    .scaledToFit()
-                    .frame(height: 200)
+                ZStack(alignment: .bottom) {
+
+                    Image(AnimalScenario.backgroundName(for: scientificName))
+                        .resizable()
+                        .scaledToFit()
+
+                    Image(AnimalScenario.groundName(for: scientificName))
+                        .resizable()
+                        .scaledToFit()
+                    
+                    if isDiscovered {
+                        Image(
+                            IllustrationAnimal.imageName(
+                                for: scientificName,
+                                discovered: true
+                            )
+                        )
+                        .resizable()
+                        .scaledToFit()
+                    } else {
+                        Text("Nada foi descoberto")
+                            .font(.system(size: 22, weight: .bold))
+                            .foregroundStyle(.white)
+                            .padding(.bottom, 60)
+                            .shadow(color: .black.opacity(0.5), radius: 2)
+                    }
+                }
+                .frame(height: 200)
 
                 Label(biomeName, systemImage: "mappin")
                     .font(.system(size: 17, weight: .medium))
 
                 Button(action: onViewCollection) {
-                    Text("Ver na coleção")
+                    Text(isDiscovered ? "Ver na coleção" : "Encerrar expedição")
                         .font(.headline)
                         .foregroundStyle(.white)
                         .frame(maxWidth: .infinity)
@@ -9014,7 +9712,7 @@ ARQUIVO: ./FaunaVista/FaunaVista/View/GameView/ExpeditionFinishedView.swift
 import SwiftUI
 
 struct ExpeditionFinishedView: View {
-    @ObservedObject var vm: ExpeditionViewModel
+    var vm: ExpeditionViewState
 
     private let columns = [
         GridItem(.flexible(), spacing: 12),
@@ -9159,9 +9857,8 @@ struct CompletedMissionSheetView: View {
                         }
                 }
                 .buttonStyle(.plain)
-                .padding(.top, 50)
 
-        
+                Spacer()
             }
 
             CompletedMissionAnimalIdentification(
@@ -9211,9 +9908,7 @@ struct CompletedMissionSheetView: View {
             "Deseja realmente refazer a expedição?",
             isPresented: $showRedoConfirmation
         ) {
-            Button("Cancelar", role: .cancel) {
-                
-            }
+            Button("Cancelar", role: .cancel) {  }
 
             Button("Refazer", role: .destructive) {
                 onRedo()
@@ -9540,7 +10235,147 @@ struct InformationView: View {
 
 
 ========================================
-ARQUIVO: ./FaunaVista/FaunaVista/View/Onboarding/StartExpedition.swift
+ARQUIVO: ./FaunaVista/FaunaVista/View/Onboarding/FindSpecies.swift
+========================================
+//
+//  Encontre.swift
+//  FaunaVista
+//
+//  Created by Joice Cardoso on 05/10/26.
+//
+
+import SwiftUI
+
+struct FindSpecies: View {
+    @Environment(AppCoordinator.self) private var coordinator
+    var body: some View {
+        ZStack {
+            Image("EncontreImg")
+                .resizable()
+                .scaledToFill()
+                .ignoresSafeArea()
+            
+            VStack(spacing: 10) {
+                Text("Explore novos\nterritórios")
+                    .font(
+                        .custom("Belanosima-SemiBold", size: 34))
+                    .multilineTextAlignment(.center)
+                    .foregroundStyle(Color("TextOnboarding"))
+                    .padding(.top, 80)
+                
+                Text("Procure animais que enfrentam \n riscos de desaparecer da mata \n e descubra sua importância")
+                    .font(.system(size: 16))
+                    .multilineTextAlignment(.center)
+                    .foregroundStyle(Color("TextOnboarding"))
+                
+                Spacer()
+                
+                HStack(spacing: 30) {
+                    
+                    Button (action: {
+                        coordinator.pop()
+                    }) {
+                        Image(systemName: "chevron.left")
+                            .font(.system(size: 25, weight: .bold))
+                            .foregroundStyle(.white)
+                            .frame(width: 50, height: 50)
+                    }
+                    .glassEffect(.regular, in: .circle)
+                    .padding(.bottom, 70)
+                    
+                    
+                    Button (action: {
+                        coordinator.push(.observeImg)
+                    }) {
+                        Image(systemName: "chevron.right")
+                            .font(.system(size: 25, weight: .bold))
+                            .foregroundStyle(.white)
+                            .frame(width: 50, height: 50)
+                    }
+                    .glassEffect(.regular, in: .circle)
+                    .padding(.bottom, 70)
+                    
+                }
+            }
+        }
+        .navigationBarBackButtonHidden(true)
+    }
+}
+
+#Preview {
+    FindSpecies()
+}
+
+
+========================================
+ARQUIVO: ./FaunaVista/FaunaVista/View/Onboarding/EndOnboarding.swift
+========================================
+//
+//  Comecou.swift
+//  FaunaVista
+//
+//  Created by Joice Cardoso on 06/10/26.
+//
+
+import SwiftUI
+
+struct EndOnboarding: View {
+    @Environment(AppCoordinator.self) private var coordinator
+    @AppStorage("hasCompletedOnboarding")
+    
+    private var hasCompletedOnboarding = false
+    
+    var body: some View {
+        ZStack {
+            Image("ComecouImg")
+                .resizable()
+                .scaledToFill()
+                .ignoresSafeArea()
+            
+            VStack(spacing: 10) {
+                Text("Sua expedição\nestá começando")
+                    .font(
+                        .custom("Belanosima-SemiBold", size: 34))
+                    .multilineTextAlignment(.center)
+                    .foregroundStyle(Color("TextOnboarding"))
+                
+                Text("Explore, fotografe e complete\nsua coleção de descobertas\npela fauna brasileira")
+                    .font(.system(size: 16))
+                    .multilineTextAlignment(.center)
+                    .foregroundStyle(Color("TextOnboarding"))
+                
+                Spacer()
+                
+                Button {
+                    coordinator.resetOnboarding()
+                    hasCompletedOnboarding = true
+                } label: {
+                    Text("Iniciar")
+                        .font(.system(size: 18, weight: .medium))
+                        .foregroundStyle(.textIcon)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 46)
+                        .background (Color("TextOnboarding"))
+                        .clipShape(Capsule())
+                }
+                .padding(.horizontal, 80)
+            }
+            .padding(.bottom, 70)
+            .padding(.top, 150)
+            
+        }
+        .navigationBarBackButtonHidden(true)
+    }
+}
+
+#Preview {
+    EndOnboarding()
+}
+
+
+
+========================================
+ARQUIVO: ./FaunaVista/FaunaVista/View/Onboarding/StartOnboarding.swift
 ========================================
 //
 //  startexpedition.swift
@@ -9551,7 +10386,8 @@ ARQUIVO: ./FaunaVista/FaunaVista/View/Onboarding/StartExpedition.swift
 
 import SwiftUI
 
-struct StartExpedition: View {
+struct StartOnboarding: View {
+    @Environment(AppCoordinator.self) private var coordinator
     var body: some View {
         ZStack {
             Image("ExpedicaoComecaImg")
@@ -9571,9 +10407,9 @@ struct StartExpedition: View {
                 
                 Spacer()
                 
-                Button {
-                    
-                } label: {
+                Button (action: {
+                    coordinator.push(.exploreTerritories)
+                }) {
                     Text("Avançar")
                         .font(.system(size: 18, weight: .medium))
                         .foregroundStyle(.white)
@@ -9584,7 +10420,7 @@ struct StartExpedition: View {
                 }
                 .padding(.horizontal, 80)
             }
-            .padding(.bottom, 50)
+            .padding(.bottom, 70)
             .padding(.top, 150)
             
         }
@@ -9592,12 +10428,119 @@ struct StartExpedition: View {
 }
 
 #Preview {
-    StartExpedition()
+    StartOnboarding()
 }
 
 
 ========================================
-ARQUIVO: ./FaunaVista/FaunaVista/View/Onboarding/Observe.swift
+ARQUIVO: ./FaunaVista/FaunaVista/View/Onboarding/ExploreTerritories.swift
+========================================
+//
+//  Explore.swift
+//  FaunaVista
+//
+//  Created by Joice Cardoso on 05/10/26.
+//
+
+import SwiftUI
+
+struct ExploreTerritories: View {
+    @Environment(AppCoordinator.self) private var coordinator
+    var body: some View {
+        ZStack {
+            Image("ExploreImg")
+                .resizable()
+                .scaledToFill()
+                .ignoresSafeArea()
+            
+            VStack(spacing: 10) {
+                Text("Encontre espécies ameaçadas")
+                    .font(
+                        .custom("Belanosima-SemiBold", size: 34))
+                    .multilineTextAlignment(.center)
+                    .padding(.top, 80)
+                
+                Text("Procure animais que enfrentam\n riscos de desaparecer da mata\n e descubra sua importância")
+                    .font(.system(size: 16))
+                    .multilineTextAlignment(.center)
+                
+                Spacer()
+                HStack(spacing: 30) {
+                    
+                    Button (action: {
+                        coordinator.pop()
+                    }) {
+                        Image(systemName: "chevron.left")
+                            .font(.system(size: 25, weight: .bold))
+                            .foregroundStyle(.white)
+                            .frame(width: 50, height: 50)
+                    }
+                    .glassEffect(.regular, in: .circle)
+                    .padding(.bottom, 70)
+                    
+                    
+                    Button (action: {
+                        coordinator.push(.findSpecies)
+                    }) {
+                        Image(systemName: "chevron.right")
+                            .font(.system(size: 25, weight: .bold))
+                            .foregroundStyle(.white)
+                            .frame(width: 50, height: 50)
+                    }
+                    .glassEffect(.regular, in: .circle)
+                    .padding(.bottom, 70)
+                    
+                }
+            
+            }
+    
+        }
+        .navigationBarBackButtonHidden(true)
+    }
+}
+
+#Preview {
+    ExploreTerritories()
+}
+
+
+========================================
+ARQUIVO: ./FaunaVista/FaunaVista/View/Onboarding/OnboardingView.swift
+========================================
+//
+//  OnboardingView.swift
+//  FaunaVista
+//
+//  Created by Gabriel Groppo on 07/10/26.
+//
+
+import SwiftUI
+
+struct OnboardingView: View {
+
+    @Environment(AppCoordinator.self)
+    private var coordinator
+
+    var body: some View {
+
+        @Bindable var coordinator = coordinator
+
+        NavigationStack(path: $coordinator.pathOnboarding) {
+
+            StartOnboarding()
+                .navigationDestination(for: AppRoute.self) { route in
+                    ViewFactory.viewBuilder(for: route)
+                }
+        }
+        .onAppear {
+            coordinator.isOnboarding = true
+        }
+    }
+}
+
+
+========================================
+ARQUIVO: ./FaunaVista/FaunaVista/View/Onboarding/ObserveImg.swift
 ========================================
 //
 //  Observe.swift
@@ -9608,7 +10551,8 @@ ARQUIVO: ./FaunaVista/FaunaVista/View/Onboarding/Observe.swift
 
 import SwiftUI
 
-struct Observe: View {
+struct ObserveImg: View {
+    @Environment(AppCoordinator.self) private var coordinator
     var body: some View {
         ZStack {
             Image("ObserveImg")
@@ -9634,238 +10578,38 @@ struct Observe: View {
                 
                 HStack(spacing: 30) {
                     
-                    Button {
-                        
-                    } label: {
+                    Button (action: {
+                        coordinator.pop()
+                    }) {
                         Image(systemName: "chevron.left")
                             .font(.system(size: 25, weight: .bold))
                             .foregroundStyle(.white)
                             .frame(width: 50, height: 50)
                     }
                     .glassEffect(.regular, in: .circle)
-                    .padding(.bottom, 50)
+                    .padding(.bottom, 70)
                     
                     
-                    Button {
-                        
-                    } label: {
+                    Button (action: {
+                        coordinator.push(.endOnboarding)
+                    }) {
                         Image(systemName: "chevron.right")
                             .font(.system(size: 25, weight: .bold))
                             .foregroundStyle(.white)
                             .frame(width: 50, height: 50)
                     }
                     .glassEffect(.regular, in: .circle)
-                    .padding(.bottom, 50)
+                    .padding(.bottom, 70)
                     
                 }
                 
             }
         }
-            }
-        }
-#Preview {
-    Observe()
-}
-
-
-========================================
-ARQUIVO: ./FaunaVista/FaunaVista/View/Onboarding/Encontre.swift
-========================================
-//
-//  Encontre.swift
-//  FaunaVista
-//
-//  Created by Joice Cardoso on 05/10/26.
-//
-
-import SwiftUI
-
-struct Encontre: View {
-    var body: some View {
-        ZStack {
-            Image("EncontreImg")
-                .resizable()
-                .scaledToFill()
-                .ignoresSafeArea()
-            
-            VStack(spacing: 10) {
-                Text("Explore novos\nterritórios")
-                    .font(
-                        .custom("Belanosima-SemiBold", size: 34))
-                    .multilineTextAlignment(.center)
-                    .foregroundStyle(Color("TextOnboarding"))
-                    .padding(.top, 80)
-                
-                Text("Procure animais que enfrentam \n riscos de desaparecer da mata \n e descubra sua importância")
-                    .font(.system(size: 16))
-                    .multilineTextAlignment(.center)
-                    .foregroundStyle(Color("TextOnboarding"))
-                
-                Spacer()
-                
-                HStack(spacing: 30) {
-                    
-                    Button {
-                        
-                    } label: {
-                        Image(systemName: "chevron.left")
-                            .font(.system(size: 25, weight: .bold))
-                            .foregroundStyle(.white)
-                            .frame(width: 50, height: 50)
-                    }
-                    .glassEffect(.regular, in: .circle)
-                    .padding(.bottom, 50)
-                    
-                    
-                    Button {
-                        
-                    } label: {
-                        Image(systemName: "chevron.right")
-                            .font(.system(size: 25, weight: .bold))
-                            .foregroundStyle(.white)
-                            .frame(width: 50, height: 50)
-                    }
-                    .glassEffect(.regular, in: .circle)
-                    .padding(.bottom, 50)
-                    
-                }
-            }
-        }
+        .navigationBarBackButtonHidden(true)
     }
 }
-
 #Preview {
-    Encontre()
-}
-
-
-========================================
-ARQUIVO: ./FaunaVista/FaunaVista/View/Onboarding/Comecou.swift
-========================================
-//
-//  Comecou.swift
-//  FaunaVista
-//
-//  Created by Joice Cardoso on 06/10/26.
-//
-
-import SwiftUI
-
-struct Comecou: View {
-    var body: some View {
-        ZStack {
-            Image("ComecouImg")
-                .resizable()
-                .scaledToFill()
-                .ignoresSafeArea()
-            
-            VStack(spacing: 10) {
-                Text("Sua expedição\nestá começando")
-                    .font(
-                        .custom("Belanosima-SemiBold", size: 34))
-                    .multilineTextAlignment(.center)
-                    .foregroundStyle(Color("TextOnboarding"))
-                
-                Text("Explore, fotografe e complete\nsua coleção de descobertas\npela fauna brasileira")
-                    .font(.system(size: 16))
-                    .multilineTextAlignment(.center)
-                    .foregroundStyle(Color("TextOnboarding"))
-                
-                Spacer()
-                
-                Button {
-                    
-                } label: {
-                    Text("Iniciar")
-                        .font(.system(size: 18, weight: .medium))
-                        .foregroundStyle(.texIcon)
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 46)
-                        .background (Color("TextOnboarding"))
-                        .clipShape(Capsule())
-                }
-                .padding(.horizontal, 80)
-            }
-            .padding(.bottom, 50)
-            .padding(.top, 150)
-            
-        }
-    }
-}
-
-#Preview {
-    Comecou()
-}
-
-
-
-========================================
-ARQUIVO: ./FaunaVista/FaunaVista/View/Onboarding/Explore.swift
-========================================
-//
-//  Explore.swift
-//  FaunaVista
-//
-//  Created by Joice Cardoso on 05/10/26.
-//
-
-import SwiftUI
-
-struct Explore: View {
-    var body: some View {
-        ZStack {
-            Image("ExploreImg")
-                .resizable()
-                .scaledToFill()
-                .ignoresSafeArea()
-            
-            VStack(spacing: 10) {
-                Text("Encontre espécies ameaçadas")
-                    .font(
-                        .custom("Belanosima-SemiBold", size: 34))
-                    .multilineTextAlignment(.center)
-                    .padding(.top, 80)
-                
-                Text("Procure animais que enfrentam\n riscos de desaparecer da mata\n e descubra sua importância")
-                    .font(.system(size: 16))
-                    .multilineTextAlignment(.center)
-                
-                Spacer()
-                HStack(spacing: 30) {
-                    
-                    Button {
-                        
-                    } label: {
-                        Image(systemName: "chevron.left")
-                            .font(.system(size: 25, weight: .bold))
-                            .foregroundStyle(.white)
-                            .frame(width: 50, height: 50)
-                    }
-                    .glassEffect(.regular, in: .circle)
-                    .padding(.bottom, 50)
-                    
-                    
-                    Button {
-                        
-                    } label: {
-                        Image(systemName: "chevron.right")
-                            .font(.system(size: 25, weight: .bold))
-                            .foregroundStyle(.white)
-                            .frame(width: 50, height: 50)
-                    }
-                    .glassEffect(.regular, in: .circle)
-                    .padding(.bottom, 50)
-                    
-                }
-            
-            }
-    
-        }
-    }
-}
-
-#Preview {
-    Explore()
+    ObserveImg()
 }
 
 
@@ -9895,7 +10639,7 @@ class ExpeditionLog{
     
     var MissionAccomplished: Bool = false
     
-  
+    
     
     func AddPhoto(registroFotografico:RegistroFotografico) {
         if capturedPhotos.count < 10 {
@@ -9964,8 +10708,8 @@ enum PreviewSupport {
     }
 
     @MainActor
-    static var coordinator: AppCordinator {
-        AppCordinator()
+    static var coordinator: AppCoordinator {
+        AppCoordinator()
     }
 
     @MainActor
@@ -10158,7 +10902,9 @@ final class AnimalService {
                     taxon,
                     biome: catalogAnimal.biome,
                     commonName: catalogAnimal.commonName,
-                    conservationStatus: catalogAnimal.conservationStatus,
+                    conservationStatus: catalogAnimal.conservationStatus
+                        ?? taxon.conservationStatus?.statusName,
+                    
                     imageURL: imageURL,
                     imageSourceURL: imageSourceURL,
                     imageAuthor: imageAuthor,
@@ -10345,11 +11091,21 @@ final class INaturalistService {
             INaturalistResponse.self,
             from: data
         )
-
-        return result.results.first { taxon in
+        
+        let animal = result.results.first { taxon in
             taxon.name.lowercased() == scientificName.lowercased()
             && taxon.rank == "species"
         }
+
+        if let animal {
+            print("🐾 Animal:", animal.name)
+            print("📋 Status:", animal.conservationStatus?.status ?? "nil")
+            print("🌍 Status Name:", animal.conservationStatus?.statusName ?? "nil")
+        } else {
+            print("❌ Animal não encontrado:", scientificName)
+        }
+
+        return animal
     }
 }
 
@@ -11019,7 +11775,6 @@ import Combine
 
 struct ContentView: View {
     @AppStorage("onboardingConcluido") var onboardingConcluido: Bool = false
-    @StateObject private var vm = ExpeditionViewModel()
     var body: some View {
         Group {
             if onboardingConcluido {

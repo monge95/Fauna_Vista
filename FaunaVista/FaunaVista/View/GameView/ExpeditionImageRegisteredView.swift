@@ -72,35 +72,31 @@ struct ExpeditionAnimalRegisteredView: View {
 
                     Text(scientificName)
                         .font(.footnote.italic())
-                        .foregroundStyle(.secondary)
+                         .foregroundStyle(.secondary)
                 }
 
                 ZStack(alignment: .bottom) {
-
-                    Image(AnimalScenario.backgroundName(for: scientificName))
-                        .resizable()
-                        .scaledToFit()
-
-                    Image(AnimalScenario.groundName(for: scientificName))
-                        .resizable()
-                        .scaledToFit()
-                        .offset(y: groundOffset)
-                    
-                    if isDiscovered {
-                        Image(
-                            IllustrationAnimal.imageName(
-                                for: scientificName,
-                                discovered: true
-                            )
-                        )
-                        .resizable()
-                        .scaledToFit()
-                    } else {
-                        Text("Nada foi descoberto")
-                            .font(.system(size: 22, weight: .bold))
-                            .foregroundStyle(.white)
-                            .padding(.bottom, 60)
-                            .shadow(color: .black.opacity(0.5), radius: 2)
+                    if let animal = AnimalScenario.constructCard(for: scientificName){
+                        Image(animal.BackgroundName)
+                            .resizable()
+                            .scaledToFit()
+                            
+                        
+                            
+                            if isDiscovered {
+                                Image(animal.assetName)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(maxWidth: animal.size)
+                            .position(y: animal.posY)
+                            
+                        } else {
+                            Text("Nada foi descoberto")
+                                .font(.system(size: 22, weight: .bold))
+                                .foregroundStyle(.white)
+                                .padding(.bottom, 60)
+                                .shadow(color: .black.opacity(0.5), radius: 2)
+                        }
                     }
                 }
                 .frame(height: 200)

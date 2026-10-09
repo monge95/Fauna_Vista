@@ -7,49 +7,70 @@
 
 import Foundation
 
+struct animalScenario: Identifiable {
+    let id: Int
+    let assetName: String
+    let BackgroundName: String
+    let size: CGFloat
+    let posY: CGFloat
+
+}
+
 struct AnimalScenario {
 
-    static func backgroundName(for scientificName: String) -> String {
+    static func constructCard(for scientificName: String) -> animalScenario? {
         switch scientificName {
-
+            
         case "Myrmecophaga tridactyla":
-            return "TamanduaArara"
-
+            let animal = animalScenario(id: 1, assetName: "tamandua-bandeira",BackgroundName: "TamanduaArara", size: 100.1, posY: 100.1)
+            return animal
+            
         case "Chrysocyon brachyurus":
-            return "OncaLoboTatu"
-
+            let animal = animalScenario(id: 1,assetName: "lobo-guara" ,BackgroundName: "OncaLoboTatu", size: 100.1, posY: 100.1)
+            return animal
+            
         case "Inia geoffrensis":
-            return "Agua"
-
+            let animal = animalScenario(id: 1,assetName: "boto-cor-de-rosa" ,BackgroundName: "Agua", size: 100.1, posY: 100.1)
+            return animal
+            
         case "Cacajao rubicundus":
-            return "Uacari"
-
+            let animal = animalScenario(id: 1,assetName: "uacari-vermelho" ,BackgroundName: "Uacari", size: 100.1, posY: 100.1)
+            return animal
+            
         case "Anodorhynchus leari":
-            return "TamanduaArara"
-
+            let animal = animalScenario(id: 1,assetName: "arara-azul" ,BackgroundName: "TamanduaArara", size: 100.1, posY: 100.1)
+            return animal
+            
         case "Tolypeutes tricinctus":
-            return "OncaLoboTatu"
-
+            let animal = animalScenario(id: 1,assetName: "tatu-bola" ,BackgroundName: "OncaLoboTatu", size: 100.1, posY: 100.1)
+            return animal
+            
         case "Leontopithecus rosalia":
-            return "MicoPreguica"
-
+            let animal = animalScenario(id: 1,assetName: "mico-leao-dourado" ,BackgroundName: "MicoPreguica", size: 100.1, posY: 100.1)
+            return animal
+            
         case "Bradypus torquatus":
-            return "MicoPreguica"
-
+            let animal = animalScenario(id: 1,assetName: "preguica-de-coleira" ,BackgroundName: "MicoPreguica", size: 100.1, posY: 100.1)
+            return animal
+            
         case "Pteronura brasiliensis":
-            return "Agua"
-
+            let animal = animalScenario(id: 1,assetName: "ariranha" ,BackgroundName: "Agua", size: 100.1, posY: 100.1)
+            return animal
+            
         case "Panthera onca":
-            return "OncaLoboTatu"
-
+            let animal = animalScenario(id: 1,assetName: "onca-pintada" ,BackgroundName: "OncaLoboTatu", size: 100.1, posY: 100.1)
+            return animal
+            
         case "Xanthopsar flavus":
-            return "Veste"
-
+            let animal = animalScenario(id: 1,assetName: "onca-pintada" ,BackgroundName: "OncaLoboTatu", size: 100.1, posY: 100.1)
+            return animal
+            
         case "Ceratophrys ornata":
-            return "Agua"
-
+            let animal = animalScenario(id: 1,assetName: "onca-pintada" ,BackgroundName: "OncaLoboTatu", size: 100.1, posY: 100.1)
+            return animal
+            
         default:
-            return ""
+            return nil
         }
     }
 
