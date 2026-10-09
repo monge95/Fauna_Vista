@@ -16,7 +16,7 @@ struct InformationView: View {
 
             header
 
-            VStack(spacing: 24) {
+            VStack(spacing: 12) {
 
                 NavigationLink {
                     FrequentlyAskedQuestionsView()
