@@ -49,7 +49,12 @@ final class ExpeditionGame {
     var missionAnimal: ExpeditionAnimalDefinition? { level?.animal }
     var requiredSelection: Int { min(ExpeditionConfig.photosToSubmit, photoCards.count) }
     var selectedPhotos: [ExpeditionPhoto] { photoCards.filter { selectedPhotoIDs.contains($0.id) } }
-    var canSubmitSelection: Bool { requiredSelection > 0 && selectedPhotoIDs.count == requiredSelection }
+    var canSubmitSelection: Bool {
+        if requiredSelection == 0 {
+            return selectedPhotoIDs.isEmpty
+        }
+        return selectedPhotoIDs.count == requiredSelection
+    }
 
     var missionResults: [(mission: ExpeditionMission, completed: Bool)] {
         guard let id = missionAnimal?.id else {
@@ -57,7 +62,8 @@ final class ExpeditionGame {
         }
         return ExpeditionMission.allCases.map { ($0, $0.isCompleted(by: selectedPhotos, animalID: id)) }
     }
-
+    
+    
     var allMissionsCompleted: Bool { missionResults.allSatisfy { $0.completed } }
 
     // MARK: - Nível
@@ -174,3 +180,5 @@ final class ExpeditionGame {
         captureInProgress = false
     }
 }
+
+

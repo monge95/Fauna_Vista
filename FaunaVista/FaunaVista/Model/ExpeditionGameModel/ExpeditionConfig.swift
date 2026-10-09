@@ -23,6 +23,13 @@ struct ExpeditionConfig {
     static let maximumZoom: Float = 5.0
     static let totalPhotos = 10
     static let gameDuration: TimeInterval = 60
+
+    // MARK: - Transição para iniciar a expedição
+    // Estes valores podem ser alterados livremente para ajustar a experiência.
+    static let startCountdownDuration: TimeInterval = 5.0
+    static let startCountdownStepDuration: TimeInterval = 1.0
+    static let startFadeInDuration: TimeInterval = 0.45
+    static let startFadeOutDuration: TimeInterval = 0.45
     static let photoCropSize: CGFloat = 280  // Tamanho do quadro de captura.
     // Distância válida para detectar um objeto.
     // Ajuste estes dois valores conforme o tamanho real dos seus modelos 3D.
@@ -61,3 +68,5 @@ struct ExpeditionConfig {
     static let maxLookLeftDegrees: Float = 50
     static let maxLookRightDegrees: Float = 50
 }
+
+

@@ -17,10 +17,13 @@ struct MyApp: App {
                 CoordinatorView()
                     .environment(coordinator)
                     .environment(log)
+                    .preferredColorScheme(.light)
+
             } else {
                 OnboardingView()
                     .environment(coordinator)
                     .environment(log)
+                    .preferredColorScheme(.light)
             }
         }
         .modelContainer(for: [
