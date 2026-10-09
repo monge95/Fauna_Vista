@@ -42,7 +42,7 @@ struct ExpeditionMissionCheckView: View {
             FaunaPalette.beige
                 .ignoresSafeArea()
 
-            ScrollView {
+          
 
                 VStack(spacing: 14) {
 
@@ -56,7 +56,7 @@ struct ExpeditionMissionCheckView: View {
                     )
                     .resizable()
                     .scaledToFit()
-                    .frame(height: 190)
+                    .frame(height: 110)
 
                     Text(
                         vm.missionAnimal?.displayName ?? "Animal"
@@ -72,7 +72,7 @@ struct ExpeditionMissionCheckView: View {
                     // MARK: - Desafios
 
                     Text("Desafios")
-                        .font(.system(size: 17, weight: .bold))
+                        .font(.system(size: 15, weight: .bold))
                         .frame(
                             maxWidth: .infinity,
                             alignment: .leading
@@ -84,7 +84,7 @@ struct ExpeditionMissionCheckView: View {
                         id: \.element.mission.id
                     ) { index, result in
 
-                        HStack(spacing: 12) {
+                        HStack(spacing: 10) {
 
                             Image(
                                 systemName: result.completed
@@ -108,7 +108,7 @@ struct ExpeditionMissionCheckView: View {
 
                             Spacer(minLength: 0)
                         }
-                        .padding(12)
+                        .padding(10)
                         .background(
                             .white,
                             in: RoundedRectangle(cornerRadius: 14)
@@ -161,7 +161,7 @@ struct ExpeditionMissionCheckView: View {
                 .padding(.horizontal, 20)
                 .padding(.top, 60)
                 .padding(.bottom, 110)
-            }
+            
 
             // MARK: - Próximo / voltar aos biomas
 
