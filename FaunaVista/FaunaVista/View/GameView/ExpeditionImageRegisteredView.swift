@@ -18,20 +18,8 @@ struct ExpeditionAnimalRegisteredView: View {
     let onViewCollection: () -> Void
     
     private var biomeName: String {
-           MapPiece.todosOsBiomas
-               .first { $0.id == biome }?.name ?? "Bioma"
-       }
-
-    private var biomeColor: Color {
-        switch biome {
-        case 2:  return Color("AmazonColor")
-        case 1:  return Color("CerradoColor")
-        case 5:  return Color("CaatingaColor")
-        case 4:  return Color("AtlanticForestColor")
-        case 6:  return Color("PantanalColor")
-        case 3:  return Color("PampaColor")
-        default: return .gray
-        }
+        MapPiece.todosOsBiomas
+            .first { $0.id == biome }?.name ?? "Bioma"
     }
 
     var body: some View {
@@ -62,21 +50,19 @@ struct ExpeditionAnimalRegisteredView: View {
                             .resizable()
                             .scaledToFit()
                             
-                        
-                            
                             if isDiscovered {
                                 Image(animal.assetName)
                             .resizable()
                             .scaledToFit()
                             .frame(maxWidth: animal.size)
-                            .position(y: animal.posY)
+                            .offset(y: animal.posY)
+                            
                             
                         } else {
                             Text("Nada foi descoberto")
                                 .font(.system(size: 22, weight: .bold))
                                 .foregroundStyle(.white)
                                 .padding(.bottom, 60)
-                                .shadow(color: .black.opacity(0.5), radius: 2)
                         }
                     }
                 }
@@ -98,7 +84,6 @@ struct ExpeditionAnimalRegisteredView: View {
             .foregroundStyle(.black)
             .padding(24)
             .background(FaunaPalette.beige, in: RoundedRectangle(cornerRadius: 32))
-            .shadow(color: .black.opacity(0.15), radius: 8, y: 4)
             .padding(.horizontal, 28)
         }
     }
@@ -107,7 +92,7 @@ struct ExpeditionAnimalRegisteredView: View {
 #Preview("Animal registrado") {
 
     
-    let scientificName = "Leontopithecus rosalia"
+    let scientificName = "Chrysocyon brachyurus"
 
     let animal = animalCatalog.first {
         $0.scientificName == scientificName
