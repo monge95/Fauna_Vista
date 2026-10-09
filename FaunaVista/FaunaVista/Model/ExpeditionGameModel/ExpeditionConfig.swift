@@ -26,7 +26,7 @@ struct ExpeditionConfig {
 
     // MARK: - Transição para iniciar a expedição
     // Estes valores podem ser alterados livremente para ajustar a experiência.
-    static let startCountdownDuration: TimeInterval = 5.0
+    static let startCountdownDuration: TimeInterval = 3.0
     static let startCountdownStepDuration: TimeInterval = 1.0
     static let startFadeInDuration: TimeInterval = 0.45
     static let startFadeOutDuration: TimeInterval = 0.45
