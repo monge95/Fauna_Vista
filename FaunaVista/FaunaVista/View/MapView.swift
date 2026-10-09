@@ -71,6 +71,7 @@ struct MapView: View {
                         .cornerRadius(20)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.leading, 70)
+                        .padding(.top,-15)
                     
                     ZStack{
                     Image("cloud")
@@ -78,7 +79,7 @@ struct MapView: View {
                         
                         
                         MapButton()
-                            .padding(.top, 60)
+                            .padding(.top, 50)
                     }
                     Spacer()
                 }

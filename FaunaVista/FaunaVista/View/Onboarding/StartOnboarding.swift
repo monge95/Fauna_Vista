@@ -17,7 +17,7 @@ struct StartOnboarding: View {
                 .ignoresSafeArea()
             
             VStack(spacing: 10) {
-                Text("Sua Expedição\ncomeça aqui")
+                Text("Sua expedição\ncomeça aqui")
                     .font(
                         .custom("Belanosima-SemiBold", size: 34))
                     .multilineTextAlignment(.center)
