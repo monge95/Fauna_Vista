@@ -8,17 +8,17 @@
 import SwiftUI
 
 struct ExpeditionMissionCheckView: View {
-
+    
     let vm: ExpeditionViewState
     
     @Environment(AppCoordinator.self) private var coordinator
-   // @ObservedObject var vm: ExpeditionViewModel
+    
     
     private var currentMissionPin: MissionPin? {
         guard let scientificName = vm.missionAnimal?.scientificName else {
             return nil
         }
-
+        
         return MissionPin.allMissionPins.first {
             $0.scientificName == scientificName
         }
@@ -28,143 +28,157 @@ struct ExpeditionMissionCheckView: View {
         guard let pin = currentMissionPin else {
             return []
         }
-
+        
         return [
             pin.missionObjective1,
             pin.missionObjective2,
             pin.missionObjective3
         ]
     }
-
+    
+    private var missionFailed: Bool {
+        !vm.missionResults.contains { $0.completed }
+    }
+    
     var body: some View {
         ZStack(alignment: .bottom) {
-
+            
             FaunaPalette.beige
                 .ignoresSafeArea()
-
-          
-
-                VStack(spacing: 14) {
-
-                    // MARK: - Animal
-
-                    Image(
-                        IllustrationAnimal.imageName(
-                            for: vm.missionAnimal?.scientificName ?? "",
-                            discovered: true
-                        )
+            
+            VStack(spacing: 14) {
+                
+                // MARK: - Animal
+                
+                Image(
+                    IllustrationAnimal.imageName(
+                        for: vm.missionAnimal?.scientificName ?? "",
+                        discovered: !missionFailed
                     )
-                    .resizable()
-                    .scaledToFit()
-                    .frame(height: 110)
+                )
+                .resizable()
+                .scaledToFit()
+                .frame(height: 110)
+                
+                if missionFailed {
 
-                    Text(
-                        vm.missionAnimal?.displayName ?? "Animal"
-                    )
-                    .font(.system(size: 20, weight: .bold))
+                    VStack(spacing: 8) {
+                        Text("Missão não concluída")
+                            .font(.system(size: 20, weight: .bold))
 
-                    Text(
-                        vm.missionAnimal?.scientificName ?? ""
-                    )
-                    .font(.footnote.italic())
-                    .foregroundStyle(.secondary)
-
-                    // MARK: - Desafios
-
-                    Text("Desafios")
-                        .font(.system(size: 15, weight: .bold))
-                        .frame(
-                            maxWidth: .infinity,
-                            alignment: .leading
-                        )
-                        .padding(.top, 8)
-
-                    ForEach(
-                        Array(vm.missionResults.enumerated()),
-                        id: \.element.mission.id
-                    ) { index, result in
-
-                        HStack(spacing: 10) {
-
-                            Image(
-                                systemName: result.completed
-                                    ? "checkmark.circle.fill"
-                                    : "circle"
-                            )
-                            .font(.system(size: 30))
-                            .foregroundStyle(
-                                result.completed
-                                    ? Color.green
-                                    : Color.gray.opacity(0.4)
-                            )
-
-                            Text(
-                                missionObjectives.indices.contains(index)
-                                    ? missionObjectives[index]
-                                    : result.mission.title
-                            )
-                            .font(.system(size: 12))
-                            .fixedSize(horizontal: false, vertical: true)
-
-                            Spacer(minLength: 0)
-                        }
-                        .padding(10)
-                        .background(
-                            .white,
-                            in: RoundedRectangle(cornerRadius: 14)
-                        )
+                        Text("Nenhum desafio foi cumprido. O animal permanece desconhecido.")
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                            .multilineTextAlignment(.center)
                     }
 
-                    // MARK: - Fotos
+                } else {
 
-                    Text("Fotos enviadas")
-                        .font(.system(size: 17, weight: .bold))
-                        .frame(
-                            maxWidth: .infinity,
-                            alignment: .leading
-                        )
-                        .padding(.top, 8)
+                    Text(vm.missionAnimal?.displayName ?? "Animal")
+                        .font(.system(size: 20, weight: .bold))
 
+                    Text(vm.missionAnimal?.scientificName ?? "")
+                        .font(.footnote.italic())
+                        .foregroundStyle(.secondary)
+
+                }
+                
+                // MARK: - Desafios
+                
+                Text("Desafios")
+                    .font(.system(size: 15, weight: .bold))
+                    .frame(
+                        maxWidth: .infinity,
+                        alignment: .leading
+                    )
+                    .padding(.top, 8)
+                
+                ForEach(
+                    Array(vm.missionResults.enumerated()),
+                    id: \.element.mission.id
+                ) { index, result in
+                    
                     HStack(spacing: 10) {
-
-                        ForEach(vm.selectedPhotos) { photo in
-
-                            VStack(spacing: 4) {
-
-                                Color.clear
-                                    .aspectRatio(
-                                        1,
-                                        contentMode: .fit
-                                    )
-                                    .overlay(
-                                        Image(uiImage: photo.image)
-                                            .resizable()
-                                            .scaledToFill()
-                                    )
-                                    .clipShape(
-                                        RoundedRectangle(
-                                            cornerRadius: 14
-                                        )
-                                    )
-
-                                Text(
-                                    photo.pose?.displayName
-                                    ?? "Sem animal"
+                        
+                        Image(
+                            systemName: result.completed
+                            ? "checkmark.circle.fill"
+                            : "circle"
+                        )
+                        .font(.system(size: 30))
+                        .foregroundStyle(
+                            result.completed
+                            ? Color.green
+                            : Color.gray.opacity(0.4)
+                        )
+                        
+                        Text(
+                            missionObjectives.indices.contains(index)
+                            ? missionObjectives[index]
+                            : result.mission.title
+                        )
+                        .font(.system(size: 12))
+                        .fixedSize(horizontal: false, vertical: true)
+                        
+                        Spacer(minLength: 0)
+                    }
+                    .padding(10)
+                    .background(
+                        .white,
+                        in: RoundedRectangle(cornerRadius: 14)
+                    )
+                }
+                
+                // MARK: - Fotos
+                
+                Text("Fotos enviadas")
+                    .font(.system(size: 17, weight: .bold))
+                    .frame(
+                        maxWidth: .infinity,
+                        alignment: .leading
+                    )
+                    .padding(.top, 8)
+                
+                HStack(spacing: 10) {
+                    
+                    ForEach(vm.selectedPhotos) { photo in
+                        
+                        VStack(spacing: 4) {
+                            
+                            Color.clear
+                                .aspectRatio(
+                                    1,
+                                    contentMode: .fit
                                 )
-                                .font(.caption2)
-                                .foregroundStyle(.secondary)
-                            }
+                                .overlay(
+                                    Image(uiImage: photo.image)
+                                        .resizable()
+                                        .scaledToFill()
+                                )
+                                .clipShape(
+                                    RoundedRectangle(
+                                        cornerRadius: 14
+                                    )
+                                )
+                            
+                            Text(
+                                photo.pose?.displayName
+                                ?? "Sem animal"
+                            )
+                            .font(.caption2)
+                            .foregroundStyle(.secondary)
                         }
                     }
                 }
-                .foregroundStyle(.black)
-                .padding(.horizontal, 20)
-                .padding(.top, 60)
-                .padding(.bottom, 110)
+            }
+            .foregroundStyle(.black)
+            .padding(.horizontal, 20)
+            .padding(.top, 60)
+            .padding(.bottom, 110)
             
-
+            
             // MARK: - Próximo / voltar aos biomas
-
+            
             if vm.selectedPhotos.isEmpty {
                 Text("Nenhuma foto foi enviada. O animal não será descoberto.")
                     .font(.caption)
@@ -173,60 +187,63 @@ struct ExpeditionMissionCheckView: View {
                     .padding(.horizontal, 24)
                     .padding(.bottom, 76)
             }
-
+            
             Button {
-                            vm.showRegistered()
-                        } label: {
-
-                            Text(vm.selectedPhotos.isEmpty ? "Avançar" : "Próximo")
-                                .font(.headline)
-                                .foregroundStyle(.white)
-                                .padding(.vertical, 16)
-                                .frame(maxWidth: 260)
-                                .background(
-                                    FaunaPalette.teal,
-                                    in: Capsule()
-                                )
-                        }
-                        .padding(.bottom, 24)
-        }
-
-        // MARK: - Voltar
-
-        .overlay(alignment: .topLeading) {
-
-            Button {
-                if vm.selectedPhotos.isEmpty {
+                if missionFailed {
                     vm.cancelExpedition()
                     coordinator.pop()
                 } else {
-                    vm.backToSelection()
+                    vm.showRegistered()
                 }
             } label: {
-
-                Image(systemName: "chevron.left")
-                    .font(
-                        .system(
-                            size: 22,
-                            weight: .bold
-                        )
-                    )
-                    .foregroundStyle(.green)
-                    .frame(
-                        width: 44,
-                        height: 44
-                    )
+                Text(missionFailed ? "Voltar ao bioma" : "Próximo")
+                    .font(.headline)
+                    .foregroundStyle(.white)
+                    .padding(.vertical, 16)
+                    .frame(maxWidth: 260)
                     .background(
-                        .ultraThinMaterial,
-                        in: Circle()
+                        FaunaPalette.teal,
+                        in: Capsule()
                     )
             }
-            .padding(.leading, 20)
-            .padding(.top, 8)
+            .padding(.bottom, 24)
+            
+            // MARK: - Voltar
+            
+            .overlay(alignment: .topLeading) {
+                
+                //            Button {
+                //                if vm.selectedPhotos.isEmpty {
+                //                    vm.cancelExpedition()
+                //                    coordinator.pop()
+                //                } else {
+                //                    vm.backToSelection()
+                //                }
+                //            } label: {
+                //
+                //                Image(systemName: "chevron.left")
+                //                    .font(
+                //                        .system(
+                //                            size: 22,
+                //                            weight: .bold
+                //                        )
+                //                    )
+                //                    .foregroundStyle(.green)
+                //                    .frame(
+                //                        width: 44,
+                //                        height: 44
+                //                    )
+                //                    .background(
+                //                        .ultraThinMaterial,
+                //                        in: Circle()
+                //                    )
+                //            }
+                //            .padding(.leading, 20)
+                //            .padding(.top, 8)
+            }
         }
     }
 }
-
 #Preview {
     ExpeditionMissionCheckView(
         vm: ExpeditionViewState()
