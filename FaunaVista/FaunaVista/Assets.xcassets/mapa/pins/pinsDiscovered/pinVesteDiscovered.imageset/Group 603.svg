@@ -6,7 +6,7 @@
 <use xlink:href="#stroke0_647_3488"/>
 </mask>
 <path d="M25 3C37.1503 3 47 12.8497 47 25C47 32.9655 42.7663 39.9418 36.4268 43.8027L25.3506 52.5L14.2334 44.1875C7.52965 40.4178 3 33.2387 3 25C3 12.8497 12.8497 3 25 3Z" stroke-width="4" stroke="#FFEDC8" mask="url(#stroke1_647_3488)"/>
-<circle cx="25" cy="24.9996" r="17.7222" fill="#FFE8F7"/>
+<circle cx="25" cy="24.9996" r="17.7222" fill="#FFD0E3"/>
 </g>
 <rect x="19" y="11" width="12.4" height="26.8831" fill="url(#pattern0_647_3488)"/>
 <defs>
