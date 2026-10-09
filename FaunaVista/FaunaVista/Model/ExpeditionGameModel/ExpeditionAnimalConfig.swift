@@ -32,13 +32,13 @@ struct ExpeditionAnimalConfig {
             randomActionEnabled: true,
             randomActionChance: 0.35,
             animationTimelineStartFrame: 0,
-            animationTimelineEndFrame: 140,
+            animationTimelineEndFrame: 203,
             idleStartFrame: 0,
             idleEndFrame: 50, // pode mudar de animal pra animal
             walkingStartFrame: 51, // pode mudar de animal pra animal
             walkingEndFrame: 100, // pode mudar de animal pra animal
             actionStartFrame: 101,// pode mudar de animal pra animal
-            actionEndFrame: 140,// pode mudar de animal pra animal
+            actionEndFrame: 203,// pode mudar de animal pra animal
             idleLoops: true, // Idle e Walking ficam em loop.
             walkingLoops: true,  // Action toca uma vez e depois volta para Idle.
             actionLoops: false,
@@ -55,20 +55,20 @@ struct ExpeditionAnimalConfig {
             displayName: "Lobo-Guará",
             scientificName: "Chrysocyon brachyurus",
             enabled: true,
-            speed: 3.4,
+            speed: 7.4,
             waitAtPosition: 2.0,
             actionDuration: 7.0,
             loopRoute: true,
             randomActionEnabled: true,
             randomActionChance: 0.35,
-            animationTimelineStartFrame: 0,
-            animationTimelineEndFrame: 140,
-            idleStartFrame: 0,
-            idleEndFrame: 50, // pode mudar de animal pra animal
-            walkingStartFrame: 51, // pode mudar de animal pra animal
-            walkingEndFrame: 100, // pode mudar de animal pra animal
-            actionStartFrame: 101,// pode mudar de animal pra animal
-            actionEndFrame: 140,// pode mudar de animal pra animal
+            animationTimelineStartFrame: 1,
+            animationTimelineEndFrame: 400,
+            idleStartFrame: 1,
+            idleEndFrame: 123, // pode mudar de animal pra animal
+            walkingStartFrame: 124, // pode mudar de animal pra animal
+            walkingEndFrame: 144, // pode mudar de animal pra animal
+            actionStartFrame: 145,// pode mudar de animal pra animal
+            actionEndFrame: 400,// pode mudar de animal pra animal
             idleLoops: true, // Idle e Walking ficam em loop.
             walkingLoops: true,  // Action toca uma vez e depois volta para Idle.
             actionLoops: false,
@@ -92,13 +92,13 @@ struct ExpeditionAnimalConfig {
             randomActionEnabled: true,
             randomActionChance: 0.35,
             animationTimelineStartFrame: 0,
-            animationTimelineEndFrame: 140,
+            animationTimelineEndFrame: 145,
             idleStartFrame: 0,
-            idleEndFrame: 50, // pode mudar de animal pra animal
-            walkingStartFrame: 51, // pode mudar de animal pra animal
-            walkingEndFrame: 100, // pode mudar de animal pra animal
-            actionStartFrame: 101,// pode mudar de animal pra animal
-            actionEndFrame: 140,// pode mudar de animal pra animal
+            idleEndFrame: 33, // pode mudar de animal pra animal
+            walkingStartFrame: 0, // pode mudar de animal pra animal
+            walkingEndFrame: 33, // pode mudar de animal pra animal
+            actionStartFrame: 34,// pode mudar de animal pra animal
+            actionEndFrame: 147,// pode mudar de animal pra animal
             idleLoops: true, // Idle e Walking ficam em loop.
             walkingLoops: true,  // Action toca uma vez e depois volta para Idle.
             actionLoops: false,
@@ -176,19 +176,19 @@ struct ExpeditionAnimalConfig {
             scientificName: "Ceratophrys ornata",
             enabled: true,
             speed: 3.4,
-            waitAtPosition: 2.0,
+            waitAtPosition: 3.0,
             actionDuration: 7.0,
             loopRoute: true,
             randomActionEnabled: true,
             randomActionChance: 0.35,
             animationTimelineStartFrame: 0,
-            animationTimelineEndFrame: 140,
+            animationTimelineEndFrame: 134,
             idleStartFrame: 0,
-            idleEndFrame: 50, // pode mudar de animal pra animal
-            walkingStartFrame: 51, // pode mudar de animal pra animal
-            walkingEndFrame: 100, // pode mudar de animal pra animal
-            actionStartFrame: 101,// pode mudar de animal pra animal
-            actionEndFrame: 140,// pode mudar de animal pra animal
+            idleEndFrame: 41, // pode mudar de animal pra animal
+            walkingStartFrame: 41, // pode mudar de animal pra animal
+            walkingEndFrame: 60, // pode mudar de animal pra animal
+            actionStartFrame: 61,// pode mudar de animal pra animal
+            actionEndFrame: 134,// pode mudar de animal pra animal
             idleLoops: true, // Idle e Walking ficam em loop.
             walkingLoops: true,  // Action toca uma vez e depois volta para Idle.
             actionLoops: false,
@@ -325,20 +325,20 @@ struct ExpeditionAnimalConfig {
             displayName: "Ariranha",
             scientificName: "Pteronura brasiliensis",
             enabled: true,
-            speed: 3.4,
+            speed: 12.4,
             waitAtPosition: 2.0,
-            actionDuration: 7.0,
+            actionDuration: 3.0,
             loopRoute: true,
             randomActionEnabled: true,
             randomActionChance: 0.35,
             animationTimelineStartFrame: 0,
-            animationTimelineEndFrame: 140,
-            idleStartFrame: 0,
-            idleEndFrame: 50, // pode mudar de animal pra animal
-            walkingStartFrame: 51, // pode mudar de animal pra animal
-            walkingEndFrame: 100, // pode mudar de animal pra animal
-            actionStartFrame: 101,// pode mudar de animal pra animal
-            actionEndFrame: 140,// pode mudar de animal pra animal
+            animationTimelineEndFrame: 173,
+            idleStartFrame: 1,
+            idleEndFrame: 77, // pode mudar de animal pra animal
+            walkingStartFrame: 82, // pode mudar de animal pra animal
+            walkingEndFrame: 125, // pode mudar de animal pra animal
+            actionStartFrame: 126,// pode mudar de animal pra animal
+            actionEndFrame: 173,// pode mudar de animal pra animal
             idleLoops: true, // Idle e Walking ficam em loop.
             walkingLoops: true,  // Action toca uma vez e depois volta para Idle.
             actionLoops: false,
