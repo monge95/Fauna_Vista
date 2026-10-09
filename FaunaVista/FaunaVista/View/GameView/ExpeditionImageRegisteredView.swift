@@ -34,7 +34,6 @@ struct ExpeditionAnimalRegisteredView: View {
         }
     }
 
-
     var body: some View {
         ZStack {
             FaunaPalette.tealLight.ignoresSafeArea()
@@ -103,4 +102,21 @@ struct ExpeditionAnimalRegisteredView: View {
             .padding(.horizontal, 28)
         }
     }
+}
+
+#Preview("Animal registrado") {
+
+    
+    let scientificName = "Leontopithecus rosalia"
+
+    let animal = animalCatalog.first {
+        $0.scientificName == scientificName
+    }
+
+    ExpeditionAnimalRegisteredView(
+        animalName: animal?.commonName ?? "Animal",
+        scientificName: scientificName,
+        biome: animal?.biome ?? 1, isDiscovered: true,
+        onViewCollection: {}
+    )
 }
