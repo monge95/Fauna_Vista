@@ -87,6 +87,15 @@ struct ExpeditionAnimalRegisteredView: View {
                         .offset(y: groundOffset)
                     
                     if isDiscovered {
+                        
+                        Image(AnimalScenario.backgroundName(for: scientificName))
+                            .resizable()
+                            .scaledToFit()
+
+                        Image(AnimalScenario.groundName(for: scientificName))
+                            .resizable()
+                            .scaledToFit()
+                        
                         Image(
                             IllustrationAnimal.imageName(
                                 for: scientificName,
@@ -99,8 +108,8 @@ struct ExpeditionAnimalRegisteredView: View {
                         Text("Nada foi descoberto")
                             .font(.system(size: 22, weight: .bold))
                             .foregroundStyle(.white)
-                            .padding(.bottom, 60)
-                            .shadow(color: .black.opacity(0.5), radius: 2)
+                            .padding(.bottom, 30)
+                            .shadow(color: .black.opacity(0.3), radius: 2)
                     }
                 }
                 .frame(height: 200)
