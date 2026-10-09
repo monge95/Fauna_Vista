@@ -18,22 +18,40 @@ struct ExpeditionAnimalRegisteredView: View {
     let onViewCollection: () -> Void
     
     private var biomeName: String {
-           MapPiece.todosOsBiomas
-               .first { $0.id == biome }?.name ?? "Bioma"
-       }
-
-    private var biomeColor: Color {
-        switch biome {
-        case 2:  return Color("AmazonColor")
-        case 1:  return Color("CerradoColor")
-        case 5:  return Color("CaatingaColor")
-        case 4:  return Color("AtlanticForestColor")
-        case 6:  return Color("PantanalColor")
-        case 3:  return Color("PampaColor")
-        default: return .gray
+        MapPiece.todosOsBiomas
+            .first { $0.id == biome }?.name ?? "Bioma"
+    }
+    
+    private var groundOffset: CGFloat {
+        switch scientificName {
+        case "Inia geoffrensis":
+            return 0
+        case "Cacajao rubicundus":
+            return 10
+        case "Chrysocyon brachyurus":
+            return 8
+        case "Myrmecophaga tridactyla":
+            return 12
+        case "Anodorhynchus leari":
+            return -65
+        case "Tolypeutes tricinctus":
+            return -30
+        case "Leontopithecus rosalia":
+            return 0
+        case "Bradypus torquatus":
+            return 0
+        case "Pteronura brasiliensis":
+            return 0
+        case "Panthera onca":
+            return 0
+        case "Xanthopsar flavus":
+            return 0
+        case "Ceratophrys ornata":
+            return 0
+        default:
+            return 0
         }
     }
-
 
     var body: some View {
         ZStack {
@@ -64,6 +82,7 @@ struct ExpeditionAnimalRegisteredView: View {
                     Image(AnimalScenario.groundName(for: scientificName))
                         .resizable()
                         .scaledToFit()
+                        .offset(y: groundOffset)
                     
                     Image(
                         IllustrationAnimal.imageName(
@@ -73,6 +92,7 @@ struct ExpeditionAnimalRegisteredView: View {
                     )
                     .resizable()
                     .scaledToFit()
+                    
 
                     
                 }
@@ -98,4 +118,21 @@ struct ExpeditionAnimalRegisteredView: View {
             .padding(.horizontal, 28)
         }
     }
+}
+
+#Preview("Animal registrado") {
+
+    
+    let scientificName = "Leontopithecus rosalia"
+
+    let animal = animalCatalog.first {
+        $0.scientificName == scientificName
+    }
+
+    ExpeditionAnimalRegisteredView(
+        animalName: animal?.commonName ?? "Animal",
+        scientificName: scientificName,
+        biome: animal?.biome ?? 1,
+        onViewCollection: {}
+    )
 }
