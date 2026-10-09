@@ -139,7 +139,7 @@ struct ExpeditionAnimalRegisteredView: View {
     ExpeditionAnimalRegisteredView(
         animalName: animal?.commonName ?? "Animal",
         scientificName: scientificName,
-        biome: animal?.biome ?? 1,
+        biome: animal?.biome ?? 1, isDiscovered: true,
         onViewCollection: {}
     )
 }
