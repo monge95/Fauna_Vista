@@ -21,37 +21,6 @@ struct ExpeditionAnimalRegisteredView: View {
         MapPiece.todosOsBiomas
             .first { $0.id == biome }?.name ?? "Bioma"
     }
-    
-    private var groundOffset: CGFloat {
-        switch scientificName {
-        case "Inia geoffrensis":
-            return 0
-        case "Cacajao rubicundus":
-            return 10
-        case "Chrysocyon brachyurus":
-            return 8
-        case "Myrmecophaga tridactyla":
-            return 12
-        case "Anodorhynchus leari":
-            return -65
-        case "Tolypeutes tricinctus":
-            return -30
-        case "Leontopithecus rosalia":
-            return 0
-        case "Bradypus torquatus":
-            return 0
-        case "Pteronura brasiliensis":
-            return 0
-        case "Panthera onca":
-            return 0
-        case "Xanthopsar flavus":
-            return 0
-        case "Ceratophrys ornata":
-            return 0
-        default:
-            return 0
-        }
-    }
 
     var body: some View {
         ZStack {
@@ -72,44 +41,29 @@ struct ExpeditionAnimalRegisteredView: View {
 
                     Text(scientificName)
                         .font(.footnote.italic())
-                        .foregroundStyle(.secondary)
+                         .foregroundStyle(.secondary)
                 }
 
                 ZStack(alignment: .bottom) {
-
-                    Image(AnimalScenario.backgroundName(for: scientificName))
-                        .resizable()
-                        .scaledToFit()
-
-                    Image(AnimalScenario.groundName(for: scientificName))
-                        .resizable()
-                        .scaledToFit()
-                        .offset(y: groundOffset)
-                    
-                    if isDiscovered {
-                        
-                        Image(AnimalScenario.backgroundName(for: scientificName))
+                    if let animal = AnimalScenario.constructCard(for: scientificName){
+                        Image(animal.BackgroundName)
                             .resizable()
                             .scaledToFit()
-
-                        Image(AnimalScenario.groundName(for: scientificName))
+                            
+                            if isDiscovered {
+                                Image(animal.assetName)
                             .resizable()
                             .scaledToFit()
-                        
-                        Image(
-                            IllustrationAnimal.imageName(
-                                for: scientificName,
-                                discovered: true
-                            )
-                        )
-                        .resizable()
-                        .scaledToFit()
-                    } else {
-                        Text("Nada foi descoberto")
-                            .font(.system(size: 22, weight: .bold))
-                            .foregroundStyle(.white)
-                            .padding(.bottom, 30)
-                            .shadow(color: .black.opacity(0.3), radius: 2)
+                            .frame(maxWidth: animal.size)
+                            .offset(y: animal.posY)
+                            
+                            
+                        } else {
+                            Text("Nada foi descoberto")
+                                .font(.system(size: 22, weight: .bold))
+                                .foregroundStyle(.white)
+                                .padding(.bottom, 60)
+                        }
                     }
                 }
                 .frame(height: 200)
@@ -130,7 +84,6 @@ struct ExpeditionAnimalRegisteredView: View {
             .foregroundStyle(.black)
             .padding(24)
             .background(FaunaPalette.beige, in: RoundedRectangle(cornerRadius: 32))
-            .shadow(color: .black.opacity(0.15), radius: 8, y: 4)
             .padding(.horizontal, 28)
         }
     }
@@ -139,7 +92,7 @@ struct ExpeditionAnimalRegisteredView: View {
 #Preview("Animal registrado") {
 
     
-    let scientificName = "Leontopithecus rosalia"
+    let scientificName = "Chrysocyon brachyurus"
 
     let animal = animalCatalog.first {
         $0.scientificName == scientificName
