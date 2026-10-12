@@ -1,4 +1,3 @@
-//
 //  ExpeditionGameView.swift
 //  Experiment Project
 //
@@ -20,7 +19,14 @@ struct ExpeditionGameView: View {
     @State private var flashVisible = false
     @State private var debugAxis: ExpeditionDebugAxis = .x
 
-    private var aimColor: Color {
+    // HUDs de debug/ajuda (painel de ajuste da mira, objeto/distância/avaliação
+    // e controles de objeto/câmera). Ficam OCULTOS, mas continuam ocupando o mesmo
+    // espaço no layout (.hidden()), para o quadro da foto não sair da posição
+    // em que foi calibrado. Mude para `true` se precisar calibrar de novo.
+    private let showDebugHUDs = false
+
+    // Cor aplicada na imagem "Sight". nil = imagem com suas cores originais.
+    private var sightTint: Color? {
         if vm.isVegetationDetected {
             return .gray
         }
@@ -29,7 +35,28 @@ struct ExpeditionGameView: View {
             return .green
         }
 
-        return .white
+        return nil
+    }
+
+    // A imagem fica 20% menor e 20% mais transparente.
+    // O quadro de medição (photoCropSize) NÃO muda, então o recorte da foto
+    // e o ponto de detecção continuam exatamente no mesmo lugar.
+    private let sightScale: CGFloat = 0.8
+    private let sightOpacity: Double = 0.8
+
+    @ViewBuilder
+    private var sightImage: some View {
+        if let tint = sightTint {
+            Image("Sight")
+                .renderingMode(.template)
+                .resizable()
+                .scaledToFit()
+                .foregroundStyle(tint)
+        } else {
+            Image("Sight")
+                .resizable()
+                .scaledToFit()
+        }
     }
 
     private var distanceText: String {
@@ -127,57 +154,35 @@ struct ExpeditionGameView: View {
 
                 if ExpeditionConfig.aimTuningPanelVisible {
                     aimTuningPanel
+                        .hiddenKeepingLayout(!showDebugHUDs)
                 }
 
                 Spacer()
 
-                ZStack {
-                    RoundedRectangle(cornerRadius: 18)
-                        .stroke(
-                            .white.opacity(0.8),
-                            lineWidth: 2
-                        )
-                        .frame(
-                            width: ExpeditionConfig.photoCropSize,
-                            height: ExpeditionConfig.photoCropSize
-                        )
-                        .background(
-                            GeometryReader { geo in
-                                Color.clear
-                                    .preference(
-                                        key: CropRectKey.self,
-                                        value: geo.frame(in: .global)
-                                    )
-                            }
-                        )
-
-                    Circle()
-                        .fill(aimColor)
-                        .frame(
-                            width: ExpeditionConfig.aimPointRadius * 2,
-                            height: ExpeditionConfig.aimPointRadius * 2
-                        )
-                        .overlay {
-                            Circle()
-                                .stroke(.black.opacity(0.35), lineWidth: 1)
+                // Moldura da foto = imagem "Sight". Muda de cor quando detecta.
+                // A bolinha central foi removida; a detecção continua saindo
+                // do centro do quadro (cropRect) + ajuste de calibração.
+                sightImage
+                    .frame(
+                        width: ExpeditionConfig.photoCropSize * sightScale,
+                        height: ExpeditionConfig.photoCropSize * sightScale
+                    )
+                    .opacity(sightOpacity)
+                    .frame(
+                        width: ExpeditionConfig.photoCropSize,
+                        height: ExpeditionConfig.photoCropSize
+                    )
+                    .allowsHitTesting(false)
+                    .accessibilityHidden(true)
+                    .background(
+                        GeometryReader { geo in
+                            Color.clear
+                                .preference(
+                                    key: CropRectKey.self,
+                                    value: geo.frame(in: .global)
+                                )
                         }
-                        .shadow(
-                            color: .black.opacity(0.45),
-                            radius: 3
-                        )
-
-                    // Ponto REAL de onde sai a detecção (mira + ajuste manual).
-                    if ExpeditionConfig.aimDebugMarkerVisible {
-                        Circle()
-                            .stroke(.cyan, lineWidth: 2)
-                            .frame(width: 14, height: 14)
-                            .offset(
-                                x: vm.aimDetectionOffset.x,
-                                y: vm.aimDetectionOffset.y
-                            )
-                            .allowsHitTesting(false)
-                    }
-                }
+                    )
 
                 Spacer()
 
@@ -217,6 +222,7 @@ struct ExpeditionGameView: View {
                     )
                 }
                 .padding(.bottom, 10)
+                .hiddenKeepingLayout(!showDebugHUDs)
 
                 // ==================================================
                 // CONTROLES DE DEBUG
@@ -293,6 +299,7 @@ struct ExpeditionGameView: View {
                 }
                 .tint(.white)
                 .padding(.bottom, 8)
+                .hiddenKeepingLayout(!showDebugHUDs)
 
                 HStack {
                     Spacer()
@@ -328,6 +335,19 @@ struct ExpeditionGameView: View {
         }
         .onPreferenceChange(CropRectKey.self) { rect in
             vm.updateCropRect(rect)
+        }
+    }
+}
+
+
+// Esconde a view mas mantém o espaço que ela ocupa no layout.
+private extension View {
+    @ViewBuilder
+    func hiddenKeepingLayout(_ hide: Bool) -> some View {
+        if hide {
+            self.hidden()
+        } else {
+            self
         }
     }
 }
