@@ -16,7 +16,7 @@ import Combine
 // ============================================================
 
 struct ExpeditionSceneRepresentable: UIViewRepresentable {
-    @ObservedObject var vm: ExpeditionViewModel
+    var vm: ExpeditionViewState
 
     func makeUIView(context: Context) -> ExpeditionSceneView {
         let view = ExpeditionSceneView(frame: .zero)

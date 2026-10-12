@@ -55,10 +55,4 @@ enum FaunaPalette {
     static let teal = Color(red: 0.06, green: 0.43, blue: 0.43)
     static let tealLight = Color(red: 0.64, green: 0.83, blue: 0.82)
     static let beige = Color(red: 0.94, green: 0.92, blue: 0.88)
-}//
-//  ExpeditionMission.swift
-//  FaunaVista
-//
-//  Created by Felipe Colares Cardoso on 02/10/26.
-//
-
+}

@@ -19,7 +19,6 @@ struct ViewFactory{
         case .Expedition:
             ExpeditionView()
                     
-                    
         case .CheckExpedition:
             CheckExpeditionView()
                     

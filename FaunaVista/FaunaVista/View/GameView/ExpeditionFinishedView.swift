@@ -1,12 +1,12 @@
 //
 //  ExpeditionFinishedView.swift
 //  Tela "Análise das fotos": escolher as fotos com checkmark.
-//  
+//
 
 import SwiftUI
 
 struct ExpeditionFinishedView: View {
-    @ObservedObject var vm: ExpeditionViewModel
+    var vm: ExpeditionViewState
 
     private let columns = [
         GridItem(.flexible(), spacing: 12),

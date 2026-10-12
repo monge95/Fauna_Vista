@@ -53,10 +53,20 @@ final class INaturalistService {
             INaturalistResponse.self,
             from: data
         )
-
-        return result.results.first { taxon in
+        
+        let animal = result.results.first { taxon in
             taxon.name.lowercased() == scientificName.lowercased()
             && taxon.rank == "species"
         }
+
+        if let animal {
+            print("🐾 Animal:", animal.name)
+            print("📋 Status:", animal.conservationStatus?.status ?? "nil")
+            print("🌍 Status Name:", animal.conservationStatus?.statusName ?? "nil")
+        } else {
+            print("❌ Animal não encontrado:", scientificName)
+        }
+
+        return animal
     }
 }
