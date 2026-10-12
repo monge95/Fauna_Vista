@@ -21,6 +21,7 @@ struct StartOnboarding: View {
                     .font(
                         .custom("Belanosima-SemiBold", size: 34))
                     .multilineTextAlignment(.center)
+                 
                 
                 Text("Vem explorar os biomas do Brasil \nem uma expedição virtual")
                     .font(.system(size: 16))
