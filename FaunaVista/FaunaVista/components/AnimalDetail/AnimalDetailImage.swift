@@ -67,9 +67,22 @@ struct AnimalDetailImage: View {
             .frame(maxWidth: .infinity)
             .frame(height: 260)
             .overlay {
-                Image(systemName: "photo")
-                    .font(.system(size: 40))
-                    .foregroundStyle(.secondary)
+                VStack(spacing: 12) {
+
+                    Image(systemName: "wifi.slash")
+                        .font(.system(size: 36))
+                        .foregroundStyle(.secondary)
+
+                    Text("Imagem indisponível")
+                        .font(.headline)
+                        .foregroundStyle(.primary)
+
+                    Text("Verifique sua conexão com a internet e tente novamente.")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, 24)
+                }
             }
     }
 

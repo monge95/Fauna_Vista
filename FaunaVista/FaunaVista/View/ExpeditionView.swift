@@ -117,7 +117,7 @@ struct ExpeditionView: View {
                     .zIndex(10)
                     .allowsHitTesting(true)
 
-                if vm.countdownNumber > 0 {
+                /*if vm.countdownNumber > 0 {
 
                     Text("Começando em \(vm.countdownNumber)")
                         .font(
@@ -130,7 +130,7 @@ struct ExpeditionView: View {
                         .foregroundStyle(.white)
                         .transition(.opacity)
                         .zIndex(11)
-                }
+                }*/
             }
         }
 

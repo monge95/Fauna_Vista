@@ -41,13 +41,13 @@ struct ExpeditionConfig {
     // O valor é interpolado entre o zoom mínimo (1x) e o máximo (5x).
     // Use o painel "Ajuste da mira" na tela e copie aqui os valores impressos no console.
     static let aimDetectionOffsetAtMinZoom = CGPoint(x: 0, y: -40) // calibrado!!
-    static let aimDetectionOffsetAtMaxZoom = CGPoint(x: 0, y: 50) // calibrado!
+    static let aimDetectionOffsetAtMaxZoom = CGPoint(x: 0, y: 30) // calibrado!
     static let aimTuningPanelVisible = true   // painel de ajuste ao vivo
     static let aimDebugMarkerVisible = true   // bolinha ciano = ponto REAL da detecção
     static let aimTuningStep: CGFloat = 10    // passo de cada toque, em pontos
     // Detecção da vegetação: usa um detector próprio baseado no tamanho
     // visual do modelo, sem depender das colisões do mesh original.
-    static let vegetationDetectionVisible = true
+    static let vegetationDetectionVisible = false
     static let vegetationDetectionPadding: Float = 0.00
     static let vegetationDetectionOffset = SIMD3<Float>(0, -5, 0) // posicao da caixa de colisao da vegetacao
     static let debugObjectMoveStep: Float = 0.5  // Passo dos controles de debug (em metros).
