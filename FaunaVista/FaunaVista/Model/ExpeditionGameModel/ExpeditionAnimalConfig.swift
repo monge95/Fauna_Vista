@@ -254,9 +254,9 @@ struct ExpeditionAnimalConfig {
             actionLoops: false,
             modelFacesRight: true,// A rota do tamanduá é comparada com a horizontal visível
             movementAxis: .screen, // da câmera, não com um eixo fixo do mapa.
-            detectionOffset: SIMD3<Float>(1.4,0,1.5), // Se o USDZ original olhar para a esquerda, use false. onde Z é pra cima e pra baixo
-            detectionScaleX: 5.5,
-            detectionScaleY: 3.2,
+            detectionOffset: SIMD3<Float>(4.0,0,3.0), // Se o USDZ original olhar para a esquerda, use false. onde Z é pra cima e pra baixo
+            detectionScaleX: 12.5,
+            detectionScaleY: 10.2,
             detectionVisible: false,
         ),
         ExpeditionAnimalDefinition(
@@ -284,9 +284,9 @@ struct ExpeditionAnimalConfig {
             actionLoops: false,
             modelFacesRight: true,// A rota do tamanduá é comparada com a horizontal visível
             movementAxis: .screen, // da câmera, não com um eixo fixo do mapa.
-            detectionOffset: SIMD3<Float>(1.4,0,1.5), // Se o USDZ original olhar para a esquerda, use false. onde Z é pra cima e pra baixo
-            detectionScaleX: 5.5,
-            detectionScaleY: 3.2,
+            detectionOffset: SIMD3<Float>(4.4,0,4.5), // Se o USDZ original olhar para a esquerda, use false. onde Z é pra cima e pra baixo
+            detectionScaleX: 6.5,
+            detectionScaleY: 5.2,
             detectionVisible: false,
         ),
         ExpeditionAnimalDefinition(
