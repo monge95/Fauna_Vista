@@ -17,10 +17,11 @@ struct StartOnboarding: View {
                 .ignoresSafeArea()
             
             VStack(spacing: 10) {
-                Text("Sua Expedição\ncomeça aqui")
+                Text("Sua expedição\ncomeça aqui")
                     .font(
                         .custom("Belanosima-SemiBold", size: 34))
                     .multilineTextAlignment(.center)
+                 
                 
                 Text("Vem explorar os biomas do Brasil \nem uma expedição virtual")
                     .font(.system(size: 16))
