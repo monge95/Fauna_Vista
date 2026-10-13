@@ -26,48 +26,48 @@ struct AnimalScenario {
             return animal
             
         case "Chrysocyon brachyurus":
-            let animal = animalScenario(id: 1,assetName: "loboChao" ,BackgroundName: "OncaLoboTatu", size: 260.1, posY: 2.1)
+            let animal = animalScenario(id: 2,assetName: "loboChao" ,BackgroundName: "OncaLoboTatu", size: 260.1, posY: 2.1)
             return animal
             
         case "Inia geoffrensis":
-            let animal = animalScenario(id: 1,assetName: "boto-cor-de-rosa" ,BackgroundName: "Agua", size: 260.1, posY: 10.1)
+            let animal = animalScenario(id: 3,assetName: "boto-cor-de-rosa" ,BackgroundName: "Agua", size: 260.1, posY: 10.1)
             return animal
             
         case "Cacajao rubicundus":
-            let animal = animalScenario(id: 1,assetName: "uacariChao" ,BackgroundName: "Uacari", size: 260.1, posY: 10.1)
+            let animal = animalScenario(id: 4,assetName: "uacariChao" ,BackgroundName: "Uacari", size: 260.1, posY: 10.1)
             return animal
             
         case "Anodorhynchus leari":
-            let animal = animalScenario(id: 1,assetName: "araraChao" ,BackgroundName: "TamanduaArara", size: 260.1, posY: -50.1)
+            let animal = animalScenario(id: 5,assetName: "araraChao" ,BackgroundName: "TamanduaArara", size: 260.1, posY: -50.1)
             return animal
             
         case "Tolypeutes tricinctus":
-            let animal = animalScenario(id: 1,assetName: "tatuChao" ,BackgroundName: "OncaLoboTatu", size: 260.1, posY: 30.1)
+            let animal = animalScenario(id: 6,assetName: "tatuChao" ,BackgroundName: "OncaLoboTatu", size: 260.1, posY: 30.1)
             return animal
             
         case "Leontopithecus rosalia":
-            let animal = animalScenario(id: 1,assetName: "micoChao" ,BackgroundName: "MicoPreguica", size: 270.00, posY: 45)
+            let animal = animalScenario(id: 7,assetName: "micoChao" ,BackgroundName: "MicoPreguica", size: 270.00, posY: 45)
             return animal
                     
         case "Bradypus torquatus":
-            let animal = animalScenario(id: 1,assetName: "preguica-de-coleira" ,BackgroundName: "MicoPreguica", size: 270, posY: 0)
+            let animal = animalScenario(id: 8,assetName: "preguica-de-coleira" ,BackgroundName: "MicoPreguica", size: 270, posY: 0)
             return animal
                     
         case "Pteronura brasiliensis":
-            let animal = animalScenario(id: 1,assetName: "ariranha" ,BackgroundName: "Agua", size: 300, posY: 5)
+            let animal = animalScenario(id: 8,assetName: "ariranha" ,BackgroundName: "Agua", size: 300, posY: 5)
             return animal
                 
         case "Panthera onca":
-            let animal = animalScenario(id: 1,assetName: "oncaChao" ,BackgroundName: "OncaLoboTatu", size: 300, posY: 5)
+            let animal = animalScenario(id: 10,assetName: "oncaChao" ,BackgroundName: "OncaLoboTatu", size: 300, posY: 5)
             return animal
 
         case "Xanthopsar flavus":
-            let animal = animalScenario(id: 1,assetName: "vesteChao" ,BackgroundName: "Veste", size: 256.72, posY: 20)
+            let animal = animalScenario(id: 11,assetName: "vesteChao" ,BackgroundName: "Veste", size: 256.72, posY: 20)
             return animal
 
             
         case "Ceratophrys ornata":
-            let animal = animalScenario(id: 1,assetName: "sapoChao" ,BackgroundName: "Agua", size: 260.0, posY: 5)
+            let animal = animalScenario(id: 12,assetName: "sapoChao" ,BackgroundName: "Agua", size: 260.0, posY: 5)
             return animal
 
         default:

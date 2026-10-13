@@ -23,7 +23,7 @@ struct AnimalBasicInfoCard: View {
                     .italic()
             }
 
-            HStack(alignment: .top, spacing: 12) {
+            HStack(alignment: .top, spacing: 8) {
 
                 VStack(alignment: .leading, spacing: 6) {
                     Text("Bioma")
@@ -80,7 +80,7 @@ struct AnimalBasicInfoCard: View {
 
     private var biomeTextColor: Color {
         switch animal.biome {
-        case 2, 4: return .white   // Amazônia e Mata Atlântica
+        case 2, 4, 6, 5: return .white  
         default:   return .black
         }
     }

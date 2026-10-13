@@ -46,7 +46,7 @@ struct CompletedMissionSheetView: View {
             VStack(alignment: .leading, spacing: 12) {
 
                 Text("Desafios")
-                    .font(.system(size: 20, weight: .bold))
+                    .font(.system(size: 16, weight: .medium))
 
                 CompletedMissionChallengeCard(
                     completed: expedition.challenge1Completed,

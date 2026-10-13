@@ -13,16 +13,27 @@ struct MissionAnimalIdentification: View {
 
     var body: some View {
         VStack(spacing: 12) {
-
-            Image(illustrationName)
-                .resizable()
-                .scaledToFit()
-                .frame(width: 115, height: 115)
-                .padding(12)
-                .background {
-                    Circle()
-                        .fill(.gray.opacity(0.15))
-                }
+            if illustrationName == "mico-leao-dourado-silhouette" || illustrationName == "lobo-guara-silhouette" {
+                Image(illustrationName)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 90)
+                    .padding(37)
+                    .background {
+                        Circle()
+                            .fill(.gray.opacity(0.15))
+                    }
+            }else{
+                Image(illustrationName)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 115, height: 115)
+                    .padding(12)
+                    .background {
+                        Circle()
+                            .fill(.gray.opacity(0.15))
+                    }
+            }
 
             Text("Animal não identificado")
                 .font(.system(size: 16, weight: .medium))

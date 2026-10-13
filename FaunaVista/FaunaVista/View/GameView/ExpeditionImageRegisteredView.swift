@@ -46,9 +46,16 @@ struct ExpeditionAnimalRegisteredView: View {
 
                 ZStack(alignment: .bottom) {
                     if let animal = AnimalScenario.constructCard(for: scientificName){
-                        Image(animal.BackgroundName)
-                            .resizable()
-                            .scaledToFit()
+                        if animal.id == 6 {
+                            Image(animal.BackgroundName)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(maxWidth: 248.41, maxHeight: 170.6)
+                        }else{
+                            Image(animal.BackgroundName)
+                                .resizable()
+                                .scaledToFit()
+                        }
                             
                             if isDiscovered {
                                 Image(animal.assetName)

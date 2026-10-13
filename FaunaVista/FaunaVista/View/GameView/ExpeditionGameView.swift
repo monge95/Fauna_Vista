@@ -307,9 +307,11 @@ struct ExpeditionGameView: View {
                     Button {
                         vm.capturePhoto()
                     } label: {
-                        Image(systemName: "camera.circle.fill")
-                            .font(.system(size: 72))
-                            .symbolRenderingMode(.hierarchical)
+                        Image(systemName: "camera.fill")
+                            .font(.system(size: 36, weight: .semibold))
+                            .foregroundStyle(.white)
+                            .frame(width: 72, height: 72)
+                            .glassEffect(.regular, in: .circle)
                     }
 
                     Spacer()

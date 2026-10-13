@@ -21,6 +21,7 @@ struct CoordinatorView: View{
                     .navigationDestination(for: AppRoute.self) { rota in
                         ViewFactory.viewBuilder(for: rota)
                             .toolbar(.hidden, for: .tabBar)
+                     
 
                     }
             }
@@ -35,6 +36,7 @@ struct CoordinatorView: View{
             
             NavigationStack(path: $coordinator.pathColecao) {
                 CollectionView()
+                    .legibilityScrim()
                     .navigationDestination(for: AppRoute.self) { rota in
                         ViewFactory.viewBuilder(for: rota)
                             .toolbar(.hidden, for: .tabBar)
@@ -71,6 +73,26 @@ struct CoordinatorView: View{
         } catch {
             print("Error initializing catalog: \(error)")
         }
+    }
+}
+extension View {
+    func legibilityScrim() -> some View {
+        overlay(alignment: .bottom) {
+            LinearGradient(
+                colors: [
+                    .black.opacity(0.55),   // base: mais escuro
+                    .black.opacity(0.25),   // meio
+                    .clear                  // topo: transparente
+                ],
+                startPoint: .bottom,
+                endPoint: .top
+            )
+            .frame(height: 200)
+            .frame(maxWidth: .infinity)
+            .ignoresSafeArea(edges: .bottom)
+            .allowsHitTesting(false)   // não bloqueia gestos do mapa
+        }
+        .ignoresSafeArea()
     }
 }
 

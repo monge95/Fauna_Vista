@@ -79,17 +79,25 @@ struct AnimalCard: View {
 
     private var biomeTextColor: Color {
         switch animal.biome {
-        case 2, 6, 5: return .white   
+        case 2, 4, 6, 5: return .white
         default:      return .black
         }
     }
 
     private var animalIllustration: some View {
         ZStack {
-            Image(illustrationName)
-                .resizable()
-                .scaledToFit()
-                .frame(width: 140, height: 90)
+            if illustrationName == "mico-leao-dourado" || illustrationName == "lobo-guara" {
+                Image(illustrationName)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 170)
+            }else{
+                
+                Image(illustrationName)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 140, height: 90)
+            }
         }
     }
 

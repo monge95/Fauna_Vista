@@ -15,7 +15,7 @@ struct ExpeditionPhotosSection: View {
         VStack(alignment: .leading, spacing: 10) {
 
             Text("Fotos da expedição")
-                .font(.system(size: 20, weight: .bold))
+                .font(.system(size: 16, weight: .medium))
 
             HStack(spacing: 12) {
                 ForEach(photos.prefix(3)) { photo in

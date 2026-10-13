@@ -18,9 +18,7 @@ struct ViewFactory{
         // fluxo principal
         case .Expedition:
             ExpeditionView()
-                    
-        case .CheckExpedition:
-            CheckExpeditionView()
+ 
                     
         case .registro(let animal):
             AnimalDetailView(animal: animal)
