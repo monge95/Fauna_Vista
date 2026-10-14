@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Suporte — FaunaVista</title>
+  <meta name="description" content="Página oficial de suporte e política de privacidade do aplicativo FaunaVista para iOS. Informações, dúvidas frequentes e contato.">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/basecoat-css@1.0.2/dist/basecoat.cdn.min.css">
+  <style>
+/* Skip artifact shell — fixed styles served beside every artifact.
+   Complements basecoat; artifacts override --accent for their own identity. */
+:root {
+  color-scheme: light dark;
+  --accent: #2563eb;
+  --accent-contrast: #ffffff;
+  --accent-text: color-mix(in srgb, var(--accent) 72%, #000);
+  --bg: #f8f9fb;
+  --surface: #ffffff;
+  --text: #14171f;
+  --text-muted: #5b6472;
+  --border: rgba(20, 23, 31, 0.10);
+  --radius: 10px;
+  --shadow: 0 1px 3px rgba(20, 23, 31, 0.08);
+  --space: 16px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme="light"])) {
+    --accent-text: color-mix(in srgb, var(--accent) 78%, #fff);
+    --bg: #101318;
+    --surface: #181c23;
+    --text: #eef1f6;
+    --text-muted: #9aa4b2;
+    --border: rgba(238, 241, 246, 0.12);
+    --shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  }
+}
+:root:where([data-theme="dark"]) {
+  color-scheme: dark;
+  --accent-text: color-mix(in srgb, var(--accent) 78%, #fff);
+  --bg: #101318;
+  --surface: #181c23;
+  --text: #eef1f6;
+  --text-muted: #9aa4b2;
+  --border: rgba(238, 241, 246, 0.12);
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+:root:where([data-theme="light"]) { color-scheme: light; }
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+img { max-width: 100%; display: block; }
+
+.shell-container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+.shell-section { padding: calc(var(--space) * 2) 0; }
+.shell-grid { display: grid; gap: var(--space); grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.shell-toolbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: var(--space); }
+.shell-footer { padding: 24px 0 40px; color: var(--text-muted); font-size: 13px; }
+
+.shell-hero { padding: calc(var(--space) * 3) 0 calc(var(--space) * 2); }
+.shell-hero h1 { font-size: clamp(26px, 4vw, 40px); line-height: 1.15; margin: 0 0 10px; text-wrap: balance; }
+.shell-hero p { color: var(--text-muted); max-width: 60ch; margin: 0; }
+
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: var(--space);
+}
+
+.kpi { display: flex; flex-direction: column; gap: 4px; }
+.kpi .kpi-value { font-size: 28px; font-weight: 650; line-height: 1.1; }
+.kpi .kpi-label { font-size: 13px; color: var(--text-muted); }
+.kpi .kpi-delta { font-size: 12.5px; font-weight: 600; }
+.kpi .kpi-delta.up { color: #0a8f3c; }
+.kpi .kpi-delta.down { color: #cf3131; }
+
+table.shell-table { border-collapse: collapse; width: 100%; font-size: 14px; }
+table.shell-table th {
+  text-align: left; font-size: 11.5px; letter-spacing: 0.05em; text-transform: uppercase;
+  color: var(--text-muted); font-weight: 600;
+}
+table.shell-table th, table.shell-table td { padding: 9px 12px 9px 0; border-bottom: 1px solid var(--border); }
+table.shell-table td.num, table.shell-table th.num { text-align: right; font-variant-numeric: tabular-nums; }
+table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 6%, transparent); }
+
+.chart-box { width: 100%; min-height: 220px; }
+.chart-box svg { width: 100%; height: auto; display: block; }
+
+.muted { color: var(--text-muted); }
+.accent { color: var(--accent-text); }
+.shell-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 12%, transparent); color: var(--accent-text);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .shell-fade { animation: shell-fade 400ms ease both; }
+  @keyframes shell-fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+}
+
+</style>
+  
+  <style>
+    :root {
+      --accent: #1b6a3e;
+      --accent-rgb: 27, 106, 62;
+      --bg-warm: #f6f8f5;
+      --card-border: #dbe4dc;
+      --text-main: #1a291f;
+      --text-muted: #536456;
+      --tag-bg: #e7f2ea;
+      --tag-border: #c3decb;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 80px;
+    }
+
+    body {
+      background-color: var(--bg-warm);
+      color: var(--text-main);
+      font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+      -webkit-font-smoothing: antialiased;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Top Sticky Nav */
+    .top-nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      background-color: rgba(246, 248, 245, 0.94);
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    .nav-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0.75rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .nav-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      text-decoration: none;
+      color: var(--text-main);
+      font-weight: 700;
+      font-size: 1.15rem;
+    }
+
+    .nav-brand-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #1b6a3e, #2d8a54);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      box-shadow: 0 2px 6px rgba(27, 106, 62, 0.25);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 0.75rem;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      overflow-x: auto;
+      white-space: nowrap;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 0.88rem;
+      padding: 0.4rem 0.65rem;
+      border-radius: 6px;
+      transition: color 0.15s ease, background-color 0.15s ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links a:focus-visible {
+      color: var(--accent-text);
+      background-color: var(--tag-bg);
+      outline: none;
+    }
+
+    /* Hero / App Header */
+    .hero-card {
+      background: #ffffff;
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 2.25rem 2rem;
+      box-shadow: 0 4px 18px rgba(27, 45, 32, 0.04);
+      margin-top: 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: linear-gradient(90deg, #1b6a3e, #4ea373, #8ec29b);
+    }
+
+    .hero-header {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      margin-bottom: 1.25rem;
+      flex-wrap: wrap;
+    }
+
+    .app-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 16px;
+      background: linear-gradient(145deg, #1b6a3e 0%, #29824f 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      box-shadow: 0 8px 16px rgba(27, 106, 62, 0.22);
+      flex-shrink: 0;
+    }
+
+    .hero-title-group h1 {
+      margin: 0 0 0.25rem 0;
+      font-size: 1.9rem;
+      letter-spacing: -0.02em;
+      color: var(--text-main);
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      background-color: var(--tag-bg);
+      color: var(--accent-text);
+      border: 1px solid var(--tag-border);
+      border-radius: 999px;
+      padding: 0.25rem 0.75rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    /* Content Cards */
+    .content-section {
+      margin-top: 2rem;
+    }
+
+    .section-card {
+      background: #ffffff;
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 3px 14px rgba(27, 45, 32, 0.03);
+      margin-bottom: 1.75rem;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    .section-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: var(--tag-bg);
+      color: var(--accent-text);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .section-header h2 {
+      margin: 0;
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--text-main);
+      letter-spacing: -0.01em;
+    }
+
+    /* Feature Grid */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1rem;
+      margin-top: 1.25rem;
+    }
+
+    .feature-pill {
+      background: #fbfdfb;
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 1rem 1.15rem;
+    }
+
+    .feature-pill h3 {
+      margin: 0 0 0.35rem 0;
+      font-size: 0.98rem;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    .feature-pill p {
+      margin: 0;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+
+    /* FAQ Details */
+    .faq-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    details.faq-item {
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      background: #ffffff;
+      overflow: hidden;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    details.faq-item[open] {
+      border-color: #a4cca9;
+      box-shadow: 0 2px 8px rgba(27, 106, 62, 0.06);
+    }
+
+    details.faq-item summary {
+      padding: 1rem 1.25rem;
+      font-weight: 600;
+      font-size: 0.98rem;
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      user-select: none;
+      color: var(--text-main);
+    }
+
+    details.faq-item summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .faq-chevron {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      stroke: var(--accent-text);
+      transition: transform 0.2s ease;
+    }
+
+    details.faq-item[open] .faq-chevron {
+      transform: rotate(180deg);
+    }
+
+    .faq-answer {
+      padding: 0 1.25rem 1.15rem 1.25rem;
+      color: var(--text-muted);
+      font-size: 0.92rem;
+      line-height: 1.6;
+      border-top: 1px solid #edf2ee;
+      padding-top: 0.85rem;
+    }
+
+    .faq-answer p {
+      margin: 0 0 0.5rem 0;
+    }
+
+    .faq-answer p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Contact Box */
+    .contact-card {
+      background: linear-gradient(145deg, #f3f8f4 0%, #e9f2eb 100%);
+      border: 1px solid #c9decb;
+      border-radius: 14px;
+      padding: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    @media (min-width: 640px) {
+      .contact-card {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+
+    .contact-email-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      background-color: var(--accent);
+      color: #ffffff;
+      padding: 0.85rem 1.4rem;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      box-shadow: 0 3px 8px rgba(27, 106, 62, 0.25);
+      transition: transform 0.15s ease, background-color 0.15s ease;
+      flex-shrink: 0;
+    }
+
+    .contact-email-btn:hover {
+      background-color: #145330;
+      transform: translateY(-1px);
+    }
+
+    .contact-email-btn:active {
+      transform: translateY(0);
+    }
+
+    .copy-button {
+      background: #ffffff;
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      color: var(--text-main);
+      padding: 0.4rem 0.75rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-top: 0.5rem;
+      transition: background-color 0.15s ease;
+    }
+
+    .copy-button:hover {
+      background: #f0f4f0;
+    }
+
+    /* Privacy Policy styling */
+    .privacy-block {
+      display: flex;
+      flex-direction: column;
+      gap: 1.4rem;
+      color: var(--text-main);
+      line-height: 1.65;
+      font-size: 0.93rem;
+    }
+
+    .privacy-block h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin: 0 0 0.4rem 0;
+      color: var(--text-main);
+    }
+
+    .privacy-block p {
+      margin: 0;
+      color: #3b4c3e;
+    }
+
+    .privacy-block ul {
+      margin: 0.4rem 0 0 0;
+      padding-left: 1.25rem;
+      color: #3b4c3e;
+    }
+
+    .privacy-block li {
+      margin-bottom: 0.35rem;
+    }
+
+    .privacy-highlight {
+      background-color: #f0f7f2;
+      border-left: 4px solid var(--accent);
+      padding: 0.85rem 1rem;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .meta-tag {
+      display: inline-block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: #f1f4f1;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      margin-top: 0.5rem;
+    }
+
+    /* Footer */
+    .page-footer {
+      border-top: 1px solid var(--card-border);
+      background-color: #f0f4f0;
+      padding: 2.5rem 1.25rem;
+      margin-top: 3.5rem;
+      text-align: center;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+
+    .page-footer a {
+      color: var(--accent-text);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .back-to-top {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-top: 1rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--accent-text);
+      text-decoration: none;
+      background: #ffffff;
+      padding: 0.4rem 0.8rem;
+      border-radius: 999px;
+      border: 1px solid var(--card-border);
+    }
+
+    /* Print styling */
+    @media print {
+      .top-nav,
+      .copy-button,
+      .back-to-top,
+      .contact-email-btn {
+        display: none !important;
+      }
+      body {
+        background: #ffffff;
+        color: #000000;
+      }
+      .section-card,
+      .hero-card {
+        border: 1px solid #cccccc;
+        box-shadow: none;
+        page-break-inside: avoid;
+      }
+      details.faq-item {
+        border: 1px solid #cccccc;
+      }
+      details.faq-item summary {
+        list-style: disc;
+      }
+      .faq-answer {
+        display: block !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Barra de Navegação Fixa -->
+  <header class="top-nav" aria-label="Navegação do suporte">
+    <div class="nav-inner">
+      <a href="#inicio" class="nav-brand" title="FaunaVista">
+        <span class="nav-brand-icon" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <circle cx="12" cy="11" r="3"/>
+          </svg>
+        </span>
+        <span>FaunaVista</span>
+      </a>
+
+      <nav aria-label="Seções">
+        <ul class="nav-links">
+          <li><a href="#sobre">Sobre</a></li>
+          <li><a href="#faq">Perguntas Frequentes</a></li>
+          <li><a href="#contato">Contato</a></li>
+          <li><a href="#privacidade">Privacidade</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="shell-container" style="max-width: 900px; padding: 0 1.25rem 2rem 1.25rem;" id="inicio">
+
+    <!-- Hero Card -->
+    <section class="hero-card">
+      <div class="hero-header">
+        <div class="app-icon" aria-hidden="true">
+          <!-- Ícone estilizado representando folha / pegada de fauna -->
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/>
+            <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>
+          </svg>
+        </div>
+        <div class="hero-title-group">
+          <span class="hero-badge">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            App Store • iOS
+          </span>
+          <h1>FaunaVista</h1>
+          <p style="margin: 0; color: var(--text-muted); font-size: 1.05rem;">
+            Central de Suporte Oficial e Política de Privacidade
+          </p>
+        </div>
+      </div>
+
+      <p style="margin: 0; font-size: 0.96rem; color: #324736; line-height: 1.55;">
+        Bem-vindo à página de suporte do aplicativo <strong>FaunaVista</strong>. Aqui você encontra respostas para dúvidas frequentes sobre o uso do app, detalhes sobre armazenamento seguro e a nossa declaração completa de privacidade.
+      </p>
+    </section>
+
+    <!-- Sobre o App -->
+    <section id="sobre" class="content-section">
+      <div class="section-card">
+        <div class="section-header">
+          <span class="section-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+          </span>
+          <h2>Sobre o Aplicativo</h2>
+        </div>
+
+        <p style="margin: 0 0 1rem 0; line-height: 1.6; font-size: 0.96rem; color: #2e4132;">
+          O <strong>FaunaVista</strong> é um aplicativo educativo dedicado à valorização e conhecimento da rica fauna brasileira, com foco prioritário na sensibilização sobre espécies ameaçadas de extinção. Criado especialmente para o ecossistema Apple em <strong>SwiftUI</strong> e <strong>SwiftData</strong>, o app oferece uma experiência fluida, sem anúncios e com preservação total da sua privacidade.
+        </p>
+
+        <div class="feature-grid">
+          <div class="feature-pill">
+            <h3>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+              Enciclopédia de Espécies
+            </h3>
+            <p>Descubra características, biomas, hábitos e status de conservação (IUCN/MMA) de animais nativos do Brasil.</p>
+          </div>
+
+          <div class="feature-pill">
+            <h3>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Logs de Avistamento
+            </h3>
+            <p>Registre encontros e observações de campo com data, anotações e pontos georreferenciados no seu mapa pessoal.</p>
+          </div>
+
+          <div class="feature-pill">
+            <h3>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              Missões e Pins
+            </h3>
+            <p>Cumpra desafios educativos por bioma (Mata Atlântica, Cerrado, Pantanal, Amazônia, Caatinga e Pampa).</p>
+          </div>
+
+          <div class="feature-pill">
+            <h3>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              100% Local (SwiftData)
+            </h3>
+            <p>Seus registros e progresso ficam guardados exclusivamente na memória do seu iPhone, funcionando perfeitamente sem internet.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Perguntas Frequentes (FAQ) -->
+    <section id="faq" class="content-section">
+      <div class="section-card">
+        <div class="section-header">
+          <span class="section-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          </span>
+          <h2>Perguntas Frequentes (FAQ)</h2>
+        </div>
+
+        <div class="faq-list">
+          <details class="faq-item" open>
+            <summary>
+              <span>Como registro um novo avistamento no aplicativo?</span>
+              <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </summary>
+            <div class="faq-answer">
+              <p>Abra a aba <strong>Registros</strong> ou clique no botão flutuante <strong>+ (Adicionar)</strong> na tela inicial. Selecione a espécie observada no catálogo, informe a data/hora e, opcionalmente, insira uma anotação de campo ou foto capturada no momento.</p>
+              <p>O avistamento será fixado no mapa e contabilizado no seu livro de campo imediatamente.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary>
+              <span>Como funcionam as missões e os pins no mapa?</span>
+              <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </summary>
+            <div class="faq-answer">
+              <p>As missões são metas pedagógicas para incentivar o aprendizado sobre os biomas brasileiros (por exemplo: <em>"Descubra 3 aves da Mata Atlântica"</em> ou <em>"Identifique espécies vulneráveis do Cerrado"</em>).</p>
+              <p>Conforme você explora espécies e registra avistamentos compatíveis, o pin correspondente acende no mapa interativo e o progresso da missão é atualizado automaticamente.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary>
+              <span>Onde meus dados e fotos ficam salvos?</span>
+              <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </summary>
+            <div class="faq-answer">
+              <p><strong>Exclusivamente no seu aparelho.</strong> O FaunaVista utiliza a tecnologia moderna <strong>SwiftData</strong> da Apple. Todo o banco de dados (histórico de avistamentos, anotações de campo, configurações e progresso de missões) fica confinado no armazenamento protegido local do seu iPhone.</p>
+              <p>Nenhuma informação é transmitida, enviada para servidores externos ou armazenada em bancos de dados remotos.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary>
+              <span>O aplicativo coleta dados pessoais ou rastreia meu uso?</span>
+              <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </summary>
+            <div class="faq-answer">
+              <p><strong>Não.</strong> O FaunaVista não coleta absolutamente nenhum dado pessoal, número de telefone, localização contínua, identificador de publicidade (IDFA) ou telemetria invasiva.</p>
+              <p>Não há rastreadores de terceiros (trackers), SDKs de redes sociais ou ferramentas de análise de comportamento integradas ao código.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary>
+              <span>Como sincronizo meus dados entre múltiplos aparelhos?</span>
+              <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </summary>
+            <div class="faq-answer">
+              <p>Na versão atual, os dados são estritamente <strong>locais ao aparelho</strong> em que foram criados para garantir total autonomia offline e máxima privacidade sem depender de contas ou login.</p>
+              <p>Ao realizar o backup padrão do seu iPhone via iCloud ou Finder/Mac, o banco de dados local do app é incluído com segurança no seu backup pessoal do sistema iOS.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary>
+              <span>Como reporto um problema técnico ou sugiro uma nova espécie?</span>
+              <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </summary>
+            <div class="faq-answer">
+              <p>Você pode enviar uma mensagem direta para a nossa equipe pelo canal de suporte oficial: <a href="mailto:contato@faunavista.app" style="color: var(--accent-text); font-weight: 600;">contato@faunavista.app</a>.</p>
+              <p>Ao relatar um problema técnico, inclua se possível o modelo do seu iPhone e a versão instalada do iOS para agilizar o atendimento.</p>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contato de Suporte -->
+    <section id="contato" class="content-section">
+      <div class="section-card">
+        <div class="section-header">
+          <span class="section-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </span>
+          <h2>Canal de Suporte e Contato</h2>
+        </div>
+
+        <p style="margin-top: 0; color: #2e4132; font-size: 0.95rem; line-height: 1.55;">
+          Tem alguma dúvida sobre o app, encontrou alguma incoerência taxonômica em uma espécie ou precisa de auxílio técnico? Nossa equipe de suporte está pronta para ajudar.
+        </p>
+
+        <div class="contact-card">
+          <div>
+            <div style="font-weight: 700; color: var(--text-main); font-size: 1.05rem; margin-bottom: 0.25rem;">
+              E-mail de Suporte
+            </div>
+            <div style="font-size: 0.95rem; color: #2c4231;">
+              Canal oficial para dúvidas, relatórios de bugs e privacidade:
+            </div>
+            <div style="margin-top: 0.35rem; font-family: monospace; font-size: 1.05rem; font-weight: 700; color: var(--accent-text);" id="supportEmailText">
+              contato@faunavista.app
+            </div>
+            <button type="button" class="copy-button" id="copyEmailBtn" aria-label="Copiar e-mail de suporte">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              <span id="copyBtnLabel">Copiar e-mail</span>
+            </button>
+          </div>
+
+          <a href="mailto:contato@faunavista.app?subject=Suporte%20FaunaVista%20iOS" class="contact-email-btn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            Enviar Mensagem
+          </a>
+        </div>
+
+        <div style="margin-top: 1.25rem; font-size: 0.86rem; color: var(--text-muted); line-height: 1.45;">
+          * Respondemos habitualmente em até 2 dias úteis. Para agilizar o atendimento de bugs, informe se possível o modelo do aparelho (ex: iPhone 14) e a versão do iOS.
+        </div>
+      </div>
+    </section>
+
+    <!-- Política de Privacidade -->
+    <section id="privacidade" class="content-section">
+      <div class="section-card">
+        <div class="section-header">
+          <span class="section-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </span>
+          <div>
+            <h2>Política de Privacidade</h2>
+            <div class="meta-tag">Última atualização: Outubro de 2026</div>
+          </div>
+        </div>
+
+        <div class="privacy-block">
+          <div class="privacy-highlight">
+            <strong>Resumo Direto:</strong> O FaunaVista foi desenhado sob o princípio de <em>Privacy by Design</em>. Não coletamos, não rastreamos, não monetizamos e não transferimos dados pessoais de nenhum usuário.
+          </div>
+
+          <div>
+            <h3>1. Informações Gerais e Propósito</h3>
+            <p>
+              Esta Política de Privacidade descreve as práticas relativas ao aplicativo móvel <strong>FaunaVista</strong> para iOS. O aplicativo tem finalidade exclusivamente educativa e informativa, incentivando a conservação da fauna silvestre do Brasil.
+            </p>
+          </div>
+
+          <div>
+            <h3>2. Coleta e Tratamento de Dados Pessoais</h3>
+            <p>
+              O FaunaVista <strong>não coleta nenhum dado pessoal</strong>. Especificamente:
+            </p>
+            <ul>
+              <li><strong>Sem cadastro ou contas:</strong> O aplicativo não exige criação de login, e-mail, senha ou vínculo com redes sociais.</li>
+              <li><strong>Sem identificadores biométricos ou pessoais:</strong> Nenhum nome, documento, CPF ou número de telefone é solicitado.</li>
+              <li><strong>Sem telemetria analítica invasiva:</strong> Não utilizamos serviços de análise comportamental de terceiros.</li>
+            </ul>
+          </div>
+
+          <div>
+            <h3>3. Armazenamento Local no Dispositivo (SwiftData)</h3>
+            <p>
+              Todos os dados gerados pelo usuário durante o uso do app — incluindo avistamentos registrados, carimbos de data/hora, coordenadas marcadas em pins, anotações de campo e conclusões de missões — são armazenados <strong>estritamente na área de proteção local (sandbox) do dispositivo</strong> por meio da estrutura <strong>SwiftData</strong> da Apple.
+            </p>
+            <p style="margin-top: 0.4rem;">
+              Esses dados não são transmitidos para servidores nossos ou de qualquer terceiro. O usuário tem total controle sobre eles e pode apagá-los a qualquer momento no próprio aplicativo ou desinstalando o app.
+            </p>
+          </div>
+
+          <div>
+            <h3>4. Permissões do Sistema iOS</h3>
+            <p>
+              Para certas funcionalidades pontuais solicitadas pelo próprio usuário, o FaunaVista pode requerer acesso a recursos do sistema:
+            </p>
+            <ul>
+              <li><strong>Localização (Apenas durante o uso):</strong> Utilizada unicamente quando o usuário deseja atribuir a coordenada atual a um novo avistamento ou exibir sua posição relativa no mapa da expedição. A localização nunca é enviada para servidores ou monitorada em segundo plano.</li>
+              <li><strong>Biblioteca de Fotos / Câmera:</strong> Utilizada unicamente se o usuário optar por anexar uma foto pessoal ao seu log de avistamento local. As fotos permanecem no dispositivo.</li>
+            </ul>
+            <p style="margin-top: 0.4rem;">
+              Nenhuma dessas permissões é obrigatória para a navegação educativa nas fichas das espécies. O usuário pode revogar permissões a qualquer instante nos <em>Ajustes &gt; FaunaVista</em> do iOS.
+            </p>
+          </div>
+
+          <div>
+            <h3>5. Rastreamento e Publicidade</h3>
+            <p>
+              O FaunaVista <strong>não realiza rastreamento (tracking)</strong> nos termos do App Tracking Transparency (ATT) da Apple. O aplicativo não utiliza o Identificador de Publicidade (IDFA), não exibe anúncios de redes publicitárias e não vende ou compartilha dados com corretores de dados (data brokers).
+            </p>
+          </div>
+
+          <div>
+            <h3>6. Proteção de Menores e LGPD / COPPA</h3>
+            <p>
+              Por não coletar dados pessoais, o aplicativo é totalmente seguro para o uso de crianças, adolescentes e estudantes de todas as faixas etárias, em conformidade com a Lei Geral de Proteção de Dados (LGPD - Lei nº 13.709/2018) e padrões internacionais de proteção da infância como o COPPA.
+            </p>
+          </div>
+
+          <div>
+            <h3>7. Alterações nesta Política</h3>
+            <p>
+              Eventuais atualizações nesta política serão refletidas diretamente nesta página pública de suporte e indicadas pela data de revisão. Recomendamos a consulta periódica.
+            </p>
+          </div>
+
+          <div>
+            <h3>8. Contato do Responsável pela Privacidade</h3>
+            <p>
+              Em caso de dúvidas, solicitações ou considerações sobre privacidade no aplicativo, entre em contato através do e-mail oficial:
+              <a href="mailto:contato@faunavista.app" style="color: var(--accent-text); font-weight: 600;">contato@faunavista.app</a>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Rodapé -->
+  <footer class="page-footer">
+    <div style="max-width: 900px; margin: 0 auto;">
+      <p style="margin: 0 0 0.5rem 0; font-weight: 600; color: var(--text-main);">
+        FaunaVista © 2026 — Feito com carinho pela fauna brasileira.
+      </p>
+      <p style="margin: 0; font-size: 0.82rem;">
+        Aplicativo desenvolvido em SwiftUI e SwiftData para iOS. Todos os direitos reservados.
+      </p>
+      <div>
+        <a href="#inicio" class="back-to-top" title="Voltar ao início">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+          Voltar ao topo
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Interatividade do botão de copiar e-mail
+      const copyBtn = document.getElementById('copyEmailBtn');
+      const copyLabel = document.getElementById('copyBtnLabel');
+      const email = 'contato@faunavista.app';
+
+      if (copyBtn && copyLabel) {
+        copyBtn.addEventListener('click', async () => {
+          try {
+            await navigator.clipboard.writeText(email);
+            copyLabel.textContent = 'E-mail copiado!';
+            copyBtn.style.borderColor = 'var(--accent)';
+            setTimeout(() => {
+              copyLabel.textContent = 'Copiar e-mail';
+              copyBtn.style.borderColor = '';
+            }, 2500);
+          } catch (err) {
+            // Fallback caso clipboard API falhe
+            window.location.href = 'mailto:' + email;
+          }
+        });
+      }
+    });
+  </script>
+<script>
+/* Skip artifact shell — fixed helpers served beside every artifact. */
+(function () {
+  "use strict";
+
+  var fmt = {
+    num: function (v, opts) { return new Intl.NumberFormat("pt-BR", opts || {}).format(v); },
+    brl: function (v) { return new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(v); },
+    pct: function (v) { return new Intl.NumberFormat("pt-BR", { style: "percent", maximumFractionDigits: 1 }).format(v); }
+  };
+
+  // axisFmt keeps axis tick labels short (compact notation) so long values
+  // (e.g. full BRL amounts) never clip against the plot edge.
+  function axisFmt(v) {
+    return fmt.num(v, { notation: "compact", maximumFractionDigits: 1 });
+  }
+
+  // format accepts a function OR one of the fmt names ("num" | "brl" | "pct").
+  function coerceFormat(spec) {
+    if (typeof spec === "function") return spec;
+    if (typeof spec === "string" && fmt[spec]) return fmt[spec];
+    return function (v) { return fmt.num(v); };
+  }
+
+  function accent() {
+    return getComputedStyle(document.documentElement).getPropertyValue("--accent").trim() || "#2563eb";
+  }
+  function mutedColor() {
+    return getComputedStyle(document.documentElement).getPropertyValue("--text-muted").trim() || "#5b6472";
+  }
+  function svgEl(tag, attrs) {
+    var el = document.createElementNS("http://www.w3.org/2000/svg", tag);
+    for (var k in attrs) el.setAttribute(k, attrs[k]);
+    return el;
+  }
+  function frame(el, w, h) {
+    var svg = svgEl("svg", { viewBox: "0 0 " + w + " " + h, role: "img" });
+    el.innerHTML = "";
+    el.appendChild(svg);
+    return svg;
+  }
+
+  // maxOf guards the axis scale: empty values would give -Infinity (truthy,
+  // so "|| 1" can't catch it) and a non-positive max would flip the chart.
+  function maxOf(values) {
+    var m = values.length ? Math.max.apply(null, values) : 0;
+    return m > 0 ? m : 1;
+  }
+
+  // bar(el, {labels:[], values:[], color?, format?}) — vertical bar chart.
+  function bar(el, cfg) {
+    var W = 640, H = 280, padL = 46, padB = 30, padT = 12;
+    var svg = frame(el, W, H);
+    var max = maxOf(cfg.values);
+    var n = cfg.values.length;
+    var plotW = W - padL - 12, plotH = H - padT - padB;
+    var step = plotW / n, bw = Math.min(step * 0.62, 64);
+    var color = cfg.color || accent();
+    var f = coerceFormat(cfg.format);
+    for (var g = 0; g <= 4; g++) {
+      var gy = padT + plotH - (plotH * g) / 4;
+      svg.appendChild(svgEl("line", { x1: padL, y1: gy, x2: W - 12, y2: gy, stroke: "currentColor", "stroke-opacity": 0.08 }));
+      var lbl = svgEl("text", { x: padL - 8, y: gy + 4, "text-anchor": "end", "font-size": 10, fill: mutedColor() });
+      lbl.textContent = axisFmt((max * g) / 4);
+      svg.appendChild(lbl);
+    }
+    cfg.values.forEach(function (v, i) {
+      var bh = Math.max(0, (v / max) * plotH);
+      var x = padL + i * step + (step - bw) / 2;
+      var y = padT + plotH - bh;
+      var r = svgEl("rect", { x: x, y: y, width: bw, height: bh, rx: 4, fill: color });
+      var t = svgEl("title", {});
+      t.textContent = cfg.labels[i] + ": " + f(v);
+      r.appendChild(t);
+      svg.appendChild(r);
+      var tx = svgEl("text", { x: x + bw / 2, y: H - 10, "text-anchor": "middle", "font-size": 11, fill: mutedColor() });
+      tx.textContent = cfg.labels[i];
+      svg.appendChild(tx);
+    });
+  }
+
+  // line(el, {labels:[], values:[], color?, format?}) — single-series line.
+  function line(el, cfg) {
+    var W = 640, H = 280, padL = 46, padB = 30, padT = 12;
+    var svg = frame(el, W, H);
+    var max = maxOf(cfg.values);
+    var n = cfg.values.length;
+    var plotW = W - padL - 16, plotH = H - padT - padB;
+    var color = cfg.color || accent();
+    var f = coerceFormat(cfg.format);
+    for (var g = 0; g <= 4; g++) {
+      var gy = padT + plotH - (plotH * g) / 4;
+      svg.appendChild(svgEl("line", { x1: padL, y1: gy, x2: W - 16, y2: gy, stroke: "currentColor", "stroke-opacity": 0.08 }));
+      var lbl = svgEl("text", { x: padL - 8, y: gy + 4, "text-anchor": "end", "font-size": 10, fill: mutedColor() });
+      lbl.textContent = axisFmt((max * g) / 4);
+      svg.appendChild(lbl);
+    }
+    var pts = cfg.values.map(function (v, i) {
+      var x = padL + (n === 1 ? plotW / 2 : (plotW * i) / (n - 1));
+      var y = padT + plotH - (v / max) * plotH;
+      return [x, y];
+    });
+    var d = pts.map(function (p, i) { return (i ? "L" : "M") + p[0].toFixed(1) + " " + p[1].toFixed(1); }).join(" ");
+    svg.appendChild(svgEl("path", { d: d, fill: "none", stroke: color, "stroke-width": 2, "stroke-linejoin": "round" }));
+    pts.forEach(function (p, i) {
+      var c = svgEl("circle", { cx: p[0], cy: p[1], r: 3.5, fill: color });
+      var t = svgEl("title", {});
+      t.textContent = cfg.labels[i] + ": " + f(cfg.values[i]);
+      c.appendChild(t);
+      svg.appendChild(c);
+      var tx = svgEl("text", { x: p[0], y: H - 10, "text-anchor": "middle", "font-size": 11, fill: mutedColor() });
+      tx.textContent = cfg.labels[i];
+      svg.appendChild(tx);
+    });
+  }
+
+  // donut(el, {labels:[], values:[], colors?}) — donut with center total.
+  function donut(el, cfg) {
+    var W = 320, H = 280, cx = W / 2, cy = H / 2, R = 92, r = 58;
+    var svg = frame(el, W, H);
+    var total = cfg.values.reduce(function (a, b) { return a + b; }, 0) || 1;
+    var palette = cfg.colors || [accent(), "#1baf7a", "#eda100", "#e34948", "#4a3aa7", "#e87ba4"];
+    var a0 = -Math.PI / 2;
+    cfg.values.forEach(function (v, i) {
+      var a1 = a0 + (v / total) * Math.PI * 2;
+      var large = a1 - a0 > Math.PI ? 1 : 0;
+      var p = ["M", cx + R * Math.cos(a0), cy + R * Math.sin(a0),
+        "A", R, R, 0, large, 1, cx + R * Math.cos(a1), cy + R * Math.sin(a1),
+        "L", cx + r * Math.cos(a1), cy + r * Math.sin(a1),
+        "A", r, r, 0, large, 0, cx + r * Math.cos(a0), cy + r * Math.sin(a0), "Z"].join(" ");
+      var path = svgEl("path", { d: p, fill: palette[i % palette.length] });
+      var t = svgEl("title", {});
+      t.textContent = cfg.labels[i] + ": " + fmt.num(v) + " (" + fmt.pct(v / total) + ")";
+      path.appendChild(t);
+      svg.appendChild(path);
+      a0 = a1;
+    });
+    var center = svgEl("text", { x: cx, y: cy + 5, "text-anchor": "middle", "font-size": 20, "font-weight": 650, fill: "currentColor" });
+    center.textContent = fmt.num(total);
+    svg.appendChild(center);
+  }
+
+  window.skipShell = { fmt: fmt };
+  window.skipChart = { bar: bar, line: line, donut: donut };
+})();
+
+</script>
+</body>
+</html>
