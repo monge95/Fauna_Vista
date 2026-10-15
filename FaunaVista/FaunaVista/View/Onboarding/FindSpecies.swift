@@ -24,10 +24,10 @@ struct FindSpecies: View {
                     .foregroundStyle(Color("TextOnboarding"))
                     .padding(.top, 80)
                 
-                Text("Procure animais que enfrentam \n riscos de desaparecer da mata \n e descubra sua importância")
-                    .font(.system(size: 16))
-                    .multilineTextAlignment(.center)
-                    .foregroundStyle(Color("TextOnboarding"))
+//                Text("Procure animais que enfrentam \n riscos de desaparecer da mata \n e descubra sua importância")
+//                    .font(.system(size: 16))
+//                    .multilineTextAlignment(.center)
+//                    .foregroundStyle(Color("TextOnboarding"))
                 
                 Spacer()
                 
