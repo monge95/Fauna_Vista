@@ -4,18 +4,18 @@
 
 import SwiftUI
 
-// MARK: - TELA INICIAL (onboarding da expedição)
 struct ExpeditionStartView: View {
     var vm: ExpeditionViewState
 
     var body: some View {
         ZStack {
             FaunaPalette.beige.ignoresSafeArea()
-
+            
             VStack(spacing: 14) {
+                Spacer()
                 header
-
-                HStack(alignment: .top, spacing: 12) {
+                //Spacer()
+                HStack(alignment: .top, spacing: 20) {
                     PhotoExampleCard(
                         imageName: "fotoValida",
                         title: "Foto válida",
@@ -32,20 +32,28 @@ struct ExpeditionStartView: View {
                     )
                 }
                 .frame(maxHeight: .infinity)
-
+                //Spacer()
+                
+                Text("Instruções")
+                    .padding(.trailing, 260)
+                    .fontWeight(.semibold)
+                    
                 VStack(spacing: 10) {
                     TipRow(
                         symbol: "hand.draw.fill",
                         text: "Arraste o dedo pela tela para explorar o cenário."
                     )
+                    Divider()
                     TipRow(
                         symbol: "arrow.up.left.and.arrow.down.right",
                         text: "Abra os dedos (pinça) para dar zoom e chegar mais perto."
                     )
+                    Divider()
                     TipRow(
                         symbol: "timer",
                         text: "Você tem \(Int(ExpeditionConfig.gameDuration)) segundos e \(ExpeditionConfig.totalPhotos) fotos."
                     )
+                    Divider()
                     TipRow(
                         symbol: "pawprint.fill",
                         text: "Os animais se movem de forma imprevisível. Fique atento!"
@@ -53,6 +61,7 @@ struct ExpeditionStartView: View {
                 }
                 .padding(14)
                 .background(.white, in: RoundedRectangle(cornerRadius: 20))
+                .padding(.bottom, 15)
 
                 Button {
                     vm.startExpeditionWithCountdown()
@@ -65,31 +74,29 @@ struct ExpeditionStartView: View {
                             : "Começar Expedição"
                     )
                         .font(.headline)
-                        .foregroundStyle(.white)
-                        .frame(maxWidth: .infinity)
+                        .foregroundStyle(vm.isStartingExpedition ? Color.black : Color.white)
+                        .frame(maxWidth: 350)
                         .padding(.vertical, 16)
                         .background(
-                            vm.isStartingExpedition ? Color.gray : FaunaPalette.teal,
+                            vm.isStartingExpedition ? Color.yellow : FaunaPalette.teal,
                             in: Capsule()
                         )
                 }
                 .disabled(vm.isStartingExpedition)
+                Spacer()
             }
             .foregroundStyle(.black)
             .padding(.horizontal, 20)
             .padding(.top, 8)
-            .padding(.bottom, 16)
+            .padding(.bottom, 28)
         }
     }
 
     private var header: some View {
         VStack(spacing: 4) {
-            Image(systemName: "binoculars.fill")
-                .font(.system(size: 34))
-                .foregroundStyle(FaunaPalette.teal)
-
-            Text("Prepare-se!")
-                .font(.title.bold())
+            
+            Text("Prepare-se")
+                .font(.custom("Belanosima-SemiBold", size: 32))
 
             Text("A expedição vai começar. Veja algumas dicas:")
                 .font(.subheadline)
@@ -108,16 +115,12 @@ private struct PhotoExampleCard: View {
     let tint: Color
 
     var body: some View {
-        VStack(spacing: 8) {
+        VStack(spacing: 10) {
             Image(imageName)
                 .resizable()
-                .scaledToFit()
-                .frame(maxHeight: .infinity)
+                .scaledToFill()
+                .frame(width: 170, height: 157)
                 .clipShape(RoundedRectangle(cornerRadius: 12))
-                .overlay(
-                    RoundedRectangle(cornerRadius: 12)
-                        .stroke(tint, lineWidth: 3)
-                )
 
             HStack(spacing: 4) {
                 Image(systemName: symbol)
@@ -127,14 +130,15 @@ private struct PhotoExampleCard: View {
             }
 
             Text(text)
-                .font(.caption)
+                .font(.system(size: 15))
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
                 .minimumScaleFactor(0.85)
                 .fixedSize(horizontal: false, vertical: true)
+                .padding(.bottom, 10)
+                .padding(.horizontal, 12)
         }
-        .padding(10)
-        .frame(maxWidth: .infinity)
+        .frame(width: 170)
         .background(.white, in: RoundedRectangle(cornerRadius: 20))
     }
 }
@@ -149,7 +153,7 @@ private struct TipRow: View {
             Image(systemName: symbol)
                 .font(.system(size: 18, weight: .semibold))
                 .foregroundStyle(.white)
-                .frame(width: 34, height: 34)
+                .frame(width: 34, height: 44)
                 .background(FaunaPalette.teal, in: Circle())
 
             Text(text)
@@ -158,6 +162,7 @@ private struct TipRow: View {
 
             Spacer(minLength: 0)
         }
+        
     }
 }
 
