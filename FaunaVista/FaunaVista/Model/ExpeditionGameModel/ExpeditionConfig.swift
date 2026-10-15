@@ -35,7 +35,7 @@ struct ExpeditionConfig {
     // Ajuste estes dois valores conforme o tamanho real dos seus modelos 3D.
     static let minimumCaptureDistance: Float =  0 //  se o animal for do tamanho do Animal do prototipo
     static let maxCaptureDistance: Float = 220.0
-    static let aimPointRadius: CGFloat = 9 // Raio do ponto central da mira.
+    static let aimPointRadius: CGFloat = 25 // Raio do ponto central da mira.
     // AJUSTE MANUAL DO PONTO DE DETECÇÃO (em pontos de tela, relativo à mira desenhada).
     // y NEGATIVO = a detecção sobe; y POSITIVO = desce. x NEGATIVO = esquerda.
     // O valor é interpolado entre o zoom mínimo (1x) e o máximo (5x).

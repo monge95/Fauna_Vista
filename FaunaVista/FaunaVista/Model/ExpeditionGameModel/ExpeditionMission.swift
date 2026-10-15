@@ -10,9 +10,9 @@ enum ExpeditionAnimalPose: String {
 
     var displayName: String {
         switch self {
-        case .idle:    return "Parado"
-        case .walking: return "Andando"
-        case .action:  return "Executando ação"
+        case .idle:    return "Foto válida"
+        case .walking: return "Foto válida"
+        case .action:  return "Foto válida"
         }
     }
 }
