@@ -1,5 +1,5 @@
 //
-//  Explore.swift
+//  Encontre.swift
 //  FaunaVista
 //
 //  Created by Joice Cardoso on 05/10/26.
@@ -11,23 +11,26 @@ struct ExploreTerritories: View {
     @Environment(AppCoordinator.self) private var coordinator
     var body: some View {
         ZStack {
-            Image("ExploreImg")
+            Image("EncontreImg")
                 .resizable()
                 .scaledToFill()
                 .ignoresSafeArea()
             
             VStack(spacing: 10) {
-                Text("Encontre espécies ameaçadas")
+                Text("Explore novos\nterritórios")
                     .font(
                         .custom("Belanosima-SemiBold", size: 34))
                     .multilineTextAlignment(.center)
+                    .foregroundStyle(Color("TextOnboarding"))
                     .padding(.top, 80)
                 
-                Text("Procure animais que enfrentam\n riscos de desaparecer da mata\n e descubra sua importância")
+                Text("Procure animais que enfrentam \n riscos de desaparecer da mata \n e descubra sua importância")
                     .font(.system(size: 16))
                     .multilineTextAlignment(.center)
+                    .foregroundStyle(Color("TextOnboarding"))
                 
                 Spacer()
+                
                 HStack(spacing: 30) {
                     
                     Button (action: {
@@ -43,7 +46,7 @@ struct ExploreTerritories: View {
                     
                     
                     Button (action: {
-                        coordinator.push(.findSpecies)
+                        coordinator.push(.observeImg)
                     }) {
                         Image(systemName: "chevron.right")
                             .font(.system(size: 25, weight: .bold))
@@ -54,14 +57,12 @@ struct ExploreTerritories: View {
                     .padding(.bottom, 70)
                     
                 }
-            
             }
-    
         }
         .navigationBarBackButtonHidden(true)
     }
 }
 
 #Preview {
-    ExploreTerritories()
+    FindSpecies()
 }
