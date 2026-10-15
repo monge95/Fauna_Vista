@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Suporte — FaunaVista</title>
-  <meta name="description" content="Página oficial de suporte e política de privacidade do aplicativo FaunaVista para iOS. Informações, dúvidas frequentes e contato.">
+  <title>FaunaVista — Suporte ao Aplicativo</title>
+  <meta name="description" content="Página oficial de suporte, Termos de Uso e Política de Privacidade do aplicativo FaunaVista.">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/basecoat-css@1.0.2/dist/basecoat.cdn.min.css">
   <style>
 /* Skip artifact shell — fixed styles served beside every artifact.
@@ -166,28 +166,15 @@ table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 
     .nav-brand {
       display: inline-flex;
       align-items: center;
-      gap: 0.6rem;
       text-decoration: none;
       color: var(--text-main);
       font-weight: 700;
       font-size: 1.15rem;
     }
 
-    .nav-brand-icon {
-      width: 32px;
-      height: 32px;
-      border-radius: 8px;
-      background: linear-gradient(135deg, #1b6a3e, #2d8a54);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      color: #ffffff;
-      box-shadow: 0 2px 6px rgba(27, 106, 62, 0.25);
-    }
-
     .nav-links {
       display: flex;
-      gap: 0.75rem;
+      gap: 0.5rem;
       list-style: none;
       margin: 0;
       padding: 0;
@@ -218,19 +205,11 @@ table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 
       background: #ffffff;
       border: 1px solid var(--card-border);
       border-radius: 16px;
-      padding: 2.25rem 2rem;
+      padding: 2.5rem 2rem;
       box-shadow: 0 4px 18px rgba(27, 45, 32, 0.04);
       margin-top: 1.5rem;
       position: relative;
       overflow: hidden;
-    }
-
-    .logo {
-      display: block;
-      margin: 0 auto 12px auto;
-      width: 72px;
-      height: auto;
-      border-radius: 16px;
     }
 
     .hero-card::before {
@@ -243,30 +222,24 @@ table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 
       background: linear-gradient(90deg, #1b6a3e, #4ea373, #8ec29b);
     }
 
-    .hero-header {
-      display: flex;
-      align-items: center;
-      gap: 1.25rem;
-      margin-bottom: 1.25rem;
-      flex-wrap: wrap;
+    .app-logo {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 16px;
+      display: block;
+      margin: 0 auto 0.75rem auto;
+      box-shadow: 0 4px 14px rgba(27, 45, 32, 0.08);
     }
 
-    .app-icon {
-      width: 64px;
-      height: 64px;
-      border-radius: 16px;
-      background: linear-gradient(145deg, #1b6a3e 0%, #29824f 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #ffffff;
-      box-shadow: 0 8px 16px rgba(27, 106, 62, 0.22);
-      flex-shrink: 0;
+    .hero-header {
+      text-align: center;
+      margin-bottom: 0.5rem;
     }
 
     .hero-title-group h1 {
-      margin: 0 0 0.25rem 0;
-      font-size: 1.9rem;
+      margin: 0.35rem 0 0.25rem 0;
+      font-size: 2rem;
       letter-spacing: -0.02em;
       color: var(--text-main);
     }
@@ -426,6 +399,102 @@ table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 
       margin-bottom: 0;
     }
 
+    /* Legal Tabs & Content */
+    .legal-tabs {
+      display: flex;
+      gap: 0.5rem;
+      border-bottom: 2px solid var(--card-border);
+      margin-bottom: 1.5rem;
+      overflow-x: auto;
+    }
+
+    .legal-tab-btn {
+      background: none;
+      border: none;
+      padding: 0.75rem 1.25rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      position: relative;
+      border-radius: 8px 8px 0 0;
+      transition: color 0.15s ease, background-color 0.15s ease;
+      white-space: nowrap;
+    }
+
+    .legal-tab-btn:hover {
+      color: var(--accent-text);
+      background-color: var(--tag-bg);
+    }
+
+    .legal-tab-btn.active {
+      color: var(--accent-text);
+      font-weight: 700;
+    }
+
+    .legal-tab-btn.active::after {
+      content: "";
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background-color: var(--accent);
+      border-radius: 3px 3px 0 0;
+    }
+
+    .legal-panel {
+      display: none;
+    }
+
+    .legal-panel.active {
+      display: block;
+      animation: fadeIn 0.2s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .legal-meta {
+      display: inline-block;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      background-color: var(--tag-bg);
+      padding: 0.3rem 0.75rem;
+      border-radius: 6px;
+      border: 1px solid var(--tag-border);
+      margin-bottom: 1.25rem;
+      font-weight: 600;
+    }
+
+    .legal-body {
+      font-size: 0.94rem;
+      line-height: 1.68;
+      color: #273b2b;
+    }
+
+    .legal-body p {
+      margin: 0 0 1rem 0;
+    }
+
+    .legal-body h3 {
+      font-size: 1.05rem;
+      color: var(--text-main);
+      margin: 1.4rem 0 0.5rem 0;
+      font-weight: 700;
+    }
+
+    .legal-body ul {
+      margin: 0.35rem 0 1rem 1.25rem;
+      padding: 0;
+    }
+
+    .legal-body li {
+      margin-bottom: 0.35rem;
+    }
+
     /* Contact Box */
     .contact-card {
       background: linear-gradient(145deg, #f3f8f4 0%, #e9f2eb 100%);
@@ -491,54 +560,29 @@ table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 
       background: #f0f4f0;
     }
 
-    /* Privacy Policy styling */
-    .privacy-block {
+    .footer-links {
       display: flex;
-      flex-direction: column;
-      gap: 1.4rem;
-      color: var(--text-main);
-      line-height: 1.65;
-      font-size: 0.93rem;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
     }
 
-    .privacy-block h3 {
-      font-size: 1.05rem;
-      font-weight: 700;
-      margin: 0 0 0.4rem 0;
-      color: var(--text-main);
-    }
-
-    .privacy-block p {
-      margin: 0;
-      color: #3b4c3e;
-    }
-
-    .privacy-block ul {
-      margin: 0.4rem 0 0 0;
-      padding-left: 1.25rem;
-      color: #3b4c3e;
-    }
-
-    .privacy-block li {
-      margin-bottom: 0.35rem;
-    }
-
-    .privacy-highlight {
-      background-color: #f0f7f2;
-      border-left: 4px solid var(--accent);
-      padding: 0.85rem 1rem;
-      border-radius: 0 8px 8px 0;
-    }
-
-    .meta-tag {
-      display: inline-block;
-      font-size: 0.8rem;
+    .footer-links a {
+      color: var(--accent-text);
+      text-decoration: none;
       font-weight: 600;
-      color: var(--text-muted);
-      background: #f1f4f1;
-      padding: 0.2rem 0.6rem;
-      border-radius: 4px;
-      margin-top: 0.5rem;
+      font-size: 0.88rem;
+    }
+
+    .footer-links a:hover {
+      text-decoration: underline;
+    }
+
+    .footer-links-divider {
+      color: #9cb2a0;
+      font-size: 0.8rem;
     }
 
     /* Footer */
@@ -605,202 +649,281 @@ table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 
 </head>
 <body>
 
-  <!-- Barra de Navegação Fixa -->
-  <header class="top-nav" aria-label="Navegação do suporte">
+  <!-- Top Sticky Navigation -->
+  <header class="top-nav" aria-label="Navegação de Suporte">
     <div class="nav-inner">
-      <a href="#inicio" class="nav-brand" title="FaunaVista">
-        <span class="nav-brand-icon" aria-hidden="true">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-            <circle cx="12" cy="11" r="3"/>
-          </svg>
-        </span>
-        <span>FaunaVista</span>
-      </a>
+      <a href="#home" class="nav-brand" title="FaunaVista">FaunaVista</a>
 
-      <nav aria-label="Seções">
+      <nav aria-label="Seções da página">
         <ul class="nav-links">
-          <li><a href="#sobre">Sobre</a></li>
-          <li><a href="#faq">Perguntas Frequentes</a></li>
-          <li><a href="#contato">Contato</a></li>
-          <li><a href="#privacidade">Privacidade</a></li>
+          <li><a href="#about">Sobre</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#legal">Legal</a></li>
+          <li><a href="#contact">Contato</a></li>
         </ul>
       </nav>
     </div>
   </header>
 
-  <main class="shell-container" style="max-width: 900px; padding: 0 1.25rem 2rem 1.25rem;" id="inicio">
+  <main class="shell-container" style="max-width: 900px; padding: 0 1.25rem 2rem 1.25rem;" id="home">
 
-    <!-- Hero Card -->
+    <!-- Header Card -->
     <section class="hero-card">
       <div class="hero-header">
-        <div class="app-icon" aria-hidden="true">
-          <!-- Ícone estilizado representando folha / pegada de fauna -->
-          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/>
-            <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>
-          </svg>
-        </div>
+        <img src="logo.png" alt="Logo FaunaVista" class="app-logo" onerror="this.style.display='none'">
         <div class="hero-title-group">
-          <span class="hero-badge">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-            App Store • iOS
-          </span>
-          <img src="logo.png" alt="Logo FaunaVista" class="logo" onerror="this.style.display='none'">
           <h1>FaunaVista</h1>
-          <p style="margin: 0; color: var(--text-muted); font-size: 1.05rem;">
-            Central de Suporte Oficial e Política de Privacidade
+          <p style="margin: 0.25rem 0 0 0; color: var(--text-muted); font-size: 1.15rem; font-weight: 600;">
+            Suporte ao Aplicativo
           </p>
         </div>
       </div>
-
-      <p style="margin: 0; font-size: 0.96rem; color: #324736; line-height: 1.55;">
-        Bem-vindo à página de suporte do aplicativo <strong>FaunaVista</strong>. Aqui você encontra respostas para dúvidas frequentes sobre o uso do app, detalhes sobre armazenamento seguro e a nossa declaração completa de privacidade.
-      </p>
     </section>
 
-    <!-- Sobre o App -->
-    <section id="sobre" class="content-section">
+    <!-- Sobre Section -->
+    <section id="about" class="content-section">
       <div class="section-card">
         <div class="section-header">
           <span class="section-icon" aria-hidden="true">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
           </span>
-          <h2>Sobre o Aplicativo</h2>
+          <h2>Sobre</h2>
         </div>
 
-        <p style="margin: 0 0 1rem 0; line-height: 1.6; font-size: 0.96rem; color: #2e4132;">
-          O <strong>FaunaVista</strong> é um aplicativo educativo dedicado à valorização e conhecimento da rica fauna brasileira, com foco prioritário na sensibilização sobre espécies ameaçadas de extinção. Criado especialmente para o ecossistema Apple em <strong>SwiftUI</strong> e <strong>SwiftData</strong>, o app oferece uma experiência fluida, sem anúncios e com preservação total da sua privacidade.
+        <p style="margin: 0; line-height: 1.65; font-size: 1rem; color: #2e4132;">
+          FaunaVista é um aplicativo educativo sobre a fauna brasileira. Explore os biomas, conheça espécies ameaçadas de extinção, participe de expedições virtuais e construa sua coleção de espécies descobertas — todos os seus dados ficam armazenados no seu aparelho.
         </p>
-
-        <div class="feature-grid">
-          <div class="feature-pill">
-            <h3>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-              Enciclopédia de Espécies
-            </h3>
-            <p>Descubra características, biomas, hábitos e status de conservação (IUCN/MMA) de animais nativos do Brasil.</p>
-          </div>
-
-          <div class="feature-pill">
-            <h3>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-              Logs de Avistamento
-            </h3>
-            <p>Registre encontros e observações de campo com data, anotações e pontos georreferenciados no seu mapa pessoal.</p>
-          </div>
-
-          <div class="feature-pill">
-            <h3>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-              Missões e Pins
-            </h3>
-            <p>Cumpra desafios educativos por bioma (Mata Atlântica, Cerrado, Pantanal, Amazônia, Caatinga e Pampa).</p>
-          </div>
-
-          <div class="feature-pill">
-            <h3>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-              100% Local (SwiftData)
-            </h3>
-            <p>Seus registros e progresso ficam guardados exclusivamente na memória do seu iPhone, funcionando perfeitamente sem internet.</p>
-          </div>
-        </div>
       </div>
     </section>
 
-    <!-- Perguntas Frequentes (FAQ) -->
+    <!-- FAQ Section -->
     <section id="faq" class="content-section">
       <div class="section-card">
         <div class="section-header">
           <span class="section-icon" aria-hidden="true">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
           </span>
-          <h2>Perguntas Frequentes (FAQ)</h2>
+          <h2>FAQ</h2>
         </div>
 
         <div class="faq-list">
           <details class="faq-item" open>
             <summary>
-              <span>Como registro um novo avistamento no aplicativo?</span>
+              <span>Como registro um avistamento?</span>
               <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
             </summary>
             <div class="faq-answer">
-              <p>Abra a aba <strong>Registros</strong> ou clique no botão flutuante <strong>+ (Adicionar)</strong> na tela inicial. Selecione a espécie observada no catálogo, informe a data/hora e, opcionalmente, insira uma anotação de campo ou foto capturada no momento.</p>
-              <p>O avistamento será fixado no mapa e contabilizado no seu livro de campo imediatamente.</p>
+              <p>Durante as expedições virtuais, siga os objetivos e desafios apresentados pelo app para fazer registros fotográficos simulados das espécies que encontrar.</p>
             </div>
           </details>
 
           <details class="faq-item">
             <summary>
-              <span>Como funcionam as missões e os pins no mapa?</span>
+              <span>Como funcionam as missões e os pins?</span>
               <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
             </summary>
             <div class="faq-answer">
-              <p>As missões são metas pedagógicas para incentivar o aprendizado sobre os biomas brasileiros (por exemplo: <em>"Descubra 3 aves da Mata Atlântica"</em> ou <em>"Identifique espécies vulneráveis do Cerrado"</em>).</p>
-              <p>Conforme você explora espécies e registra avistamentos compatíveis, o pin correspondente acende no mapa interativo e o progresso da missão é atualizado automaticamente.</p>
+              <p>As missões guiam sua exploração. Complete os objetivos para ganhar pins e acompanhar seu progresso pelos biomas.</p>
             </div>
           </details>
 
           <details class="faq-item">
             <summary>
-              <span>Onde meus dados e fotos ficam salvos?</span>
+              <span>Onde meus dados ficam salvos?</span>
               <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
             </summary>
             <div class="faq-answer">
-              <p><strong>Exclusivamente no seu aparelho.</strong> O FaunaVista utiliza a tecnologia moderna <strong>SwiftData</strong> da Apple. Todo o banco de dados (histórico de avistamentos, anotações de campo, configurações e progresso de missões) fica confinado no armazenamento protegido local do seu iPhone.</p>
-              <p>Nenhuma informação é transmitida, enviada para servidores externos ou armazenada em bancos de dados remotos.</p>
+              <p>Todo o seu progresso é armazenado localmente no seu aparelho. Nada é enviado para servidores.</p>
             </div>
           </details>
 
           <details class="faq-item">
             <summary>
-              <span>O aplicativo coleta dados pessoais ou rastreia meu uso?</span>
+              <span>O app coleta meus dados?</span>
               <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
             </summary>
             <div class="faq-answer">
-              <p><strong>Não.</strong> O FaunaVista não coleta absolutamente nenhum dado pessoal, número de telefone, localização contínua, identificador de publicidade (IDFA) ou telemetria invasiva.</p>
-              <p>Não há rastreadores de terceiros (trackers), SDKs de redes sociais ou ferramentas de análise de comportamento integradas ao código.</p>
+              <p>Não. O FaunaVista não coleta, compartilha ou vende dados pessoais. Consulte nossa <a href="#legal" id="linkToPrivacy" style="color: var(--accent-text); font-weight: 600;">Privacy Policy</a> na seção Legal abaixo.</p>
             </div>
           </details>
 
           <details class="faq-item">
             <summary>
-              <span>Como sincronizo meus dados entre múltiplos aparelhos?</span>
+              <span>O app usa minha câmera?</span>
               <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
             </summary>
             <div class="faq-answer">
-              <p>Na versão atual, os dados são estritamente <strong>locais ao aparelho</strong> em que foram criados para garantir total autonomia offline e máxima privacidade sem depender de contas ou login.</p>
-              <p>Ao realizar o backup padrão do seu iPhone via iCloud ou Finder/Mac, o banco de dados local do app é incluído com segurança no seu backup pessoal do sistema iOS.</p>
+              <p>Não. Os registros fotográficos durante as expedições são simulações geradas pelo próprio app. O FaunaVista nunca acessa a câmera do dispositivo.</p>
             </div>
           </details>
 
           <details class="faq-item">
             <summary>
-              <span>Como reporto um problema técnico ou sugiro uma nova espécie?</span>
+              <span>Como reporto um problema?</span>
               <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
             </summary>
             <div class="faq-answer">
-              <p>Você pode enviar uma mensagem direta para a nossa equipe pelo canal de suporte oficial: <a href="mailto:contato@faunavista.app" style="color: var(--accent-text); font-weight: 600;">contato@faunavista.app</a>.</p>
-              <p>Ao relatar um problema técnico, inclua se possível o modelo do seu iPhone e a versão instalada do iOS para agilizar o atendimento.</p>
+              <p>Envie um e-mail para <a href="mailto:faunavistastaff@gmail.com" style="color: var(--accent-text); font-weight: 600;">faunavistastaff@gmail.com</a> e responderemos o mais breve possível.</p>
             </div>
           </details>
         </div>
       </div>
     </section>
 
-    <!-- Contato de Suporte -->
-    <section id="contato" class="content-section">
+    <!-- Legal Section (Tabs: Terms of Use & Privacy Policy) -->
+    <section id="legal" class="content-section">
+      <div class="section-card">
+        <div class="section-header">
+          <span class="section-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </span>
+          <h2>Legal</h2>
+        </div>
+
+        <!-- Tab Controls -->
+        <div class="legal-tabs" role="tablist" aria-label="Documentos legais">
+          <button type="button" role="tab" class="legal-tab-btn active" id="tab-terms-btn" aria-selected="true" aria-controls="panel-terms">
+            Terms of Use
+          </button>
+          <button type="button" role="tab" class="legal-tab-btn" id="tab-privacy-btn" aria-selected="false" aria-controls="panel-privacy">
+            Privacy Policy
+          </button>
+        </div>
+
+        <!-- Tab 1: Terms of Use -->
+        <div id="panel-terms" class="legal-panel active" role="tabpanel" aria-labelledby="tab-terms-btn">
+          <span class="legal-meta">Last updated: September 25, 2026</span>
+
+          <div class="legal-body">
+            <p>Welcome to FaunaVista. These Terms of Use establish the conditions for using the FaunaVista app, developed for educational and interactive purposes to provide exploration of Brazilian fauna and its biomes. By using the app, the user acknowledges these Terms of Use.</p>
+
+            <h3>1. About FaunaVista</h3>
+            <p>FaunaVista is an educational app that presents information about Brazilian fauna, its biomes, and species threatened with extinction. The app allows the user to:</p>
+            <ul>
+              <li>explore Brazilian biomes;</li>
+              <li>learn about different species;</li>
+              <li>look up information about animals and their environments;</li>
+              <li>take part in interactive virtual expeditions;</li>
+              <li>make simulated photo records during the virtual expeditions;</li>
+              <li>track their exploration progress;</li>
+              <li>build their collection of discovered species.</li>
+            </ul>
+
+            <h3>2. Educational purpose</h3>
+            <p>The content presented by FaunaVista has an educational and informative purpose. The information made available in the app should not be considered a substitute for official sources, scientific publications, or guidance from specialized professionals. Information about the classification, distribution, characteristics, and conservation status of species may be updated over time. Where applicable, the app will indicate the sources used to provide this information.</p>
+
+            <h3>3. Proper use of the app</h3>
+            <p>The user agrees to use FaunaVista in an appropriate manner, consistent with its purpose. It is not permitted to use the app to:</p>
+            <ul>
+              <li>attempt to access or modify its operation in an unauthorized way;</li>
+              <li>perform reverse engineering or improperly interfere with its systems;</li>
+              <li>use the app for illegal activities;</li>
+              <li>use content made available by the app in a way that violates third-party rights;</li>
+              <li>exploit flaws or vulnerabilities in the app with the intent to cause damage.</li>
+            </ul>
+
+            <h3>4. Expeditions and simulated records</h3>
+            <p>FaunaVista features interactive expeditions that simulate the observation and photographic recording of Brazilian fauna species within the app. During these expeditions, the user can make simulated photo records according to the goals and challenges presented by the app. These records are part of the exploration experience and do not represent photographs captured by the device's camera. FaunaVista does not use the device's camera to perform these simulations. The simulated records may be used to track the user's progress in the expeditions, in the species collection, and in the exploration of the biomes.</p>
+
+            <h3>5. Third-party content and sources</h3>
+            <p>FaunaVista uses content and information from external services to complement the species exploration experience. Information related to species and observations may be obtained through iNaturalist, while images used to represent the species may be obtained through Wikimedia Commons. Third-party content remains subject to the copyrights, licenses, and other conditions established by their respective authors and owners. FaunaVista does not claim ownership of this content and, where applicable, will provide the respective authorship, source, and license information in the Sources &amp; Credits section of the app.</p>
+
+            <h3>6. Intellectual property</h3>
+            <p>The elements developed specifically for FaunaVista, including its visual identity, name, logo, interface, original texts, illustrations, and other proprietary materials, are protected by applicable intellectual property legislation. Using the app does not grant the user any property rights over these elements. Content belonging to third parties remains subject to the rights and licenses of their respective owners.</p>
+
+            <h3>7. App availability</h3>
+            <p>We strive to keep FaunaVista available and working properly, but we do not guarantee that the app will be free of interruptions, errors, or downtime. The operation of certain features may depend on an internet connection, external services, or the availability of the APIs used by the app. Third-party services may undergo changes, interruptions, or downtime beyond the control of the team responsible for FaunaVista.</p>
+
+            <h3>8. Updates</h3>
+            <p>FaunaVista may receive updates to fix errors, improve features, update content, or add new resources. Some features may be modified, replaced, or removed over the course of the app's development.</p>
+
+            <h3>9. Limitation of liability</h3>
+            <p>FaunaVista is made available for educational and informational purposes. We do not guarantee that all information presented will be permanently up to date or complete. The team responsible for the app is not liable for decisions made solely based on the information presented in the app.</p>
+
+            <h3>10. Privacy</h3>
+            <p>The handling of information related to users is described in our Privacy Policy. The Privacy Policy is part of these Terms of Use and should be consulted to understand how information is handled by the app.</p>
+
+            <h3>11. Changes to these Terms</h3>
+            <p>These Terms of Use may be updated when there are relevant changes to the app, its services, or applicable legislation. The most recent version will be available within the app and/or on FaunaVista's official channels.</p>
+
+            <h3>12. Contact</h3>
+            <p>For questions, suggestions, or requests related to FaunaVista, please contact:<br>
+            <strong>FaunaVista</strong> — Team: Felipe Colares, Gabriel Groppo, Joice Cardoso, Pedro Monge<br>
+            Email: <a href="mailto:faunavistastaff@gmail.com" style="color: var(--accent-text); font-weight: 600;">faunavistastaff@gmail.com</a><br>
+            Last updated: September 25, 2026.</p>
+          </div>
+        </div>
+
+        <!-- Tab 2: Privacy Policy -->
+        <div id="panel-privacy" class="legal-panel" role="tabpanel" aria-labelledby="tab-privacy-btn">
+          <span class="legal-meta">Last updated: September 25, 2026</span>
+
+          <div class="legal-body">
+            <p>This Privacy Policy explains how the FaunaVista app handles information related to its users. FaunaVista is an educational and interactive app focused on exploring Brazilian fauna, allowing users to learn about endangered species, explore Brazilian biomes, and take part in virtual expeditions and discovery activities within the app.</p>
+
+            <h3>1. Collection of personal data</h3>
+            <p>FaunaVista was developed following the principle of data minimization and, at this time, does not require registration or account creation to use the app. The app does not directly request personal information such as: name; address; phone number; email address; ID documents; password; payment information. FaunaVista also does not have, in its current version, a user profile system or storage of personal information on its own servers.</p>
+
+            <h3>2. Data stored on the device</h3>
+            <p>To enable its features to work, FaunaVista may store information related to the user's progress locally on the device, such as:</p>
+            <ul>
+              <li>discovered species;</li>
+              <li>biome exploration progress;</li>
+              <li>simulated expeditions completed within the app;</li>
+              <li>information related to expedition completion;</li>
+              <li>simulated photo records made during the expeditions.</li>
+            </ul>
+            <p>This information is used exclusively to maintain the operation and progress of the app. Progress-related data is stored locally on the device and, in the current version, is not sent to FaunaVista's own servers.</p>
+
+            <h3>3. Simulated photo records</h3>
+            <p>FaunaVista features interactive virtual expeditions that simulate photographing Brazilian fauna species in natural environments. The photo records made during these virtual expeditions are simulations generated by the app itself and do not correspond to photographs captured by the device's camera. Therefore, FaunaVista does not request access to the device's camera and does not collect or store the user's personal photographs. The simulated records may be associated with expedition progress and the user's collection, remaining stored locally when necessary for the app to function.</p>
+
+            <h3>4. Data and content from external services</h3>
+            <p>FaunaVista uses external services to provide information and content related to the species presented in the app.</p>
+            <p><strong>iNaturalist:</strong> used as a source of information related to fauna species and observations, and may provide data such as common name, scientific name, location, and other information made available by the platform.</p>
+            <p><strong>Wikimedia Commons:</strong> used as a source of images of the species presented in the app. The images used are selected according to the licenses applicable to each file, respecting the conditions of use and attribution established by their respective authors and licensors.</p>
+            <p>FaunaVista does not claim ownership of content belonging to these sources. Information about the authorship, license, and origin of the content used can be found in the Sources &amp; Credits section of the app.</p>
+
+            <h3>5. Data sharing</h3>
+            <p>FaunaVista does not sell users' personal data. In the current version, progress-related data stored locally is not shared with third parties by the app. If future versions begin to use services that involve the collection, storage, or sharing of personal data, this Privacy Policy will be updated to state which data will be handled, for what purposes, and with which third parties it may be shared.</p>
+
+            <h3>6. Storage and deletion</h3>
+            <p>Information related to the user's progress is stored locally on the device. Deleting the app may remove the local data associated with its operation, according to the behavior of the operating system and the device's storage settings. If FaunaVista ever offers data storage on servers or user accounts, specific mechanisms will be provided for requesting access to, correction of, or deletion of that data.</p>
+
+            <h3>7. Privacy of children and teens</h3>
+            <p>FaunaVista has an educational purpose and can be used by students. The app does not directly request personal information for account creation or user identification. Parents, guardians, and educational institutions may contact us if they have questions about how data is handled in the app.</p>
+
+            <h3>8. Security</h3>
+            <p>We adopt technical measures compatible with the app's structure to reduce risks related to unauthorized access to stored information. Since FaunaVista does not maintain, in its current version, a user account or its own database containing personal information, most progress-related information remains on the device used by the user.</p>
+
+            <h3>9. User rights</h3>
+            <p>Under applicable legislation, including the Brazilian General Data Protection Law (LGPD), users may exercise the applicable rights over their personal data, including those related to confirmation of processing, access, correction, and deletion, where applicable. For requests or questions related to privacy, please contact us by email: <a href="mailto:joicenunes.ca@gmail.com" style="color: var(--accent-text); font-weight: 600;">joicenunes.ca@gmail.com</a></p>
+
+            <h3>10. Changes to this Privacy Policy</h3>
+            <p>This Privacy Policy may be updated to reflect changes in FaunaVista's features, in the services used, or in applicable legislation. When there are relevant changes, the updated version will be made available in the app and/or on FaunaVista's official channels.</p>
+
+            <h3>11. Contact</h3>
+            <p>For questions, suggestions, or requests related to privacy, please contact:<br>
+            <strong>FaunaVista</strong> — Team: Felipe Colares, Gabriel Groppo, Joice Cardoso, Pedro Monge<br>
+            Email: <a href="mailto:joicenunes.ca@gmail.com" style="color: var(--accent-text); font-weight: 600;">joicenunes.ca@gmail.com</a><br>
+            Last updated: September 25, 2026.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="content-section">
       <div class="section-card">
         <div class="section-header">
           <span class="section-icon" aria-hidden="true">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
           </span>
-          <h2>Canal de Suporte e Contato</h2>
+          <h2>Contato</h2>
         </div>
 
         <p style="margin-top: 0; color: #2e4132; font-size: 0.95rem; line-height: 1.55;">
-          Tem alguma dúvida sobre o app, encontrou alguma incoerência taxonômica em uma espécie ou precisa de auxílio técnico? Nossa equipe de suporte está pronta para ajudar.
+          Dúvidas, sugestões ou solicitações? Envie um e-mail:
         </p>
 
         <div class="contact-card">
@@ -809,10 +932,10 @@ table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 
               E-mail de Suporte
             </div>
             <div style="font-size: 0.95rem; color: #2c4231;">
-              Canal oficial para dúvidas, relatórios de bugs e privacidade:
+              Canal oficial para atendimento e suporte:
             </div>
             <div style="margin-top: 0.35rem; font-family: monospace; font-size: 1.05rem; font-weight: 700; color: var(--accent-text);" id="supportEmailText">
-              contato@faunavista.app
+              faunavistastaff@gmail.com
             </div>
             <button type="button" class="copy-button" id="copyEmailBtn" aria-label="Copiar e-mail de suporte">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
@@ -820,137 +943,34 @@ table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 
             </button>
           </div>
 
-          <a href="mailto:contato@faunavista.app?subject=Suporte%20FaunaVista%20iOS" class="contact-email-btn">
+          <a href="mailto:faunavistastaff@gmail.com?subject=Suporte%20FaunaVista" class="contact-email-btn">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-            Enviar Mensagem
+            Enviar E-mail
           </a>
-        </div>
-
-        <div style="margin-top: 1.25rem; font-size: 0.86rem; color: var(--text-muted); line-height: 1.45;">
-          * Respondemos habitualmente em até 2 dias úteis. Para agilizar o atendimento de bugs, informe se possível o modelo do aparelho (ex: iPhone 14) e a versão do iOS.
-        </div>
-      </div>
-    </section>
-
-    <!-- Política de Privacidade -->
-    <section id="privacidade" class="content-section">
-      <div class="section-card">
-        <div class="section-header">
-          <span class="section-icon" aria-hidden="true">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          </span>
-          <div>
-            <h2>Política de Privacidade</h2>
-            <div class="meta-tag">Última atualização: Outubro de 2026</div>
-          </div>
-        </div>
-
-        <div class="privacy-block">
-          <div class="privacy-highlight">
-            <strong>Resumo Direto:</strong> O FaunaVista foi desenhado sob o princípio de <em>Privacy by Design</em>. Não coletamos, não rastreamos, não monetizamos e não transferimos dados pessoais de nenhum usuário.
-          </div>
-
-          <div>
-            <h3>1. Informações Gerais e Propósito</h3>
-            <p>
-              Esta Política de Privacidade descreve as práticas relativas ao aplicativo móvel <strong>FaunaVista</strong> para iOS. O aplicativo tem finalidade exclusivamente educativa e informativa, incentivando a conservação da fauna silvestre do Brasil.
-            </p>
-          </div>
-
-          <div>
-            <h3>2. Coleta e Tratamento de Dados Pessoais</h3>
-            <p>
-              O FaunaVista <strong>não coleta nenhum dado pessoal</strong>. Especificamente:
-            </p>
-            <ul>
-              <li><strong>Sem cadastro ou contas:</strong> O aplicativo não exige criação de login, e-mail, senha ou vínculo com redes sociais.</li>
-              <li><strong>Sem identificadores biométricos ou pessoais:</strong> Nenhum nome, documento, CPF ou número de telefone é solicitado.</li>
-              <li><strong>Sem telemetria analítica invasiva:</strong> Não utilizamos serviços de análise comportamental de terceiros.</li>
-            </ul>
-          </div>
-
-          <div>
-            <h3>3. Armazenamento Local no Dispositivo (SwiftData)</h3>
-            <p>
-              Todos os dados gerados pelo usuário durante o uso do app — incluindo avistamentos registrados, carimbos de data/hora, coordenadas marcadas em pins, anotações de campo e conclusões de missões — são armazenados <strong>estritamente na área de proteção local (sandbox) do dispositivo</strong> por meio da estrutura <strong>SwiftData</strong> da Apple.
-            </p>
-            <p style="margin-top: 0.4rem;">
-              Esses dados não são transmitidos para servidores nossos ou de qualquer terceiro. O usuário tem total controle sobre eles e pode apagá-los a qualquer momento no próprio aplicativo ou desinstalando o app.
-            </p>
-          </div>
-
-          <div>
-            <h3>4. Permissões do Sistema iOS</h3>
-            <p>
-              Para certas funcionalidades pontuais solicitadas pelo próprio usuário, o FaunaVista pode requerer acesso a recursos do sistema:
-            </p>
-            <ul>
-              <li><strong>Localização (Apenas durante o uso):</strong> Utilizada unicamente quando o usuário deseja atribuir a coordenada atual a um novo avistamento ou exibir sua posição relativa no mapa da expedição. A localização nunca é enviada para servidores ou monitorada em segundo plano.</li>
-              <li><strong>Biblioteca de Fotos / Câmera:</strong> Utilizada unicamente se o usuário optar por anexar uma foto pessoal ao seu log de avistamento local. As fotos permanecem no dispositivo.</li>
-            </ul>
-            <p style="margin-top: 0.4rem;">
-              Nenhuma dessas permissões é obrigatória para a navegação educativa nas fichas das espécies. O usuário pode revogar permissões a qualquer instante nos <em>Ajustes &gt; FaunaVista</em> do iOS.
-            </p>
-          </div>
-
-          <div>
-            <h3>5. Rastreamento e Publicidade</h3>
-            <p>
-              O FaunaVista <strong>não realiza rastreamento (tracking)</strong> nos termos do App Tracking Transparency (ATT) da Apple. O aplicativo não utiliza o Identificador de Publicidade (IDFA), não exibe anúncios de redes publicitárias e não vende ou compartilha dados com corretores de dados (data brokers).
-            </p>
-          </div>
-
-          <div>
-            <h3>6. Proteção de Menores e LGPD / COPPA</h3>
-            <p>
-              Por não coletar dados pessoais, o aplicativo é totalmente seguro para o uso de crianças, adolescentes e estudantes de todas as faixas etárias, em conformidade com a Lei Geral de Proteção de Dados (LGPD - Lei nº 13.709/2018) e padrões internacionais de proteção da infância como o COPPA.
-            </p>
-          </div>
-
-          <div>
-            <h3>7. Alterações nesta Política</h3>
-            <p>
-              Eventuais atualizações nesta política serão refletidas diretamente nesta página pública de suporte e indicadas pela data de revisão. Recomendamos a consulta periódica.
-            </p>
-          </div>
-
-          <div>
-            <h3>8. Contato do Responsável pela Privacidade</h3>
-            <p>
-              Em caso de dúvidas, solicitações ou considerações sobre privacidade no aplicativo, entre em contato através do e-mail oficial:
-              <a href="mailto:contato@faunavista.app" style="color: var(--accent-text); font-weight: 600;">contato@faunavista.app</a>.
-            </p>
-          </div>
         </div>
       </div>
     </section>
 
   </main>
 
-  <!-- Rodapé -->
+  <!-- Footer -->
   <footer class="page-footer">
     <div style="max-width: 900px; margin: 0 auto;">
       <p style="margin: 0 0 0.5rem 0; font-weight: 600; color: var(--text-main);">
         FaunaVista © 2026 — Feito com carinho pela fauna brasileira.
       </p>
-      <p style="margin: 0; font-size: 0.82rem;">
-        Aplicativo desenvolvido em SwiftUI e SwiftData para iOS. Todos os direitos reservados.
-      </p>
       <div>
-        <a href="#inicio" class="back-to-top" title="Voltar ao início">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
-          Voltar ao topo
-        </a>
+        <a href="#home" class="back-to-top" title="Voltar ao topo">Voltar ao topo</a>
       </div>
     </div>
   </footer>
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // Interatividade do botão de copiar e-mail
+      // Copy Email functionality
       const copyBtn = document.getElementById('copyEmailBtn');
       const copyLabel = document.getElementById('copyBtnLabel');
-      const email = 'contato@faunavista.app';
+      const email = 'faunavistastaff@gmail.com';
 
       if (copyBtn && copyLabel) {
         copyBtn.addEventListener('click', async () => {
@@ -963,9 +983,47 @@ table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 
               copyBtn.style.borderColor = '';
             }, 2500);
           } catch (err) {
-            // Fallback caso clipboard API falhe
             window.location.href = 'mailto:' + email;
           }
+        });
+      }
+
+      // Legal Tabs Switcher
+      const tabTermsBtn = document.getElementById('tab-terms-btn');
+      const tabPrivacyBtn = document.getElementById('tab-privacy-btn');
+      const panelTerms = document.getElementById('panel-terms');
+      const panelPrivacy = document.getElementById('panel-privacy');
+
+      function switchLegalTab(tabName) {
+        if (tabName === 'privacy') {
+          tabPrivacyBtn.classList.add('active');
+          tabPrivacyBtn.setAttribute('aria-selected', 'true');
+          panelPrivacy.classList.add('active');
+
+          tabTermsBtn.classList.remove('active');
+          tabTermsBtn.setAttribute('aria-selected', 'false');
+          panelTerms.classList.remove('active');
+        } else {
+          tabTermsBtn.classList.add('active');
+          tabTermsBtn.setAttribute('aria-selected', 'true');
+          panelTerms.classList.add('active');
+
+          tabPrivacyBtn.classList.remove('active');
+          tabPrivacyBtn.setAttribute('aria-selected', 'false');
+          panelPrivacy.classList.remove('active');
+        }
+      }
+
+      if (tabTermsBtn && tabPrivacyBtn) {
+        tabTermsBtn.addEventListener('click', () => switchLegalTab('terms'));
+        tabPrivacyBtn.addEventListener('click', () => switchLegalTab('privacy'));
+      }
+
+      // Link from FAQ directly to privacy tab
+      const linkToPrivacy = document.getElementById('linkToPrivacy');
+      if (linkToPrivacy) {
+        linkToPrivacy.addEventListener('click', () => {
+          switchLegalTab('privacy');
         });
       }
     });
