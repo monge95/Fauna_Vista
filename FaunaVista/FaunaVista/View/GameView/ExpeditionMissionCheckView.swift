@@ -163,7 +163,7 @@ struct ExpeditionMissionCheckView: View {
                             
                             Text(
                                 photo.pose?.displayName
-                                ?? "Sem animal"
+                                ?? "Foto inválida"
                             )
                             .font(.caption2)
                             .foregroundStyle(.secondary)

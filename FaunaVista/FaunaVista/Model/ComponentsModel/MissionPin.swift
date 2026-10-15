@@ -181,7 +181,7 @@ struct MissionPin: Identifiable {
             assetsNameDiscovered: "pinOnçaDiscovered",
             missionObjective1: "Fotografe o animal parado",
             missionObjective2: "Fotografe o animal em movimento",
-            missionObjective3: "Fotografe o animal entrando na água",
+            missionObjective3: "Fotografe o animal bebendo água",
             posX: 225.0,
             posY: 260.0
         ),

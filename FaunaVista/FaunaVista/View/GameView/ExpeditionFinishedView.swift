@@ -19,11 +19,11 @@ struct ExpeditionFinishedView: View {
 
             ScrollView {
                 VStack(spacing: 6) {
-                    Text("Análise das fotos")
+                    Text("Revise suas capturas")
                         .font(.system(size: 28, weight: .heavy))
 
-                    Text("Selecione as fotos que\ndeseja enviar para análise")
-                        .font(.footnote)
+                    Text("Lembre-se das orientações iniciais \ne escolha as fotos válidas.")
+                        .font(.default)
                         .multilineTextAlignment(.center)
                         .padding(.bottom, 16)
 
