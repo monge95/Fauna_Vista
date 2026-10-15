@@ -154,7 +154,7 @@ struct TermsOfUseView: View {
                         text: """
                         Para dúvidas, sugestões ou solicitações relacionadas ao FaunaVista, entre em contato:
                         FaunaVista
-                         Responsável: [Felipe Colares, Gabriel Groppo Joice Cardoso, Pedro Monge] E-mail: [joicenunes.ca@gmail.com]
+                         Responsável: [Felipe Colares, Gabriel Groppo Joice Cardoso, Pedro Monge] E-mail: faunavistastaff@gmail.com
                         Última atualização: [25/09/2026]
                         """
                         

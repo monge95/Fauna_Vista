@@ -158,7 +158,7 @@ struct PrivacyPolicyView: View {
                         FaunaVista
 
                         Responsável: Felipe Colares, Gabriel Groppo, Joice Cardoso, Pedro Monge
-                        E-mail: joicenunes.ca@gmail.com
+                        E-mail: faunavistastaff@gmail.com
 
                         Última atualização: 25/09/2026
                         """

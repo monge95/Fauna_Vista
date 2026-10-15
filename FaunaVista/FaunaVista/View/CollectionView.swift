@@ -96,6 +96,7 @@ struct CollectionView: View {
         .background(
             Color("CollectionBackground")
         )
+        .padding(.top, 50)
     }
     
     private var orderedAnimals: [Animal] {
