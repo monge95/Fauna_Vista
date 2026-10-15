@@ -18,6 +18,7 @@ struct ExpeditionGameView: View {
     var vm: ExpeditionViewState
     @State private var flashVisible = false
     @State private var debugAxis: ExpeditionDebugAxis = .x
+    @State private var showExitConfirmation = false
 
     // HUDs de debug/ajuda (painel de ajuste da mira, objeto/distância/avaliação
     // e controles de objeto/câmera). Ficam OCULTOS, mas continuam ocupando o mesmo
@@ -128,6 +129,21 @@ struct ExpeditionGameView: View {
 
             VStack {
                 HStack {
+                    // Botão de sair da expedição
+                    Button {
+                        showExitConfirmation = true
+                    } label: {
+                        Image(systemName: "figure.walk.arrival")
+                            .font(.system(size: 16, weight: .bold))
+                            .foregroundStyle(.primary)
+                            .frame(width: 40, height: 40)
+                            .background(
+                                .ultraThinMaterial,
+                                in: Circle()
+                            )
+                    }
+                    .accessibilityLabel("Sair da expedição")
+
                     Label(
                         "\(vm.photosTaken)/\(ExpeditionConfig.totalPhotos)",
                         systemImage: "photo"
@@ -326,6 +342,18 @@ struct ExpeditionGameView: View {
                 .ignoresSafeArea()
                 .allowsHitTesting(false)
                 .accessibilityHidden(true)
+        }
+        .alert(
+            "Sair da expedição?",
+            isPresented: $showExitConfirmation
+        ) {
+            Button("Continuar", role: .cancel) { }
+
+            Button("Sair", role: .destructive) {
+                vm.cancelExpedition()
+            }
+        } message: {
+            Text("Você perderá o progresso e as fotos tiradas nesta expedição.")
         }
         .onChange(of: vm.photoFlashID) { _, _ in
             flashVisible = true
