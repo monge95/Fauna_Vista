@@ -1,6 +1,8 @@
 //
 //  ExpeditionStartView.swift
 //
+//
+ 
 
 import SwiftUI
 
@@ -10,91 +12,113 @@ struct ExpeditionStartView: View {
     var body: some View {
         ZStack {
             FaunaPalette.beige.ignoresSafeArea()
-            
-            VStack(spacing: 14) {
-                Spacer()
-                header
-                //Spacer()
-                HStack(alignment: .top, spacing: 20) {
-                    PhotoExampleCard(
-                        imageName: "fotoValida",
-                        title: "Foto válida",
-                        text: "O círculo fica verde quando o animal está na mira.",
-                        symbol: "checkmark.circle.fill",
-                        tint: .green
-                    )
-                    PhotoExampleCard(
-                        imageName: "fotoInvalida",
-                        title: "Foto inválida",
-                        text: "O círculo fica cinza quando não há um alvo válido.",
-                        symbol: "xmark.circle.fill",
-                        tint: .gray
-                    )
-                }
-                .frame(maxHeight: .infinity)
-                //Spacer()
-                
-                Text("Instruções")
-                    .padding(.trailing, 260)
-                    .fontWeight(.semibold)
-                    
-                VStack(spacing: 10) {
-                    TipRow(
-                        symbol: "hand.draw.fill",
-                        text: "Arraste o dedo pela tela para explorar o cenário."
-                    )
-                    Divider()
-                    TipRow(
-                        symbol: "arrow.up.left.and.arrow.down.right",
-                        text: "Abra os dedos (pinça) para dar zoom e chegar mais perto."
-                    )
-                    Divider()
-                    TipRow(
-                        symbol: "timer",
-                        text: "Você tem \(Int(ExpeditionConfig.gameDuration)) segundos e \(ExpeditionConfig.totalPhotos) fotos."
-                    )
-                    Divider()
-                    TipRow(
-                        symbol: "pawprint.fill",
-                        text: "Os animais se movem de forma imprevisível. Fique atento!"
-                    )
-                }
-                .padding(14)
-                .background(.white, in: RoundedRectangle(cornerRadius: 20))
-                .padding(.bottom, 15)
 
-                Button {
-                    vm.startExpeditionWithCountdown()
-                } label: {
-                    Text(
-                        vm.isStartingExpedition
-                            ? (vm.countdownNumber > 0
-                                ? "Começando em \(vm.countdownNumber)"
-                                : "Começando…")
-                            : "Começar Expedição"
-                    )
-                        .font(.headline)
-                        .foregroundStyle(vm.isStartingExpedition ? Color.black : Color.white)
-                        .frame(maxWidth: 350)
-                        .padding(.vertical, 16)
-                        .background(
-                            vm.isStartingExpedition ? Color.yellow : FaunaPalette.teal,
-                            in: Capsule()
-                        )
+            VStack(spacing: 0) {
+
+                // Conteúdo rola se não couber (iPad / janela pequena),
+                // e fica centralizado quando cabe.
+                GeometryReader { geo in
+                    ScrollView {
+                        content
+                            .frame(maxWidth: 600)
+                            .frame(maxWidth: .infinity)
+                            .padding(.horizontal, 20)
+                            .padding(.vertical, 12)
+                            .frame(minHeight: geo.size.height)
+                    }
+                    .scrollBounceBehavior(.basedOnSize)
                 }
-                .disabled(vm.isStartingExpedition)
-                Spacer()
+
+                // Botão SEMPRE visível, fixo embaixo
+                startButton
+                    .padding(.horizontal, 20)
+                    .padding(.top, 8)
+                    .padding(.bottom, 16)
             }
             .foregroundStyle(.black)
-            .padding(.horizontal, 20)
-            .padding(.top, 8)
-            .padding(.bottom, 28)
         }
+    }
+
+    // MARK: - Conteúdo
+
+    private var content: some View {
+        VStack(spacing: 14) {
+            header
+
+            HStack(alignment: .top, spacing: 16) {
+                PhotoExampleCard(
+                    imageName: "fotoValida",
+                    title: "Foto válida",
+                    text: "O círculo fica verde quando o animal está na mira.",
+                    symbol: "checkmark.circle.fill",
+                    tint: .green
+                )
+                PhotoExampleCard(
+                    imageName: "fotoInvalida",
+                    title: "Foto inválida",
+                    text: "O círculo fica cinza quando não há um alvo válido.",
+                    symbol: "xmark.circle.fill",
+                    tint: .gray
+                )
+            }
+
+            Text("Instruções")
+                .fontWeight(.semibold)
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+            VStack(spacing: 10) {
+                TipRow(
+                    symbol: "hand.draw.fill",
+                    text: "Arraste o dedo pela tela para explorar o cenário."
+                )
+                Divider()
+                TipRow(
+                    symbol: "arrow.up.left.and.arrow.down.right",
+                    text: "Abra os dedos (pinça) para dar zoom e chegar mais perto."
+                )
+                Divider()
+                TipRow(
+                    symbol: "timer",
+                    text: "Você tem \(Int(ExpeditionConfig.gameDuration)) segundos e \(ExpeditionConfig.totalPhotos) fotos."
+                )
+                Divider()
+                TipRow(
+                    symbol: "pawprint.fill",
+                    text: "Os animais se movem de forma imprevisível. Fique atento!"
+                )
+            }
+            .padding(14)
+            .background(.white, in: RoundedRectangle(cornerRadius: 20))
+        }
+    }
+
+    private var startButton: some View {
+        Button {
+            vm.startExpeditionWithCountdown()
+        } label: {
+            Text(
+                vm.isStartingExpedition
+                    ? (vm.countdownNumber > 0
+                        ? "Começando em \(vm.countdownNumber)"
+                        : "Começando…")
+                    : "Começar Expedição"
+            )
+            .font(.headline)
+            .lineLimit(1)
+            .minimumScaleFactor(0.8)
+            .foregroundStyle(vm.isStartingExpedition ? Color.black : Color.white)
+            .frame(maxWidth: 350)
+            .padding(.vertical, 16)
+            .background(
+                vm.isStartingExpedition ? Color.yellow : FaunaPalette.teal,
+                in: Capsule()
+            )
+        }
+        .disabled(vm.isStartingExpedition)
     }
 
     private var header: some View {
         VStack(spacing: 4) {
-            
             Text("Prepare-se")
                 .font(.custom("Belanosima-SemiBold", size: 32))
 
@@ -116,10 +140,14 @@ private struct PhotoExampleCard: View {
 
     var body: some View {
         VStack(spacing: 10) {
-            Image(imageName)
-                .resizable()
-                .scaledToFill()
-                .frame(width: 170, height: 157)
+            // Proporção fixa (170x157), largura flexível
+            Color.clear
+                .aspectRatio(170.0 / 157.0, contentMode: .fit)
+                .overlay {
+                    Image(imageName)
+                        .resizable()
+                        .scaledToFill()
+                }
                 .clipShape(RoundedRectangle(cornerRadius: 12))
 
             HStack(spacing: 4) {
@@ -138,7 +166,8 @@ private struct PhotoExampleCard: View {
                 .padding(.bottom, 10)
                 .padding(.horizontal, 12)
         }
-        .frame(width: 170)
+        .frame(maxWidth: 220)
+        .frame(maxWidth: .infinity)
         .background(.white, in: RoundedRectangle(cornerRadius: 20))
     }
 }
@@ -162,7 +191,6 @@ private struct TipRow: View {
 
             Spacer(minLength: 0)
         }
-        
     }
 }
 

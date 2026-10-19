@@ -3,33 +3,30 @@
 //  FaunaVista
 //
 //  Created by Joice Cardoso on 05/10/26.
-//
+ 
 
 import SwiftUI
 
 struct StartOnboarding: View {
     @Environment(AppCoordinator.self) private var coordinator
+
     var body: some View {
-        ZStack {
-            Image("ExpedicaoComecaImg")
-                .resizable()
-                .scaledToFill()
-                .ignoresSafeArea()
-            
+        GeometryReader { geo in
             VStack(spacing: 10) {
                 Text("Sua expedição\ncomeça aqui")
-                    .font(
-                        .custom("Belanosima-SemiBold", size: 34))
+                    .font(.custom("Belanosima-SemiBold", size: 34))
                     .multilineTextAlignment(.center)
-                 
-                
+                    .lineLimit(2)
+                    .minimumScaleFactor(0.6)
+
                 Text("Vem explorar os biomas do Brasil \nem uma expedição virtual")
                     .font(.system(size: 16))
                     .multilineTextAlignment(.center)
-                
-                Spacer()
-                
-                Button (action: {
+                    .fixedSize(horizontal: false, vertical: true)
+
+                Spacer(minLength: 16)
+
+                Button(action: {
                     coordinator.push(.findSpecies)
                 }) {
                     Text("Avançar")
@@ -37,15 +34,18 @@ struct StartOnboarding: View {
                         .foregroundStyle(.white)
                         .frame(maxWidth: .infinity)
                         .frame(height: 46)
-                        .background (Color.button)
+                        .background(Color.button)
                         .clipShape(Capsule())
                 }
-                .padding(.horizontal, 80)
+                .frame(maxWidth: 360)
+                .padding(.horizontal, geo.size.width * 0.2)
             }
-            .padding(.bottom, 70)
-            .padding(.top, 150)
-            
+            .padding(.horizontal, 24)
+            .padding(.top, geo.size.height * 0.19)
+            .padding(.bottom, max(24, geo.size.height * 0.09))
+            .frame(width: geo.size.width, height: geo.size.height)
         }
+        .background { ScreenBackground(name: "ExpedicaoComecaImg") }
     }
 }
 
