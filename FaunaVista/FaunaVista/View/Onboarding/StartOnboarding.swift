@@ -30,7 +30,7 @@ struct StartOnboarding: View {
                 Spacer()
                 
                 Button (action: {
-                    coordinator.push(.exploreTerritories)
+                    coordinator.push(.findSpecies)
                 }) {
                     Text("Avançar")
                         .font(.system(size: 18, weight: .medium))

@@ -1,5 +1,5 @@
 //
-//  Encontre.swift
+//  Explore.swift
 //  FaunaVista
 //
 //  Created by Joice Cardoso on 05/10/26.
@@ -11,26 +11,20 @@ struct FindSpecies: View {
     @Environment(AppCoordinator.self) private var coordinator
     var body: some View {
         ZStack {
-            Image("EncontreImg")
+            Image("ExploreImg")
                 .resizable()
                 .scaledToFill()
                 .ignoresSafeArea()
             
             VStack(spacing: 10) {
-                Text("Explore novos\nterritórios")
+                Text("Encontre espécies ameaçadas")
                     .font(
                         .custom("Belanosima-SemiBold", size: 34))
                     .multilineTextAlignment(.center)
-                    .foregroundStyle(Color("TextOnboarding"))
                     .padding(.top, 80)
                 
-//                Text("Procure animais que enfrentam \n riscos de desaparecer da mata \n e descubra sua importância")
-//                    .font(.system(size: 16))
-//                    .multilineTextAlignment(.center)
-//                    .foregroundStyle(Color("TextOnboarding"))
                 
                 Spacer()
-                
                 HStack(spacing: 30) {
                     
                     Button (action: {
@@ -46,7 +40,7 @@ struct FindSpecies: View {
                     
                     
                     Button (action: {
-                        coordinator.push(.observeImg)
+                        coordinator.push(.exploreTerritories)
                     }) {
                         Image(systemName: "chevron.right")
                             .font(.system(size: 25, weight: .bold))
@@ -57,12 +51,14 @@ struct FindSpecies: View {
                     .padding(.bottom, 70)
                     
                 }
+            
             }
+    
         }
         .navigationBarBackButtonHidden(true)
     }
 }
 
 #Preview {
-    FindSpecies()
+    ExploreTerritories()
 }
