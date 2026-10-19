@@ -54,7 +54,7 @@ struct BiomeView: View {
             }
             .frame(width: geo.size.width, height: geo.size.height)
         }
-        .background { ScreenBackground(name: "BackGroundBiome") }
+        .background { ScreenBackground(name: "BackGroundMap") }
     }
 }
 
