@@ -17,8 +17,7 @@ struct BiomeView: View {
         GeometryReader { geo in
             VStack(spacing: 10) {
 
-                // Título e subtítulo
-                VStack(spacing: 6) {
+                VStack(spacing: 0) {
                     ForEach(MapPiece.todosOsBiomas) { bio in
                         if log.activeBiomeId == bio.id {
                             Text(bio.name)
@@ -36,25 +35,31 @@ struct BiomeView: View {
                         .multilineTextAlignment(.center)
                         .frame(maxWidth: .infinity, alignment: .center)
                 }
+                .padding(.top, -geo.size.height * 0.09)
                 .padding(.horizontal, 20)
 
-                // Mapa escala para o espaço que sobra entre título e barra de progresso
+      
                 FitToSpace(designSize: mapDesignSize) {
                     MapBiome(mapPice: log.activeBiomeId)
                 }
-                .frame(maxHeight: .infinity)
+                .frame(width: geo.size.width * 1.25)
+                .ignoresSafeArea()
+                
 
-                // Barra de progresso SEMPRE colada embaixo
-                // (antes estava dentro de um GeometryReader sem altura, que
-                //  ocupava todo o espaço livre e jogava a barra para o topo)
+
+            
                 MissionProgress()
                     .frame(maxWidth: 520)
                     .padding(.horizontal, max(20, geo.size.width * 0.12))
                     .padding(.bottom, 16)
+                Spacer(minLength: 0)
             }
-            .frame(width: geo.size.width, height: geo.size.height)
+            .padding(.top, 0)
+            .frame(width: geo.size.width, height: geo.size.height, alignment: .top)
         }
-        .background { ScreenBackground(name: "BackGroundMap") }
+        .background { ScreenBackground(name: "BackGroundBiome") }
+        .navigationBarTitleDisplayMode(.inline)
+        
     }
 }
 

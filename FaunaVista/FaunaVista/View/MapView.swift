@@ -31,7 +31,7 @@ struct MapView: View {
                     infoButton
                 }
                 .padding(.horizontal, geo.size.width * 0.04)
-                .padding(.top, geo.size.height * 0.02)
+                .padding(.top, geo.size.height * 0.1)
 
                 // Dica
                 Text("Toque no bioma para explorar")
@@ -50,17 +50,20 @@ struct MapView: View {
                 FitToSpace(designSize: mapDesignSize) {
                     ZStack {
                         Image("cloud")
-                            .padding(.bottom, 30)
+                            .padding(.bottom, geo.size.width * 0.2)
 
                         MapButton()
-                            .padding(.top, 50)
+                          
+                            
                     }
                 }
-                .frame(maxHeight: .infinity)
-                .padding(.bottom, 8)
+                .frame(width: geo.size.width * 1.25)  
+                .ignoresSafeArea()
+                .padding(.bottom, geo.size.height * 0.1)
             }
-            .frame(width: geo.size.width, height: geo.size.height)
+            .frame(width: geo.size.width, height: geo.size.height, alignment: .center)
         }
+        .ignoresSafeArea()
         .background { ScreenBackground(name: "BackGroundMap") }
     }
 
