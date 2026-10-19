@@ -93,10 +93,10 @@ struct CollectionView: View {
             .padding(.top, 20)
             .padding(.bottom, 40)
         }
+        .padding(.top, 50)
         .background(
             Color("CollectionBackground")
         )
-        //.padding(.top, 50)
     }
     
     private var orderedAnimals: [Animal] {

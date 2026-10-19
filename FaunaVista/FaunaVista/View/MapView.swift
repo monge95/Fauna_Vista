@@ -11,15 +11,12 @@ import SwiftData
 
 struct MapView: View {
     @Environment(AppCoordinator.self) private var coordinator
-
-    /// Tamanho em que o mapa + nuvem foram desenhados (MapButton 491.8 x 504.17 + 50 de respiro no topo).
     private let mapDesignSize = CGSize(width: 492, height: 554)
 
     var body: some View {
         GeometryReader { geo in
-            // Margem lateral proporcional (antes era 70 fixo)
-            let side = max(24, min(70, geo.size.width * 0.17))
-
+          
+        
             VStack(spacing: 8) {
 
                 // Título + botão de informação
@@ -33,8 +30,8 @@ struct MapView: View {
 
                     infoButton
                 }
-                .padding(.horizontal, side)
-                .padding(.top, 8)
+                .padding(.horizontal, geo.size.width * 0.04)
+                .padding(.top, geo.size.height * 0.02)
 
                 // Dica
                 Text("Toque no bioma para explorar")
@@ -47,8 +44,7 @@ struct MapView: View {
                     .background(Color("LightGreenProgress"))
                     .cornerRadius(20)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.leading, side)
-                    .padding(.trailing, side)
+                    .padding(.horizontal, geo.size.width * 0.04)
 
                 // Mapa escalado para ocupar o espaço que sobrou
                 FitToSpace(designSize: mapDesignSize) {
