@@ -23,7 +23,7 @@ struct AnimalBasicInfoCard: View {
                     .italic()
             }
 
-            HStack(alignment: .top, spacing: 8) {
+            HStack(alignment: .top, spacing: 6) {
 
                 VStack(alignment: .leading, spacing: 6) {
                     Text("Bioma")
