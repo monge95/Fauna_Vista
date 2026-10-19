@@ -4,61 +4,40 @@
 //
 //  Created by Joice Cardoso on 05/10/26.
 //
-
 import SwiftUI
 
 struct FindSpecies: View {
     @Environment(AppCoordinator.self) private var coordinator
+
     var body: some View {
-        ZStack {
-            Image("ExploreImg")
-                .resizable()
-                .scaledToFill()
-                .ignoresSafeArea()
-            
+        GeometryReader { geo in
             VStack(spacing: 10) {
-                Text("Encontre espécies ameaçadas")
-                    .font(
-                        .custom("Belanosima-SemiBold", size: 34))
+                // Quebra de linha explícita + redução automática:
+                // o texto não quebra mais no meio de forma estranha.
+                Text("Encontre espécies\nameaçadas")
+                    .font(.custom("Belanosima-SemiBold", size: 34))
                     .multilineTextAlignment(.center)
-                    .padding(.top, 80)
-                
-                
-                Spacer()
-                HStack(spacing: 30) {
-                    
-                    Button (action: {
-                        coordinator.pop()
-                    }) {
-                        Image(systemName: "chevron.left")
-                            .font(.system(size: 25, weight: .bold))
-                            .foregroundStyle(.white)
-                            .frame(width: 50, height: 50)
-                    }
-                    .glassEffect(.regular, in: .circle)
-                    .padding(.bottom, 70)
-                    
-                    
-                    Button (action: {
-                        coordinator.push(.exploreTerritories)
-                    }) {
-                        Image(systemName: "chevron.right")
-                            .font(.system(size: 25, weight: .bold))
-                            .foregroundStyle(.white)
-                            .frame(width: 50, height: 50)
-                    }
-                    .glassEffect(.regular, in: .circle)
-                    .padding(.bottom, 70)
-                    
-                }
-            
+                    .lineLimit(2)
+                    .minimumScaleFactor(0.6)
+                    .padding(.top, geo.size.height * 0.10)
+
+                Spacer(minLength: 16)
+
+                OnboardingNavButtons(
+                    onBack: { coordinator.pop() },
+                    onNext: { coordinator.push(.exploreTerritories) }
+                )
+                .padding(.bottom, max(24, geo.size.height * 0.09))
             }
-    
+            .padding(.horizontal, 24)
+            .frame(width: geo.size.width, height: geo.size.height)
         }
+        .background { ScreenBackground(name: "ExploreImg") }
         .navigationBarBackButtonHidden(true)
     }
 }
 
 #Preview {
-    ExploreTerritories()
+    FindSpecies()
+        .environment(AppCoordinator())
 }

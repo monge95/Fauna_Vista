@@ -4,8 +4,7 @@
 //  FaunaVista
 //
 //  Created by Gabriel Groppo on 06/10/26.
-//
-
+ 
 import SwiftUI
 
 struct CompletedMissionSheetView: View {
@@ -30,8 +29,7 @@ struct CompletedMissionSheetView: View {
                         .foregroundStyle(.red)
                         .frame(width: 44, height: 44)
                         .background {
-                            Circle()
-                                .fill(.white)
+                            Circle().fill(.white)
                         }
                 }
                 .buttonStyle(.plain)
@@ -39,39 +37,42 @@ struct CompletedMissionSheetView: View {
                 Spacer()
             }
 
-            CompletedMissionAnimalIdentification(
-                animal: expedition.animal
-            )
+            ScrollView {
+                VStack(spacing: 12) {
+                    CompletedMissionAnimalIdentification(
+                        animal: expedition.animal
+                    )
 
-            VStack(alignment: .leading, spacing: 12) {
+                    VStack(alignment: .leading, spacing: 12) {
+                        Text("Desafios")
+                            .font(.system(size: 16, weight: .medium))
 
-                Text("Desafios")
-                    .font(.system(size: 16, weight: .medium))
+                        CompletedMissionChallengeCard(
+                            completed: expedition.challenge1Completed,
+                            objective: pin.missionObjective1
+                        )
+                        CompletedMissionChallengeCard(
+                            completed: expedition.challenge2Completed,
+                            objective: pin.missionObjective2
+                        )
+                        CompletedMissionChallengeCard(
+                            completed: expedition.challenge3Completed,
+                            objective: pin.missionObjective3
+                        )
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
 
-                CompletedMissionChallengeCard(
-                    completed: expedition.challenge1Completed,
-                    objective: pin.missionObjective1
-                )
-
-                CompletedMissionChallengeCard(
-                    completed: expedition.challenge2Completed,
-                    objective: pin.missionObjective2
-                )
-
-                CompletedMissionChallengeCard(
-                    completed: expedition.challenge3Completed,
-                    objective: pin.missionObjective3
-                )
+                    ExpeditionPhotosSection(
+                        photos: expedition.photos
+                    )
+                }
+                .frame(maxWidth: 600)
+                .frame(maxWidth: .infinity)
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
-
-            ExpeditionPhotosSection(
-                photos: expedition.photos
-            )
-
-            Spacer()
+            .scrollBounceBehavior(.basedOnSize)
 
             redoButton
+                .frame(maxWidth: 600)
         }
         .foregroundStyle(.black)
         .padding(.horizontal, 24)
@@ -86,7 +87,7 @@ struct CompletedMissionSheetView: View {
             "Deseja realmente refazer a expedição?",
             isPresented: $showRedoConfirmation
         ) {
-            Button("Cancelar", role: .cancel) {  }
+            Button("Cancelar", role: .cancel) { }
 
             Button("Refazer", role: .destructive) {
                 onRedo()
@@ -95,10 +96,7 @@ struct CompletedMissionSheetView: View {
             Text("Todas as fotos tiradas na expedição serão excluídas.")
         }
     }
-   
-    
-   
-    
+
     private var redoButton: some View {
         Button {
             showRedoConfirmation = true
@@ -119,4 +117,3 @@ struct CompletedMissionSheetView: View {
         .buttonStyle(.plain)
     }
 }
-

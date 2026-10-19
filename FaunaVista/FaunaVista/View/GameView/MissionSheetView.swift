@@ -3,8 +3,7 @@
 //  FaunaVista
 //
 //  Created by Felipe Colares Cardoso on 04/10/26.
-//
-
+ 
 import SwiftUI
 
 struct MissionSheetView: View {
@@ -26,8 +25,7 @@ struct MissionSheetView: View {
                         .foregroundStyle(.red)
                         .frame(width: 44, height: 44)
                         .background {
-                            Circle()
-                                .fill(.white)
+                            Circle().fill(.white)
                         }
                 }
                 .buttonStyle(.plain)
@@ -35,36 +33,26 @@ struct MissionSheetView: View {
                 Spacer()
             }
 
-            MissionAnimalIdentification(
-                scientificName: pin.scientificName
-            )
+            ScrollView {
+                VStack(spacing: 12) {
+                    MissionAnimalIdentification(
+                        scientificName: pin.scientificName
+                    )
 
-            VStack(alignment: .leading, spacing: 12) {
+                    VStack(alignment: .leading, spacing: 12) {
+                        Text("Desafios")
+                            .font(.system(size: 20, weight: .bold))
 
-                Text("Desafios")
-                    .font(.system(size: 20, weight: .bold))
-
-                MissionChallengeCard(
-                    number: 1,
-                    objective: pin.missionObjective1
-                )
-
-                MissionChallengeCard(
-                    number: 2,
-                    objective: pin.missionObjective2
-                )
-
-                MissionChallengeCard(
-                    number: 3,
-                    objective: pin.missionObjective3
-                )
+                        MissionChallengeCard(number: 1, objective: pin.missionObjective1)
+                        MissionChallengeCard(number: 2, objective: pin.missionObjective2)
+                        MissionChallengeCard(number: 3, objective: pin.missionObjective3)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                .frame(maxWidth: 600)
+                .frame(maxWidth: .infinity)
             }
-            .frame(
-                maxWidth: .infinity,
-                alignment: .leading
-            )
-
-            Spacer()
+            .scrollBounceBehavior(.basedOnSize)
 
             Button(action: onStart) {
                 Text("Iniciar expedição")
@@ -77,6 +65,7 @@ struct MissionSheetView: View {
                         in: Capsule()
                     )
             }
+            .frame(maxWidth: 600)
         }
         .foregroundStyle(.black)
         .padding(.horizontal, 24)
