@@ -15,6 +15,7 @@ struct InformationView: View {
         VStack(spacing: 0) {
 
             header
+                
 
             VStack(spacing: 12) {
 
